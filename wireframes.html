@@ -1,0 +1,2283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenPage — Wireframes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@300;400;500&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-0: #09090b;
+  --bg-1: #0f0f12;
+  --bg-2: #18181b;
+  --bg-3: #1e1e23;
+  --bg-4: #27272a;
+  --border: #2a2a2f;
+  --border-subtle: #1f1f24;
+  --text-0: #fafafa;
+  --text-1: #a1a1aa;
+  --text-2: #71717a;
+  --text-3: #52525b;
+  --green: #22c55e;
+  --green-dim: #16a34a;
+  --green-glow: rgba(34,197,94,0.12);
+  --green-glow2: rgba(34,197,94,0.06);
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --yellow: #eab308;
+  --orange: #f97316;
+  --purple: #a855f7;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --font: 'DM Sans', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { font-size: 14px; }
+body {
+  font-family: var(--font);
+  background: var(--bg-0);
+  color: var(--text-0);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ======================== TOP NAV ======================== */
+.topnav {
+  height: 48px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+}
+
+.topnav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 24px;
+  cursor: pointer;
+  user-select: none;
+}
+.topnav-logo svg { flex-shrink: 0; }
+.topnav-logo span {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-0);
+  letter-spacing: -0.3px;
+}
+
+.topnav-tabs {
+  display: flex;
+  gap: 2px;
+  height: 100%;
+  align-items: stretch;
+}
+.topnav-tab {
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-2);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font);
+  position: relative;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+.topnav-tab:hover { color: var(--text-1); }
+.topnav-tab.active { color: var(--text-0); }
+.topnav-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 8px; right: 8px;
+  height: 2px;
+  background: var(--green);
+  border-radius: 2px 2px 0 0;
+}
+
+.topnav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-family: var(--font);
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  color: var(--text-1);
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--bg-4); color: var(--text-0); border-color: #3a3a3f; }
+.btn-green {
+  background: var(--green);
+  color: #000;
+  border-color: var(--green);
+  font-weight: 600;
+}
+.btn-green:hover { background: var(--green-dim); border-color: var(--green-dim); color: #000; }
+.btn-ghost { background: transparent; border-color: transparent; }
+.btn-ghost:hover { background: var(--bg-3); border-color: var(--border); }
+.btn-sm { padding: 4px 10px; font-size: 11.5px; }
+.btn-lg { padding: 8px 20px; font-size: 13.5px; }
+
+.avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--bg-4);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-1);
+  cursor: pointer;
+}
+
+/* ======================== SCREENS ======================== */
+.screen {
+  position: absolute;
+  top: 48px; left: 0; right: 0; bottom: 0;
+  display: none;
+  overflow: hidden;
+}
+.screen.active { display: flex; }
+
+/* ======================== DASHBOARD ======================== */
+#dashboard {
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--bg-0);
+}
+
+.dash-header {
+  padding: 40px 48px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.dash-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+.dash-header p {
+  color: var(--text-2);
+  font-size: 13.5px;
+  margin-top: 4px;
+}
+
+.dash-filters {
+  padding: 24px 48px 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.dash-search {
+  padding: 7px 12px 7px 34px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-family: var(--font);
+  font-size: 13px;
+  width: 260px;
+  outline: none;
+  transition: border-color 0.15s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 10px center;
+}
+.dash-search:focus { border-color: var(--green); }
+.dash-search::placeholder { color: var(--text-3); }
+
+.filter-chip {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--text-2);
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: var(--font);
+  transition: all 0.15s;
+}
+.filter-chip:hover { color: var(--text-1); background: var(--bg-2); }
+.filter-chip.active { color: var(--text-0); background: var(--bg-3); border-color: var(--border); }
+
+.dash-grid {
+  padding: 24px 48px 48px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.project-card {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.project-card:hover {
+  border-color: #3a3a3f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.project-card-thumb {
+  height: 160px;
+  background: var(--bg-2);
+  position: relative;
+  overflow: hidden;
+}
+.project-card-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--green-glow2), transparent 60%);
+}
+.thumb-wireframe {
+  position: absolute;
+  inset: 12px;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+}
+.thumb-wireframe .tw-bar {
+  height: 6px;
+  background: var(--bg-4);
+  border-radius: 2px;
+}
+.thumb-wireframe .tw-bar.w60 { width: 60%; }
+.thumb-wireframe .tw-bar.w40 { width: 40%; }
+.thumb-wireframe .tw-bar.w80 { width: 80%; }
+.thumb-wireframe .tw-row {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+.thumb-wireframe .tw-box {
+  flex: 1;
+  height: 28px;
+  background: var(--bg-4);
+  border-radius: 3px;
+}
+
+.project-card-body { padding: 14px 16px; }
+.project-card-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.project-card-meta {
+  font-size: 11.5px;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.project-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.status-dot.draft { background: var(--yellow); }
+
+.project-card-new {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 234px;
+  border-style: dashed;
+  background: transparent;
+}
+.project-card-new:hover { border-color: var(--green); background: var(--green-glow2); }
+.new-card-inner {
+  text-align: center;
+  color: var(--text-2);
+}
+.new-card-inner svg { margin-bottom: 8px; }
+.new-card-inner p { font-size: 13px; font-weight: 500; }
+
+/* ======================== EDITOR ======================== */
+#editor {
+  flex-direction: row;
+}
+
+/* Left: Component Library Sidebar */
+.editor-sidebar-left {
+  width: 240px;
+  background: var(--bg-1);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.sidebar-header {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sidebar-search {
+  margin: 8px 10px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-family: var(--font);
+  font-size: 12px;
+  outline: none;
+  width: calc(100% - 20px);
+}
+.sidebar-search:focus { border-color: var(--green); }
+
+.component-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 8px;
+}
+.component-group-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-3);
+  padding: 12px 8px 6px;
+}
+.component-item {
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: var(--text-1);
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.12s;
+  user-select: none;
+}
+.component-item:hover { background: var(--bg-3); color: var(--text-0); }
+.component-item:active { cursor: grabbing; background: var(--green-glow); color: var(--green); }
+.component-item .ci-icon {
+  width: 28px; height: 28px;
+  border-radius: 5px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.component-item:hover .ci-icon { border-color: #3a3a3f; }
+.component-item .ci-label { font-weight: 500; }
+
+/* Center: Canvas */
+.editor-canvas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-0);
+  min-width: 0;
+}
+
+.canvas-toolbar {
+  height: 40px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 6px;
+}
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 4px;
+}
+.toolbar-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 6px;
+}
+.toolbar-btn {
+  width: 30px; height: 30px;
+  border-radius: 5px;
+  border: none;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-family: var(--font);
+  transition: all 0.12s;
+}
+.toolbar-btn:hover { background: var(--bg-3); color: var(--text-0); }
+.toolbar-btn.active { background: var(--green-glow); color: var(--green); }
+
+.canvas-viewport-label {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.viewport-select {
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-1);
+  font-size: 11px;
+  font-family: var(--font);
+  cursor: pointer;
+}
+
+.canvas-area {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+  overflow: auto;
+  position: relative;
+}
+.canvas-area::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, var(--bg-3) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.canvas-frame {
+  width: 100%;
+  max-width: 960px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  min-height: 600px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Canvas content blocks */
+.canvas-block {
+  padding: 32px 40px;
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.canvas-block:hover { background: var(--green-glow2); }
+.canvas-block.selected {
+  background: var(--green-glow2);
+  outline: 2px solid var(--green);
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+.canvas-block-label {
+  position: absolute;
+  top: 8px; left: 8px;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--green);
+  background: var(--green-glow);
+  padding: 2px 6px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.canvas-block:hover .canvas-block-label,
+.canvas-block.selected .canvas-block-label { opacity: 1; }
+
+.block-hero { text-align: center; padding: 48px 40px; }
+.block-hero h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  margin-bottom: 8px;
+}
+.block-hero p { color: var(--text-2); font-size: 14px; max-width: 480px; margin: 0 auto 16px; }
+.block-hero-btns { display: flex; gap: 8px; justify-content: center; }
+
+.block-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+.feature-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.feature-card-icon {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  background: var(--green-glow);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  font-size: 14px;
+}
+.feature-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.feature-card p { font-size: 11.5px; color: var(--text-2); line-height: 1.5; }
+
+.block-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--green);
+  margin-bottom: 4px;
+}
+.block-section-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+.block-section-sub { color: var(--text-2); font-size: 13px; }
+
+/* Right: Properties Sidebar */
+.editor-sidebar-right {
+  width: 280px;
+  background: var(--bg-1);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.props-section {
+  padding: 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.props-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+.prop-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.prop-label {
+  font-size: 12px;
+  color: var(--text-2);
+}
+.prop-input {
+  padding: 5px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-family: var(--font);
+  font-size: 12px;
+  width: 150px;
+  outline: none;
+}
+.prop-input:focus { border-color: var(--green); }
+.prop-textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-family: var(--font);
+  font-size: 12px;
+  outline: none;
+  resize: vertical;
+  margin-top: 4px;
+}
+.prop-textarea:focus { border-color: var(--green); }
+
+.prop-color-row {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+.prop-color-swatch {
+  width: 24px; height: 24px;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.prop-color-swatch:hover { transform: scale(1.15); }
+.prop-color-swatch.active { border-color: var(--text-0); }
+
+.prop-select {
+  padding: 5px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-family: var(--font);
+  font-size: 12px;
+  width: 150px;
+  cursor: pointer;
+}
+
+/* ======================== JSON VIEW ======================== */
+#json-view {
+  flex-direction: row;
+}
+
+.json-editor-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.json-editor-header {
+  height: 40px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 8px;
+}
+.json-tab {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-2);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  font-family: var(--font);
+  transition: all 0.12s;
+}
+.json-tab:hover { color: var(--text-1); }
+.json-tab.active { background: var(--bg-3); color: var(--text-0); }
+
+.json-editor-body {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+  background: var(--bg-0);
+}
+.json-code {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-1);
+  white-space: pre;
+  counter-reset: line;
+}
+.json-code .ln {
+  counter-increment: line;
+  display: block;
+  padding-left: 48px;
+  position: relative;
+}
+.json-code .ln::before {
+  content: counter(line);
+  position: absolute;
+  left: 0;
+  width: 36px;
+  text-align: right;
+  color: var(--text-3);
+  font-size: 11px;
+}
+.json-code .jk { color: #7dd3fc; }
+.json-code .js { color: #86efac; }
+.json-code .jn { color: #fbbf24; }
+.json-code .jb { color: #f472b6; }
+.json-code .jp { color: var(--text-2); }
+.json-code .ln.highlight {
+  background: var(--green-glow);
+  border-left: 2px solid var(--green);
+  margin-left: -16px;
+  padding-left: 62px;
+}
+
+.json-preview-panel {
+  flex: 1;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.json-preview-header {
+  height: 40px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 12px;
+  color: var(--text-2);
+  gap: 6px;
+}
+.json-preview-body {
+  flex: 1;
+  overflow: auto;
+  background: var(--bg-1);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+}
+.json-preview-frame {
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.sync-indicator {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--green);
+}
+.sync-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ======================== AGENT PANEL ======================== */
+#agent {
+  flex-direction: row;
+}
+
+.agent-editor-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--bg-0);
+}
+.agent-editor-toolbar {
+  height: 40px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+.agent-canvas-area {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+  overflow: auto;
+  position: relative;
+}
+.agent-canvas-area::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--bg-3) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.agent-panel {
+  width: 380px;
+  background: var(--bg-1);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.agent-panel-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.agent-panel-header h3 {
+  font-size: 13px;
+  font-weight: 600;
+}
+.agent-badge {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--green-glow);
+  color: var(--green);
+}
+
+.agent-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.agent-msg {
+  max-width: 92%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+.agent-msg.user {
+  align-self: flex-end;
+  background: var(--bg-3);
+  color: var(--text-0);
+  border-bottom-right-radius: 4px;
+}
+.agent-msg.assistant {
+  align-self: flex-start;
+  background: var(--green-glow);
+  color: var(--text-0);
+  border-bottom-left-radius: 4px;
+  border: 1px solid rgba(34,197,94,0.15);
+}
+
+.agent-diff {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.agent-diff .diff-add { color: var(--green); }
+.agent-diff .diff-add::before { content: '+ '; }
+.agent-diff .diff-rem { color: var(--red); text-decoration: line-through; opacity: 0.6; }
+.agent-diff .diff-rem::before { content: '- '; }
+.agent-diff-label {
+  font-family: var(--font);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+
+.agent-input-area {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+}
+.agent-input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-family: var(--font);
+  font-size: 13px;
+  outline: none;
+  resize: none;
+  min-height: 40px;
+  max-height: 100px;
+}
+.agent-input:focus { border-color: var(--green); }
+.agent-input::placeholder { color: var(--text-3); }
+.agent-send {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  background: var(--green);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.agent-send:hover { background: var(--green-dim); }
+
+/* ======================== COMPONENTS BROWSER ======================== */
+#components {
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--bg-0);
+}
+
+.comp-header {
+  padding: 32px 48px 0;
+}
+.comp-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.4px; }
+.comp-header p { color: var(--text-2); font-size: 13px; margin-top: 4px; }
+
+.comp-categories {
+  padding: 20px 48px 0;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.comp-grid {
+  padding: 24px 48px 48px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.comp-card {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.comp-card:hover {
+  border-color: #3a3a3f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+.comp-card-preview {
+  height: 140px;
+  background: var(--bg-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+}
+.comp-card-preview-inner {
+  width: 100%;
+  height: 100%;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+}
+.comp-card-body {
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.comp-card-name { font-size: 13.5px; font-weight: 600; }
+.comp-card-desc { font-size: 11.5px; color: var(--text-2); margin-top: 2px; }
+.comp-card-variants {
+  font-size: 10px;
+  color: var(--text-3);
+  background: var(--bg-3);
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Mini preview shapes */
+.mp-bar { height: 6px; background: var(--bg-4); border-radius: 2px; }
+.mp-bar.w100 { width: 100%; }
+.mp-bar.w80 { width: 80%; }
+.mp-bar.w60 { width: 60%; }
+.mp-bar.w40 { width: 40%; }
+.mp-btn-row { display: flex; gap: 6px; }
+.mp-btn {
+  padding: 3px 12px;
+  border-radius: 3px;
+  background: var(--bg-4);
+  font-size: 8px;
+  color: var(--text-2);
+}
+.mp-btn.green { background: var(--green); color: #000; }
+.mp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; }
+.mp-cell {
+  height: 20px;
+  background: var(--bg-4);
+  border-radius: 2px;
+}
+.mp-price-cols { display: flex; gap: 6px; width: 100%; }
+.mp-price-col {
+  flex: 1;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px 4px;
+  text-align: center;
+}
+.mp-price-col.featured { border-color: var(--green); }
+.mp-price-label { font-size: 7px; color: var(--text-2); }
+.mp-price-val { font-size: 12px; font-weight: 700; margin: 2px 0; }
+
+/* ======================== DEPLOY ======================== */
+#deploy {
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--bg-0);
+}
+
+.deploy-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  width: 100%;
+}
+.deploy-container h1 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+}
+.deploy-container > p {
+  color: var(--text-2);
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+
+.deploy-card {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.deploy-card:hover { border-color: #3a3a3f; background: var(--bg-2); }
+.deploy-card.recommended { border-color: var(--green); }
+.deploy-card.recommended:hover { border-color: var(--green); }
+
+.deploy-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--bg-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+.deploy-card.recommended .deploy-icon {
+  background: var(--green-glow);
+}
+.deploy-card-body { flex: 1; }
+.deploy-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.deploy-card-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
+.deploy-card-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--green-glow);
+  color: var(--green);
+}
+
+.deploy-url-section {
+  margin-top: 24px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+.deploy-url-label {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.deploy-url-row {
+  display: flex;
+  gap: 8px;
+}
+.deploy-url-input {
+  flex: 1;
+  padding: 9px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  outline: none;
+}
+.deploy-url-input:focus { border-color: var(--green); }
+
+/* ======================== SETTINGS ======================== */
+#settings {
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.settings-nav {
+  width: 200px;
+  background: var(--bg-1);
+  border-right: 1px solid var(--border);
+  padding: 16px 8px;
+  flex-shrink: 0;
+}
+.settings-nav-item {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+  transition: all 0.12s;
+  border: none;
+  background: none;
+  font-family: var(--font);
+  width: 100%;
+  text-align: left;
+}
+.settings-nav-item:hover { background: var(--bg-3); color: var(--text-1); }
+.settings-nav-item.active { background: var(--bg-3); color: var(--text-0); }
+
+.settings-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 40px;
+}
+.settings-content h2 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+.settings-content > p {
+  color: var(--text-2);
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
+.settings-group {
+  margin-bottom: 28px;
+}
+.settings-group-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.settings-field {
+  margin-bottom: 16px;
+}
+.settings-field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.settings-field label span {
+  font-weight: 400;
+  color: var(--text-3);
+  margin-left: 4px;
+}
+.settings-input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-family: var(--font);
+  font-size: 13px;
+  width: 100%;
+  max-width: 440px;
+  outline: none;
+}
+.settings-input:focus { border-color: var(--green); }
+
+.settings-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  max-width: 540px;
+}
+.settings-toggle-label { font-size: 13px; }
+.settings-toggle-desc { font-size: 11.5px; color: var(--text-2); margin-top: 2px; }
+.toggle {
+  width: 36px; height: 20px;
+  border-radius: 10px;
+  background: var(--bg-4);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.toggle.on { background: var(--green); }
+.toggle::after {
+  content: '';
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  top: 2px; left: 2px;
+  transition: transform 0.2s;
+}
+.toggle.on::after { transform: translateX(16px); }
+
+/* ======================== SCROLLBAR ======================== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+/* ======================== TRANSITIONS ======================== */
+.screen { animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ======================== BREADCRUMB ======================== */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-3);
+  padding: 0 6px;
+}
+.breadcrumb span { cursor: pointer; transition: color 0.12s; }
+.breadcrumb span:hover { color: var(--text-1); }
+.breadcrumb .bc-sep { color: var(--text-3); cursor: default; }
+.breadcrumb .bc-current { color: var(--text-0); font-weight: 500; }
+
+/* ======================== RESPONSIVE HINT ======================== */
+@media (max-width: 900px) {
+  .editor-sidebar-left, .editor-sidebar-right, .agent-panel { display: none; }
+  .dash-header, .dash-filters, .dash-grid { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ======================== TOP NAV ======================== -->
+<nav class="topnav">
+  <div class="topnav-logo" onclick="navigate('dashboard')">
+    <svg viewBox="0 0 24 22" width="22" height="20" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="18" font-family="Space Grotesk, system-ui, sans-serif" font-weight="700" font-size="22" fill="#22c55e">b</text>
+      <circle cx="19" cy="13" r="5" fill="#22c55e"/>
+    </svg>
+    <span>OpenPage</span>
+  </div>
+
+  <div class="topnav-tabs">
+    <button class="topnav-tab active" data-screen="dashboard" onclick="navigate('dashboard')">Dashboard</button>
+    <button class="topnav-tab" data-screen="editor" onclick="navigate('editor')">Editor</button>
+    <button class="topnav-tab" data-screen="json-view" onclick="navigate('json-view')">JSON</button>
+    <button class="topnav-tab" data-screen="agent" onclick="navigate('agent')">Agent</button>
+    <button class="topnav-tab" data-screen="components" onclick="navigate('components')">Components</button>
+    <button class="topnav-tab" data-screen="deploy" onclick="navigate('deploy')">Deploy</button>
+    <button class="topnav-tab" data-screen="settings" onclick="navigate('settings')">Settings</button>
+  </div>
+
+  <div class="topnav-right">
+    <button class="btn btn-sm btn-ghost" onclick="navigate('deploy')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      Publish
+    </button>
+    <div class="avatar" title="Federico">FD</div>
+  </div>
+</nav>
+
+<!-- ======================== DASHBOARD ======================== -->
+<div id="dashboard" class="screen active">
+  <div class="dash-header">
+    <div>
+      <h1>Projects</h1>
+      <p>Your websites and landing pages</p>
+    </div>
+    <button class="btn btn-green" onclick="navigate('editor')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      New Project
+    </button>
+  </div>
+
+  <div class="dash-filters">
+    <input type="text" class="dash-search" placeholder="Search projects...">
+    <button class="filter-chip active">All</button>
+    <button class="filter-chip">Published</button>
+    <button class="filter-chip">Drafts</button>
+    <button class="filter-chip">Archived</button>
+  </div>
+
+  <div class="dash-grid">
+    <div class="project-card project-card-new" onclick="navigate('editor')">
+      <div class="new-card-inner">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--text-3)"><path d="M12 5v14M5 12h14"/></svg>
+        <p>Create New Site</p>
+      </div>
+    </div>
+
+    <div class="project-card" onclick="navigate('editor')">
+      <div class="project-card-thumb">
+        <div class="thumb-wireframe">
+          <div class="tw-bar w60"></div>
+          <div class="tw-bar w40"></div>
+          <div class="tw-bar w80"></div>
+          <div class="tw-row">
+            <div class="tw-box"></div>
+            <div class="tw-box"></div>
+            <div class="tw-box"></div>
+          </div>
+          <div class="tw-bar w60"></div>
+        </div>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-name">Rocketlist Landing</div>
+        <div class="project-card-meta">
+          <span class="project-card-status"><span class="status-dot"></span> Published</span>
+          <span>Edited 2h ago</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card" onclick="navigate('editor')">
+      <div class="project-card-thumb">
+        <div class="thumb-wireframe">
+          <div class="tw-bar w80"></div>
+          <div class="tw-bar w60"></div>
+          <div class="tw-row">
+            <div class="tw-box"></div>
+            <div class="tw-box"></div>
+          </div>
+          <div class="tw-bar w40"></div>
+          <div class="tw-bar w80"></div>
+        </div>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-name">OpenPaper Marketing</div>
+        <div class="project-card-meta">
+          <span class="project-card-status"><span class="status-dot"></span> Published</span>
+          <span>Edited 1d ago</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card" onclick="navigate('editor')">
+      <div class="project-card-thumb">
+        <div class="thumb-wireframe">
+          <div class="tw-bar w40"></div>
+          <div class="tw-bar w80"></div>
+          <div class="tw-bar w60"></div>
+          <div class="tw-row">
+            <div class="tw-box"></div>
+            <div class="tw-box"></div>
+            <div class="tw-box"></div>
+          </div>
+        </div>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-name">Scaile Portfolio</div>
+        <div class="project-card-meta">
+          <span class="project-card-status"><span class="status-dot draft"></span> Draft</span>
+          <span>Edited 3d ago</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card" onclick="navigate('editor')">
+      <div class="project-card-thumb">
+        <div class="thumb-wireframe">
+          <div class="tw-bar w60"></div>
+          <div class="tw-row">
+            <div class="tw-box"></div>
+            <div class="tw-box"></div>
+          </div>
+          <div class="tw-bar w40"></div>
+          <div class="tw-bar w80"></div>
+          <div class="tw-bar w60"></div>
+        </div>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-name">HyperNiche Waitlist</div>
+        <div class="project-card-meta">
+          <span class="project-card-status"><span class="status-dot draft"></span> Draft</span>
+          <span>Edited 1w ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== EDITOR ======================== -->
+<div id="editor" class="screen">
+  <!-- Left sidebar -->
+  <div class="editor-sidebar-left">
+    <div class="sidebar-header">
+      Components
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-3);cursor:pointer"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    </div>
+    <input type="text" class="sidebar-search" placeholder="Search components...">
+    <div class="component-list">
+      <div class="component-group-label">Layout</div>
+      <div class="component-item"><div class="ci-icon">H</div><div class="ci-label">Hero</div></div>
+      <div class="component-item"><div class="ci-icon">N</div><div class="ci-label">Navbar</div></div>
+      <div class="component-item"><div class="ci-icon">F</div><div class="ci-label">Footer</div></div>
+      <div class="component-item"><div class="ci-icon">S</div><div class="ci-label">Section</div></div>
+
+      <div class="component-group-label">Content</div>
+      <div class="component-item"><div class="ci-icon" style="color:var(--green)">&#9733;</div><div class="ci-label">Features</div></div>
+      <div class="component-item"><div class="ci-icon">$</div><div class="ci-label">Pricing</div></div>
+      <div class="component-item"><div class="ci-icon">"</div><div class="ci-label">Testimonials</div></div>
+      <div class="component-item"><div class="ci-icon">#</div><div class="ci-label">Stats</div></div>
+      <div class="component-item"><div class="ci-icon">?</div><div class="ci-label">FAQ</div></div>
+      <div class="component-item"><div class="ci-icon">T</div><div class="ci-label">Team</div></div>
+
+      <div class="component-group-label">Actions</div>
+      <div class="component-item"><div class="ci-icon" style="color:var(--green)">&#8594;</div><div class="ci-label">CTA</div></div>
+      <div class="component-item"><div class="ci-icon">@</div><div class="ci-label">Contact</div></div>
+      <div class="component-item"><div class="ci-icon">&#9993;</div><div class="ci-label">Newsletter</div></div>
+
+      <div class="component-group-label">Media</div>
+      <div class="component-item"><div class="ci-icon">&#9656;</div><div class="ci-label">Video</div></div>
+      <div class="component-item"><div class="ci-icon">&#9638;</div><div class="ci-label">Gallery</div></div>
+      <div class="component-item"><div class="ci-icon">&#9679;</div><div class="ci-label">Logo Cloud</div></div>
+    </div>
+  </div>
+
+  <!-- Center canvas -->
+  <div class="editor-canvas">
+    <div class="canvas-toolbar">
+      <div class="breadcrumb">
+        <span onclick="navigate('dashboard')">Projects</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-current">Rocketlist Landing</span>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="toolbar-group">
+        <button class="toolbar-btn" title="Undo">&#8617;</button>
+        <button class="toolbar-btn" title="Redo">&#8618;</button>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="toolbar-group">
+        <button class="toolbar-btn active" title="Select">&#9670;</button>
+        <button class="toolbar-btn" title="Move">&#8982;</button>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="toolbar-group">
+        <button class="toolbar-btn" title="Desktop">&#9633;</button>
+        <button class="toolbar-btn" title="Tablet" style="font-size:11px">&#8862;</button>
+        <button class="toolbar-btn" title="Mobile" style="font-size:10px">&#9646;</button>
+      </div>
+      <div class="canvas-viewport-label">
+        <span>100%</span>
+        <select class="viewport-select">
+          <option>Desktop 1440px</option>
+          <option>Tablet 768px</option>
+          <option>Mobile 375px</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="canvas-area">
+      <div class="canvas-frame">
+        <!-- Hero block -->
+        <div class="canvas-block block-hero selected" onclick="selectBlock(this)">
+          <span class="canvas-block-label">Hero</span>
+          <h2>Ship faster with Rocketlist</h2>
+          <p>The task management tool built for teams that move fast. Organize, prioritize, and launch.</p>
+          <div class="block-hero-btns">
+            <button class="btn btn-green btn-sm">Get Started Free</button>
+            <button class="btn btn-sm">Watch Demo</button>
+          </div>
+        </div>
+
+        <!-- Features block -->
+        <div class="canvas-block" onclick="selectBlock(this)">
+          <span class="canvas-block-label">Features</span>
+          <div class="block-section-label">Features</div>
+          <div class="block-section-title">Everything you need</div>
+          <div class="block-section-sub">Built for modern teams</div>
+          <div class="block-features-grid">
+            <div class="feature-card">
+              <div class="feature-card-icon">&#9889;</div>
+              <h4>Lightning Fast</h4>
+              <p>Sub-100ms response times across every interaction.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-icon">&#9876;</div>
+              <h4>AI-Powered</h4>
+              <p>Smart suggestions and auto-categorization built in.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-icon">&#128274;</div>
+              <h4>Secure</h4>
+              <p>Enterprise-grade encryption and SOC 2 compliance.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA block -->
+        <div class="canvas-block" onclick="selectBlock(this)" style="text-align:center;padding:36px 40px;background:var(--green-glow2);">
+          <span class="canvas-block-label">CTA</span>
+          <div class="block-section-title">Ready to launch?</div>
+          <div class="block-section-sub" style="margin-bottom:12px">Join 2,000+ teams already shipping faster.</div>
+          <button class="btn btn-green">Start Free Trial</button>
+        </div>
+
+        <!-- Footer block -->
+        <div class="canvas-block" onclick="selectBlock(this)" style="padding:24px 40px;">
+          <span class="canvas-block-label">Footer</span>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:var(--text-2);">Rocketlist 2026. All rights reserved.</span>
+            <div style="display:flex;gap:16px;font-size:12px;color:var(--text-2);">
+              <span>Privacy</span>
+              <span>Terms</span>
+              <span>Contact</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right sidebar -->
+  <div class="editor-sidebar-right">
+    <div class="sidebar-header">Properties</div>
+
+    <div class="props-section">
+      <div class="props-section-title">Component</div>
+      <div class="prop-row">
+        <span class="prop-label">Type</span>
+        <select class="prop-select">
+          <option>Hero</option>
+          <option>Hero Split</option>
+          <option>Hero Gradient</option>
+        </select>
+      </div>
+      <div class="prop-row">
+        <span class="prop-label">Variant</span>
+        <select class="prop-select">
+          <option>Centered</option>
+          <option>Left-aligned</option>
+          <option>With image</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="props-section">
+      <div class="props-section-title">Content</div>
+      <div class="settings-field" style="margin-bottom:10px">
+        <label style="font-size:11px;color:var(--text-2)">Headline</label>
+        <input type="text" class="prop-input" value="Ship faster with Rocketlist" style="width:100%">
+      </div>
+      <div class="settings-field" style="margin-bottom:10px">
+        <label style="font-size:11px;color:var(--text-2)">Subheadline</label>
+        <textarea class="prop-textarea" rows="2">The task management tool built for teams that move fast.</textarea>
+      </div>
+      <div class="settings-field" style="margin-bottom:10px">
+        <label style="font-size:11px;color:var(--text-2)">Primary Button</label>
+        <input type="text" class="prop-input" value="Get Started Free" style="width:100%">
+      </div>
+      <div class="settings-field" style="margin-bottom:10px">
+        <label style="font-size:11px;color:var(--text-2)">Secondary Button</label>
+        <input type="text" class="prop-input" value="Watch Demo" style="width:100%">
+      </div>
+    </div>
+
+    <div class="props-section">
+      <div class="props-section-title">Style</div>
+      <div class="prop-row">
+        <span class="prop-label">Background</span>
+      </div>
+      <div class="prop-color-row">
+        <div class="prop-color-swatch active" style="background:var(--bg-2)"></div>
+        <div class="prop-color-swatch" style="background:#1a1a2e"></div>
+        <div class="prop-color-swatch" style="background:#0a2540"></div>
+        <div class="prop-color-swatch" style="background:#14532d"></div>
+        <div class="prop-color-swatch" style="background:#1e1b4b"></div>
+        <div class="prop-color-swatch" style="background:#fafafa"></div>
+      </div>
+      <div class="prop-row" style="margin-top:12px">
+        <span class="prop-label">Padding</span>
+        <select class="prop-select" style="width:100px">
+          <option>Large</option>
+          <option>Medium</option>
+          <option>Small</option>
+        </select>
+      </div>
+      <div class="prop-row">
+        <span class="prop-label">Text Align</span>
+        <select class="prop-select" style="width:100px">
+          <option>Center</option>
+          <option>Left</option>
+          <option>Right</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="props-section">
+      <div class="props-section-title">JSON Path</div>
+      <code style="font-family:var(--mono);font-size:11px;color:var(--text-2);word-break:break-all;">config.blocks[0]</code>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== JSON VIEW ======================== -->
+<div id="json-view" class="screen">
+  <div class="json-editor-panel">
+    <div class="json-editor-header">
+      <button class="json-tab active">config.json</button>
+      <button class="json-tab">schema.json</button>
+      <div class="sync-indicator">
+        <span class="sync-dot"></span>
+        Live sync
+      </div>
+    </div>
+    <div class="json-editor-body">
+      <div class="json-code"><span class="ln"><span class="jp">{</span></span><span class="ln">  <span class="jk">"name"</span><span class="jp">:</span> <span class="js">"Rocketlist Landing"</span><span class="jp">,</span></span><span class="ln">  <span class="jk">"theme"</span><span class="jp">:</span> <span class="js">"dark"</span><span class="jp">,</span></span><span class="ln">  <span class="jk">"fonts"</span><span class="jp">:</span> <span class="jp">{</span></span><span class="ln">    <span class="jk">"heading"</span><span class="jp">:</span> <span class="js">"Space Grotesk"</span><span class="jp">,</span></span><span class="ln">    <span class="jk">"body"</span><span class="jp">:</span> <span class="js">"DM Sans"</span></span><span class="ln">  <span class="jp">},</span></span><span class="ln">  <span class="jk">"colors"</span><span class="jp">:</span> <span class="jp">{</span></span><span class="ln">    <span class="jk">"primary"</span><span class="jp">:</span> <span class="js">"#22c55e"</span><span class="jp">,</span></span><span class="ln">    <span class="jk">"background"</span><span class="jp">:</span> <span class="js">"#09090b"</span></span><span class="ln">  <span class="jp">},</span></span><span class="ln">  <span class="jk">"blocks"</span><span class="jp">:</span> <span class="jp">[</span></span><span class="ln highlight">    <span class="jp">{</span></span><span class="ln highlight">      <span class="jk">"type"</span><span class="jp">:</span> <span class="js">"hero"</span><span class="jp">,</span></span><span class="ln highlight">      <span class="jk">"variant"</span><span class="jp">:</span> <span class="js">"centered"</span><span class="jp">,</span></span><span class="ln highlight">      <span class="jk">"headline"</span><span class="jp">:</span> <span class="js">"Ship faster with Rocketlist"</span><span class="jp">,</span></span><span class="ln highlight">      <span class="jk">"subheadline"</span><span class="jp">:</span> <span class="js">"The task management tool..."</span><span class="jp">,</span></span><span class="ln highlight">      <span class="jk">"primaryCta"</span><span class="jp">:</span> <span class="jp">{</span></span><span class="ln highlight">        <span class="jk">"label"</span><span class="jp">:</span> <span class="js">"Get Started Free"</span><span class="jp">,</span></span><span class="ln highlight">        <span class="jk">"href"</span><span class="jp">:</span> <span class="js">"/signup"</span></span><span class="ln highlight">      <span class="jp">},</span></span><span class="ln highlight">      <span class="jk">"secondaryCta"</span><span class="jp">:</span> <span class="jp">{</span></span><span class="ln highlight">        <span class="jk">"label"</span><span class="jp">:</span> <span class="js">"Watch Demo"</span><span class="jp">,</span></span><span class="ln highlight">        <span class="jk">"href"</span><span class="jp">:</span> <span class="js">"#demo"</span></span><span class="ln highlight">      <span class="jp">}</span></span><span class="ln highlight">    <span class="jp">},</span></span><span class="ln">    <span class="jp">{</span></span><span class="ln">      <span class="jk">"type"</span><span class="jp">:</span> <span class="js">"features"</span><span class="jp">,</span></span><span class="ln">      <span class="jk">"variant"</span><span class="jp">:</span> <span class="js">"grid"</span><span class="jp">,</span></span><span class="ln">      <span class="jk">"label"</span><span class="jp">:</span> <span class="js">"Features"</span><span class="jp">,</span></span><span class="ln">      <span class="jk">"title"</span><span class="jp">:</span> <span class="js">"Everything you need"</span><span class="jp">,</span></span><span class="ln">      <span class="jk">"items"</span><span class="jp">:</span> <span class="jp">[</span></span><span class="ln">        <span class="jp">{</span> <span class="jk">"icon"</span><span class="jp">:</span> <span class="js">"zap"</span><span class="jp">,</span> <span class="jk">"title"</span><span class="jp">:</span> <span class="js">"Lightning Fast"</span> <span class="jp">},</span></span><span class="ln">        <span class="jp">{</span> <span class="jk">"icon"</span><span class="jp">:</span> <span class="js">"brain"</span><span class="jp">,</span> <span class="jk">"title"</span><span class="jp">:</span> <span class="js">"AI-Powered"</span> <span class="jp">},</span></span><span class="ln">        <span class="jp">{</span> <span class="jk">"icon"</span><span class="jp">:</span> <span class="js">"lock"</span><span class="jp">,</span> <span class="jk">"title"</span><span class="jp">:</span> <span class="js">"Secure"</span> <span class="jp">}</span></span><span class="ln">      <span class="jp">]</span></span><span class="ln">    <span class="jp">},</span></span><span class="ln">    <span class="jp">{</span></span><span class="ln">      <span class="jk">"type"</span><span class="jp">:</span> <span class="js">"cta"</span><span class="jp">,</span></span><span class="ln">      <span class="jk">"title"</span><span class="jp">:</span> <span class="js">"Ready to launch?"</span></span><span class="ln">    <span class="jp">},</span></span><span class="ln">    <span class="jp">{</span></span><span class="ln">      <span class="jk">"type"</span><span class="jp">:</span> <span class="js">"footer"</span><span class="jp">,</span></span><span class="ln">      <span class="jk">"variant"</span><span class="jp">:</span> <span class="js">"simple"</span></span><span class="ln">    <span class="jp">}</span></span><span class="ln">  <span class="jp">]</span></span><span class="ln"><span class="jp">}</span></span></div>
+    </div>
+  </div>
+  <div class="json-preview-panel">
+    <div class="json-preview-header">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Live Preview
+      <div class="sync-indicator" style="margin-left:auto">
+        <span class="sync-dot"></span>
+        Synced
+      </div>
+    </div>
+    <div class="json-preview-body">
+      <div class="json-preview-frame">
+        <div style="padding:32px 24px;text-align:center;border-bottom:1px solid var(--border-subtle)">
+          <div style="font-size:18px;font-weight:700;letter-spacing:-0.5px;margin-bottom:6px;">Ship faster with Rocketlist</div>
+          <div style="font-size:11px;color:var(--text-2);margin-bottom:12px;">The task management tool built for teams that move fast.</div>
+          <button class="btn btn-green btn-sm" style="font-size:10px;padding:4px 10px;">Get Started Free</button>
+        </div>
+        <div style="padding:20px 24px;border-bottom:1px solid var(--border-subtle);">
+          <div style="font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;">Features</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:8px;">Everything you need</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+            <div style="background:var(--bg-3);padding:10px;border-radius:4px;"><div style="font-size:10px;font-weight:600;">Lightning Fast</div></div>
+            <div style="background:var(--bg-3);padding:10px;border-radius:4px;"><div style="font-size:10px;font-weight:600;">AI-Powered</div></div>
+            <div style="background:var(--bg-3);padding:10px;border-radius:4px;"><div style="font-size:10px;font-weight:600;">Secure</div></div>
+          </div>
+        </div>
+        <div style="padding:20px 24px;text-align:center;background:var(--green-glow2);border-bottom:1px solid var(--border-subtle);">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Ready to launch?</div>
+          <button class="btn btn-green btn-sm" style="font-size:10px;padding:3px 8px;">Start Free Trial</button>
+        </div>
+        <div style="padding:12px 24px;font-size:9px;color:var(--text-3);">Rocketlist 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== AGENT ======================== -->
+<div id="agent" class="screen">
+  <div class="agent-editor-area">
+    <div class="agent-editor-toolbar">
+      <div class="breadcrumb">
+        <span onclick="navigate('dashboard')">Projects</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-current">Rocketlist Landing</span>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:4px;">
+        <button class="toolbar-btn" title="Undo">&#8617;</button>
+        <button class="toolbar-btn" title="Redo">&#8618;</button>
+      </div>
+    </div>
+    <div class="agent-canvas-area">
+      <div class="canvas-frame" style="max-width:720px;">
+        <div class="canvas-block block-hero">
+          <h2>Ship faster with Rocketlist</h2>
+          <p>The task management tool built for teams that move fast.</p>
+          <div class="block-hero-btns">
+            <button class="btn btn-green btn-sm">Get Started Free</button>
+            <button class="btn btn-sm">Watch Demo</button>
+          </div>
+        </div>
+        <div class="canvas-block">
+          <div class="block-section-label">Features</div>
+          <div class="block-section-title">Everything you need</div>
+          <div class="block-features-grid">
+            <div class="feature-card">
+              <div class="feature-card-icon">&#9889;</div>
+              <h4>Lightning Fast</h4>
+              <p>Sub-100ms response times.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-icon">&#9876;</div>
+              <h4>AI-Powered</h4>
+              <p>Smart suggestions built in.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-icon">&#128274;</div>
+              <h4>Secure</h4>
+              <p>Enterprise-grade encryption.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent chat panel -->
+  <div class="agent-panel">
+    <div class="agent-panel-header">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><rect x="5" y="14" width="14" height="8" rx="2"/></svg>
+      <h3>Agent</h3>
+      <span class="agent-badge">GPT-4o</span>
+      <div style="margin-left:auto;">
+        <button class="btn btn-sm btn-ghost" style="font-size:10px;">History</button>
+      </div>
+    </div>
+
+    <div class="agent-messages">
+      <div class="agent-msg user">Add a pricing section with 3 tiers: Free, Pro ($19/mo), and Enterprise (custom)</div>
+
+      <div class="agent-msg assistant">
+        Done. I added a pricing block after Features with 3 tiers. The Pro tier is highlighted as recommended.
+        <div class="agent-diff">
+          <div class="agent-diff-label">Config Patch</div>
+          <div class="diff-add">"type": "pricing"</div>
+          <div class="diff-add">"variant": "three-column"</div>
+          <div class="diff-add">"tiers": [</div>
+          <div class="diff-add">  { "name": "Free", "price": "$0" }</div>
+          <div class="diff-add">  { "name": "Pro", "price": "$19", "featured": true }</div>
+          <div class="diff-add">  { "name": "Enterprise", "price": "Custom" }</div>
+          <div class="diff-add">]</div>
+        </div>
+      </div>
+
+      <div class="agent-msg user">Make the hero background a gradient from dark blue to the current dark</div>
+
+      <div class="agent-msg assistant">
+        Updated the hero background style.
+        <div class="agent-diff">
+          <div class="agent-diff-label">Config Patch</div>
+          <div class="diff-rem">"background": "#09090b"</div>
+          <div class="diff-add">"background": "linear-gradient(135deg, #0a2540, #09090b)"</div>
+        </div>
+      </div>
+
+      <div class="agent-msg user">Change "Ship faster" to "Launch faster" and make the subheadline shorter</div>
+
+      <div class="agent-msg assistant">
+        Updated hero copy.
+        <div class="agent-diff">
+          <div class="agent-diff-label">Config Patch</div>
+          <div class="diff-rem">"headline": "Ship faster with Rocketlist"</div>
+          <div class="diff-add">"headline": "Launch faster with Rocketlist"</div>
+          <div class="diff-rem">"subheadline": "The task management tool built for teams that move fast. Organize, prioritize, and launch."</div>
+          <div class="diff-add">"subheadline": "Task management for fast-moving teams."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="agent-input-area">
+      <textarea class="agent-input" placeholder="Ask the agent to modify your site..." rows="1"></textarea>
+      <button class="agent-send">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== COMPONENTS BROWSER ======================== -->
+<div id="components" class="screen">
+  <div class="comp-header">
+    <h1>Component Library</h1>
+    <p>Drag any component into your canvas, or browse schemas and variants</p>
+  </div>
+
+  <div class="comp-categories">
+    <button class="filter-chip active">All</button>
+    <button class="filter-chip">Layout</button>
+    <button class="filter-chip">Content</button>
+    <button class="filter-chip">Actions</button>
+    <button class="filter-chip">Media</button>
+  </div>
+
+  <div class="comp-grid">
+    <!-- Hero -->
+    <div class="comp-card" onclick="navigate('editor')">
+      <div class="comp-card-preview">
+        <div class="comp-card-preview-inner">
+          <div class="mp-bar w60" style="margin-bottom:2px"></div>
+          <div class="mp-bar w40" style="height:4px;margin-bottom:4px"></div>
+          <div class="mp-btn-row">
+            <div class="mp-btn green">CTA</div>
+            <div class="mp-btn">Link</div>
+          </div>
+        </div>
+      </div>
+      <div class="comp-card-body">
+        <div>
+          <div class="comp-card-name">Hero</div>
+          <div class="comp-card-desc">Primary landing section with headline, copy, and CTAs</div>
+        </div>
+        <div class="comp-card-variants">3 variants</div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="comp-card" onclick="navigate('editor')">
+      <div class="comp-card-preview">
+        <div class="comp-card-preview-inner">
+          <div class="mp-bar w40" style="height:4px;margin-bottom:4px"></div>
+          <div class="mp-grid">
+            <div class="mp-cell"></div>
+            <div class="mp-cell"></div>
+            <div class="mp-cell"></div>
+          </div>
+        </div>
+      </div>
+      <div class="comp-card-body">
+        <div>
+          <div class="comp-card-name">Features</div>
+          <div class="comp-card-desc">Showcase product capabilities in a grid or list</div>
+        </div>
+        <div class="comp-card-variants">2 variants</div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="comp-card" onclick="navigate('editor')">
+      <div class="comp-card-preview">
+        <div class="comp-card-preview-inner" style="padding:4px 8px">
+          <div class="mp-price-cols">
+            <div class="mp-price-col">
+              <div class="mp-price-label">Free</div>
+              <div class="mp-price-val">$0</div>
+            </div>
+            <div class="mp-price-col featured">
+              <div class="mp-price-label">Pro</div>
+              <div class="mp-price-val" style="color:var(--green)">$19</div>
+            </div>
+            <div class="mp-price-col">
+              <div class="mp-price-label">Biz</div>
+              <div class="mp-price-val">$49</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comp-card-body">
+        <div>
+          <div class="comp-card-name">Pricing</div>
+          <div class="comp-card-desc">Pricing tiers with feature comparison and CTAs</div>
+        </div>
+        <div class="comp-card-variants">2 variants</div>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="comp-card" onclick="navigate('editor')">
+      <div class="comp-card-preview">
+        <div class="comp-card-preview-inner">
+          <div style="font-size:20px;color:var(--text-3);margin-bottom:2px">"</div>
+          <div class="mp-bar w80" style="height:3px"></div>
+          <div class="mp-bar w60" style="height:3px"></div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:4px">
+            <div style="width:14px;height:14px;border-radius:50%;background:var(--bg-4)"></div>
+            <div class="mp-bar w40" style="height:3px"></div>
+          </div>
+        </div>
+      </div>
+      <div class="comp-card-body">
+        <div>
+          <div class="comp-card-name">Testimonials</div>
+          <div class="comp-card-desc">Customer quotes and social proof cards</div>
+        </div>
+        <div class="comp-card-variants">2 variants</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="comp-card" onclick="navigate('editor')">
+      <div class="comp-card-preview">
+        <div class="comp-card-preview-inner" style="background:var(--green-glow2)">
+          <div class="mp-bar w60" style="height:5px;margin-bottom:2px"></div>
+          <div class="mp-bar w40" style="height:3px;margin-bottom:4px"></div>
+          <div class="mp-btn green">Get Started</div>
+        </div>
+      </div>
+      <div class="comp-card-body">
+        <div>
+          <div class="comp-card-name">Call to Action</div>
+          <div class="comp-card-desc">Conversion-focused section with button</div>
+        </div>
+        <div class="comp-card-variants">2 variants</div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="comp-card" onclick="navigate('editor')">
+      <div class="comp-card-preview">
+        <div class="comp-card-preview-inner" style="align-items:stretch">
+          <div style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:3px 0;border-bottom:1px solid var(--border)"><div class="mp-bar w60" style="height:3px"></div><span style="font-size:8px;color:var(--text-3)">+</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:3px 0;border-bottom:1px solid var(--border)"><div class="mp-bar w40" style="height:3px"></div><span style="font-size:8px;color:var(--text-3)">+</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:3px 0;"><div class="mp-bar w60" style="height:3px"></div><span style="font-size:8px;color:var(--text-3)">+</span></div>
+        </div>
+      </div>
+      <div class="comp-card-body">
+        <div>
+          <div class="comp-card-name">FAQ</div>
+          <div class="comp-card-desc">Expandable questions and answers</div>
+        </div>
+        <div class="comp-card-variants">2 variants</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="comp-card" onclick="navigate('editor')">
+      <div class="comp-card-preview">
+        <div class="comp-card-preview-inner" style="flex-direction:row;gap:12px">
+          <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--green)">10k</div><div style="font-size:7px;color:var(--text-3)">Users</div></div>
+          <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--green)">99%</div><div style="font-size:7px;color:var(--text-3)">Uptime</div></div>
+          <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--green)">4.9</div><div style="font-size:7px;color:var(--text-3)">Rating</div></div>
+        </div>
+      </div>
+      <div class="comp-card-body">
+        <div>
+          <div class="comp-card-name">Stats</div>
+          <div class="comp-card-desc">Key metrics and numbers in grid or bar layout</div>
+        </div>
+        <div class="comp-card-variants">2 variants</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="comp-card" onclick="navigate('editor')">
+      <div class="comp-card-preview">
+        <div class="comp-card-preview-inner" style="justify-content:flex-end;align-items:stretch">
+          <div style="border-top:1px solid var(--border);padding-top:6px;display:flex;justify-content:space-between;width:100%">
+            <div class="mp-bar w40" style="height:3px"></div>
+            <div style="display:flex;gap:4px"><div class="mp-bar" style="width:16px;height:3px"></div><div class="mp-bar" style="width:16px;height:3px"></div><div class="mp-bar" style="width:16px;height:3px"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="comp-card-body">
+        <div>
+          <div class="comp-card-name">Footer</div>
+          <div class="comp-card-desc">Site footer with links and legal info</div>
+        </div>
+        <div class="comp-card-variants">2 variants</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== DEPLOY ======================== -->
+<div id="deploy" class="screen">
+  <div class="deploy-container">
+    <h1>Deploy & Export</h1>
+    <p>Publish your site or export to different formats</p>
+
+    <div class="deploy-card recommended">
+      <div class="deploy-icon">&#9650;</div>
+      <div class="deploy-card-body">
+        <div class="deploy-card-title">
+          Deploy to OpenPage
+          <span class="deploy-card-tag">Recommended</span>
+        </div>
+        <div class="deploy-card-desc">One-click deploy to a .openpage.dev subdomain. Instant SSL, CDN, and analytics. Renders directly from your JSON config.</div>
+      </div>
+      <button class="btn btn-green btn-sm">Deploy</button>
+    </div>
+
+    <div class="deploy-card">
+      <div class="deploy-icon">&#9889;</div>
+      <div class="deploy-card-body">
+        <div class="deploy-card-title">Export as HTML</div>
+        <div class="deploy-card-desc">Static HTML + CSS bundle. Self-contained, no JavaScript required. Drop it on any hosting.</div>
+      </div>
+      <button class="btn btn-sm">Export</button>
+    </div>
+
+    <div class="deploy-card">
+      <div class="deploy-icon">&#9670;</div>
+      <div class="deploy-card-body">
+        <div class="deploy-card-title">Export as Next.js</div>
+        <div class="deploy-card-desc">Full Next.js project with App Router, TypeScript, and Tailwind. Deploy on Vercel or self-host.</div>
+      </div>
+      <button class="btn btn-sm">Export</button>
+    </div>
+
+    <div class="deploy-card">
+      <div class="deploy-icon">{ }</div>
+      <div class="deploy-card-body">
+        <div class="deploy-card-title">Download JSON Config</div>
+        <div class="deploy-card-desc">Raw JSON config file. Import into other OpenPage instances, use with the CLI, or version control in Git.</div>
+      </div>
+      <button class="btn btn-sm">Download</button>
+    </div>
+
+    <div class="deploy-card">
+      <div class="deploy-icon">&#128279;</div>
+      <div class="deploy-card-body">
+        <div class="deploy-card-title">Share Link</div>
+        <div class="deploy-card-desc">Generate a shareable preview link. No deploy needed - renders from an encoded config URL.</div>
+      </div>
+      <button class="btn btn-sm">Copy Link</button>
+    </div>
+
+    <div class="deploy-url-section">
+      <div class="deploy-url-label">Custom Domain</div>
+      <div class="deploy-url-row">
+        <input type="text" class="deploy-url-input" value="rocketlist.openpage.dev" readonly>
+        <button class="btn btn-sm">Change</button>
+        <button class="btn btn-sm">Add Custom Domain</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== SETTINGS ======================== -->
+<div id="settings" class="screen">
+  <nav class="settings-nav">
+    <button class="settings-nav-item active">General</button>
+    <button class="settings-nav-item">SEO & Meta</button>
+    <button class="settings-nav-item">Domain</button>
+    <button class="settings-nav-item">Analytics</button>
+    <button class="settings-nav-item">Integrations</button>
+    <button class="settings-nav-item">API Keys</button>
+    <button class="settings-nav-item" style="color:var(--red);">Danger Zone</button>
+  </nav>
+
+  <div class="settings-content">
+    <h2>General Settings</h2>
+    <p>Configure your site's basic information and preferences</p>
+
+    <div class="settings-group">
+      <div class="settings-group-title">Site Info</div>
+      <div class="settings-field">
+        <label>Site Name</label>
+        <input type="text" class="settings-input" value="Rocketlist Landing">
+      </div>
+      <div class="settings-field">
+        <label>Description <span>(used for SEO and sharing)</span></label>
+        <input type="text" class="settings-input" value="Task management for fast-moving teams">
+      </div>
+      <div class="settings-field">
+        <label>Favicon URL</label>
+        <input type="text" class="settings-input" value="/favicon.ico" style="font-family:var(--mono);font-size:12px;">
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">Theme</div>
+      <div class="settings-field">
+        <label>Color Mode</label>
+        <select class="settings-input" style="width:200px;cursor:pointer;">
+          <option>Dark</option>
+          <option>Light</option>
+          <option>System</option>
+        </select>
+      </div>
+      <div class="settings-field">
+        <label>Primary Color</label>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+          <div style="width:28px;height:28px;border-radius:6px;background:var(--green);border:2px solid var(--text-0);cursor:pointer;"></div>
+          <input type="text" class="settings-input" value="#22c55e" style="width:120px;font-family:var(--mono);font-size:12px;">
+        </div>
+      </div>
+      <div class="settings-field">
+        <label>Heading Font</label>
+        <select class="settings-input" style="width:240px;cursor:pointer;">
+          <option>Space Grotesk</option>
+          <option>Inter</option>
+          <option>Poppins</option>
+          <option>Playfair Display</option>
+        </select>
+      </div>
+      <div class="settings-field">
+        <label>Body Font</label>
+        <select class="settings-input" style="width:240px;cursor:pointer;">
+          <option>DM Sans</option>
+          <option>Inter</option>
+          <option>Lato</option>
+          <option>Source Sans Pro</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">Features</div>
+      <div class="settings-toggle-row">
+        <div>
+          <div class="settings-toggle-label">Agent API</div>
+          <div class="settings-toggle-desc">Allow agents to modify this site via API</div>
+        </div>
+        <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="settings-toggle-row">
+        <div>
+          <div class="settings-toggle-label">Version History</div>
+          <div class="settings-toggle-desc">Keep a history of all config changes</div>
+        </div>
+        <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="settings-toggle-row">
+        <div>
+          <div class="settings-toggle-label">Analytics</div>
+          <div class="settings-toggle-desc">Collect anonymous visitor analytics</div>
+        </div>
+        <div class="toggle" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="settings-toggle-row">
+        <div>
+          <div class="settings-toggle-label">Password Protection</div>
+          <div class="settings-toggle-desc">Require a password to view the site</div>
+        </div>
+        <div class="toggle" onclick="this.classList.toggle('on')"></div>
+      </div>
+    </div>
+
+    <div style="padding-top:16px;">
+      <button class="btn btn-green">Save Changes</button>
+      <button class="btn" style="margin-left:8px;">Reset</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function navigate(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.topnav-tab').forEach(t => t.classList.remove('active'));
+
+  document.getElementById(screen).classList.add('active');
+  const tab = document.querySelector(`.topnav-tab[data-screen="${screen}"]`);
+  if (tab) tab.classList.add('active');
+}
+
+function selectBlock(el) {
+  document.querySelectorAll('.canvas-block').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// Filter chips
+document.querySelectorAll('.dash-filters .filter-chip, .comp-categories .filter-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    this.parentElement.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Settings nav
+document.querySelectorAll('.settings-nav-item').forEach(item => {
+  item.addEventListener('click', function() {
+    this.parentElement.querySelectorAll('.settings-nav-item').forEach(i => i.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Color swatches
+document.querySelectorAll('.prop-color-swatch').forEach(swatch => {
+  swatch.addEventListener('click', function() {
+    this.parentElement.querySelectorAll('.prop-color-swatch').forEach(s => s.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// JSON tabs
+document.querySelectorAll('.json-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    this.parentElement.querySelectorAll('.json-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Keyboard nav hints
+document.addEventListener('keydown', (e) => {
+  const screens = ['dashboard','editor','json-view','agent','components','deploy','settings'];
+  if (e.key >= '1' && e.key <= '7') {
+    navigate(screens[parseInt(e.key) - 1]);
+  }
+});
+</script>
+
+</body>
+</html>
