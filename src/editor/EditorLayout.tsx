@@ -4,6 +4,7 @@ import { Canvas } from './Canvas'
 import { RightSidebar } from './RightSidebar'
 import { JsonDrawer } from './JsonDrawer'
 import { VersionHistory } from './VersionHistory'
+import { ShortcutsModal } from './ShortcutsModal'
 
 export function EditorLayout() {
   return (
@@ -20,6 +21,7 @@ export function EditorLayout() {
         <RightSidebar />
       </div>
       <VersionHistory />
+      <ShortcutsModal />
     </div>
   )
 }

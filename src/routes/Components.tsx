@@ -1,16 +1,36 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Plus, Code } from 'lucide-react'
+import { toast } from 'sonner'
 import { blockMetadata, categories } from '@/lib/block-metadata'
 import { renderBlock } from '@/blocks/registry'
+import { useConfigStore } from '@/store/configStore'
+import { useEditorStore } from '@/store/editorStore'
 import type { BlockConfig } from '@/blocks/types'
 
 export function Components() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [hoveredBlock, setHoveredBlock] = useState<string | null>(null)
+  const navigate = useNavigate()
+  const addBlock = useConfigStore((s) => s.addBlock)
+  const selectBlock = useEditorStore((s) => s.selectBlock)
 
   const filtered = activeCategory
     ? blockMetadata.filter((b) => b.category === activeCategory)
     : blockMetadata
+
+  function handleAdd(meta: typeof blockMetadata[number]) {
+    const block: BlockConfig = {
+      id: `block-${Date.now()}`,
+      type: meta.type,
+      variant: meta.variants[0],
+      props: { ...meta.defaultProps },
+    }
+    addBlock(block)
+    selectBlock(block.id)
+    toast(`${meta.label} added`)
+    navigate('/editor')
+  }
 
   return (
     <div className="h-full overflow-y-auto">
@@ -106,7 +126,10 @@ export function Components() {
                         Schema
                       </button>
                     )}
-                    <button className="flex items-center gap-1 px-2 py-1 rounded text-[10px] bg-green/10 text-green hover:bg-green/20 transition-colors font-medium">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleAdd(meta) }}
+                      className="flex items-center gap-1 px-2 py-1 rounded text-[10px] bg-green/10 text-green hover:bg-green/20 transition-colors font-medium"
+                    >
                       <Plus size={10} />
                       Add
                     </button>

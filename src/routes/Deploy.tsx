@@ -1,11 +1,13 @@
 import { Globe, Download, Code, FileJson, ExternalLink, CheckCircle, Clock, AlertCircle } from 'lucide-react'
+import { toast } from 'sonner'
+import { useConfigStore } from '@/store/configStore'
 
 const exportOptions = [
-  { icon: Globe, label: 'Deploy to Vercel', description: 'One-click deploy to Vercel with automatic SSL', status: 'ready' as const },
-  { icon: Globe, label: 'Deploy to Netlify', description: 'Deploy to Netlify with continuous deployment', status: 'coming' as const },
-  { icon: Download, label: 'Static HTML Export', description: 'Download as HTML/CSS/JS bundle', status: 'ready' as const },
-  { icon: Code, label: 'Next.js Export', description: 'Export as a Next.js project with components', status: 'coming' as const },
-  { icon: FileJson, label: 'JSON Config', description: 'Download the raw JSON config file', status: 'ready' as const },
+  { icon: Globe, label: 'Deploy to Vercel', description: 'One-click deploy to Vercel with automatic SSL', status: 'ready' as const, action: 'vercel' },
+  { icon: Globe, label: 'Deploy to Netlify', description: 'Deploy to Netlify with continuous deployment', status: 'coming' as const, action: 'netlify' },
+  { icon: Download, label: 'Static HTML Export', description: 'Download as HTML/CSS/JS bundle', status: 'coming' as const, action: 'html' },
+  { icon: Code, label: 'Next.js Export', description: 'Export as a Next.js project with components', status: 'coming' as const, action: 'nextjs' },
+  { icon: FileJson, label: 'JSON Config', description: 'Download the raw JSON config file', status: 'ready' as const, action: 'json' },
 ]
 
 const deployHistory = [
@@ -15,6 +17,24 @@ const deployHistory = [
 ]
 
 export function Deploy() {
+  const config = useConfigStore((s) => s.config)
+
+  function handleExport(action: string) {
+    if (action === 'json') {
+      const jsonStr = JSON.stringify(config, null, 2)
+      const blob = new Blob([jsonStr], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'site-config.json'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+      toast('JSON config downloaded')
+    }
+  }
+
   return (
     <div className="h-full overflow-y-auto">
       <div className="px-12 pt-8">
@@ -29,6 +49,7 @@ export function Deploy() {
           {exportOptions.map((opt) => (
             <div
               key={opt.label}
+              onClick={() => opt.status === 'ready' && handleExport(opt.action)}
               className={`flex items-start gap-3 p-4 rounded-xl border transition-all ${
                 opt.status === 'ready'
                   ? 'bg-bg-1 border-border-default hover:border-border-hover cursor-pointer hover:-translate-y-0.5'

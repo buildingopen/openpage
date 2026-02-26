@@ -211,9 +211,23 @@ export function LayersPanel() {
                 onSelect={() => selectBlock(block.id)}
                 onDuplicate={() => { duplicateBlock(block.id); toast('Block duplicated') }}
                 onRemove={() => {
+                  const removedBlock = block
+                  const removedIndex = blocks.findIndex((b) => b.id === removedBlock.id)
                   if (selectedBlockId === block.id) selectBlock(null)
                   removeBlock(block.id)
-                  toast('Block removed')
+                  toast('Block removed', {
+                    action: {
+                      label: 'Undo',
+                      onClick: () => {
+                        addBlock(
+                          { ...removedBlock },
+                          removedIndex >= 0 ? removedIndex : undefined
+                        )
+                        toast('Block restored')
+                      },
+                    },
+                    duration: 3000,
+                  })
                 }}
               />
             ))}

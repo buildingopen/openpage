@@ -1,24 +1,23 @@
-import { X, Clock } from 'lucide-react'
+import { X, Clock, RotateCcw } from 'lucide-react'
 import { useEditorStore } from '@/store/editorStore'
+import { useConfigStore } from '@/store/configStore'
 
-interface HistoryEntry {
-  id: string
-  time: string
-  description: string
-  source: 'agent' | 'manual'
-  diff?: { added?: string[]; removed?: string[] }
+function timeAgo(ts: number): string {
+  const seconds = Math.floor((Date.now() - ts) / 1000)
+  if (seconds < 10) return 'Just now'
+  if (seconds < 60) return `${seconds}s ago`
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 60) return `${minutes}m ago`
+  const hours = Math.floor(minutes / 60)
+  return `${hours}h ago`
 }
-
-const mockHistory: HistoryEntry[] = [
-  { id: '1', time: 'Just now', description: 'Updated hero headline', source: 'manual' },
-  { id: '2', time: '5 min ago', description: 'Added pricing section', source: 'agent', diff: { added: ['blocks[3]: pricing (simple)'] } },
-  { id: '3', time: '12 min ago', description: 'Changed feature descriptions', source: 'manual' },
-  { id: '4', time: '1 hour ago', description: 'Generated initial layout', source: 'agent', diff: { added: ['navbar', 'hero', 'features', 'cta', 'footer'] } },
-  { id: '5', time: '1 hour ago', description: 'Project created', source: 'manual' },
-]
 
 export function VersionHistory() {
   const { historyOpen, toggleHistory } = useEditorStore()
+  const undoStack = useConfigStore((s) => s.undoStack)
+  const undo = useConfigStore((s) => s.undo)
+
+  const entries = [...undoStack].reverse()
 
   return (
     <div
@@ -31,6 +30,7 @@ export function VersionHistory() {
         <div className="flex items-center gap-2">
           <Clock size={14} className="text-text-2" />
           <h3 className="text-sm font-semibold">Version History</h3>
+          <span className="text-[10px] text-text-3">({entries.length})</span>
         </div>
         <button
           onClick={toggleHistory}
@@ -42,37 +42,44 @@ export function VersionHistory() {
 
       {/* History list */}
       <div className="flex-1 overflow-y-auto p-2">
-        {mockHistory.map((entry, i) => (
+        {/* Current state */}
+        <div className="p-3 rounded-lg bg-green-glow mb-0.5">
+          <div className="flex items-center gap-1.5 text-[11px] text-text-2 mb-1">
+            <span>Current</span>
+            <span className="text-[9px] px-1.5 py-0.5 rounded-full font-semibold bg-green-glow text-green">
+              latest
+            </span>
+          </div>
+          <div className="text-[12.5px] text-text-1">Current state</div>
+        </div>
+
+        {entries.map((entry, i) => (
           <div
-            key={entry.id}
-            className={`p-3 rounded-lg cursor-pointer transition-colors mb-0.5 ${
-              i === 0 ? 'bg-green-glow' : 'hover:bg-bg-3'
-            }`}
+            key={i}
+            onClick={() => {
+              // Undo (i+1) times to restore this point
+              for (let n = 0; n <= i; n++) undo()
+            }}
+            className="p-3 rounded-lg cursor-pointer transition-colors mb-0.5 hover:bg-bg-3 group"
           >
             <div className="flex items-center gap-1.5 text-[11px] text-text-2 mb-1">
-              <span>{entry.time}</span>
-              <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-semibold ${
-                entry.source === 'agent'
-                  ? 'bg-green-glow text-green'
-                  : 'bg-status-blue/10 text-status-blue'
-              }`}>
-                {entry.source}
+              <span>{timeAgo(entry.timestamp)}</span>
+              <span className="text-[9px] px-1.5 py-0.5 rounded-full font-semibold bg-status-blue/10 text-status-blue">
+                manual
               </span>
             </div>
-            <div className="text-[12.5px] text-text-1">{entry.description}</div>
-
-            {entry.diff && i === 0 && (
-              <div className="mt-2 p-2 bg-bg-2 border border-border-default rounded font-mono text-[10px] leading-relaxed">
-                {entry.diff.added?.map((line, j) => (
-                  <div key={j} className="text-green">+ {line}</div>
-                ))}
-                {entry.diff.removed?.map((line, j) => (
-                  <div key={j} className="text-status-red">- {line}</div>
-                ))}
-              </div>
-            )}
+            <div className="flex items-center justify-between">
+              <div className="text-[12.5px] text-text-1">{entry.label}</div>
+              <RotateCcw size={12} className="text-text-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
           </div>
         ))}
+
+        {entries.length === 0 && (
+          <div className="p-4 text-center text-[11px] text-text-3">
+            No history yet. Make some changes to see history.
+          </div>
+        )}
       </div>
     </div>
   )

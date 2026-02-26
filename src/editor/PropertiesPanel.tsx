@@ -120,6 +120,100 @@ const blockFields: Partial<Record<BlockType, { sections: { title: string; fields
       },
     ],
   },
+  testimonials: {
+    sections: [
+      {
+        title: 'Content',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'subtitle', label: 'Subtitle', type: 'text' },
+          { key: 'items', label: 'Testimonials', type: 'array-items' },
+        ],
+      },
+      {
+        title: 'Style',
+        fields: [
+          { key: 'variant', label: 'Variant', type: 'select', options: ['cards', 'carousel'] },
+        ],
+      },
+    ],
+  },
+  stats: {
+    sections: [
+      {
+        title: 'Content',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'items', label: 'Stats', type: 'array-items' },
+        ],
+      },
+      {
+        title: 'Style',
+        fields: [
+          { key: 'variant', label: 'Variant', type: 'select', options: ['grid', 'bar'] },
+        ],
+      },
+    ],
+  },
+  faq: {
+    sections: [
+      {
+        title: 'Content',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'subtitle', label: 'Subtitle', type: 'text' },
+          { key: 'items', label: 'Questions', type: 'array-items' },
+        ],
+      },
+    ],
+  },
+  team: {
+    sections: [
+      {
+        title: 'Content',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'subtitle', label: 'Subtitle', type: 'text' },
+          { key: 'members', label: 'Members', type: 'array-items' },
+        ],
+      },
+    ],
+  },
+  contact: {
+    sections: [
+      {
+        title: 'Content',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'subtitle', label: 'Subtitle', type: 'text' },
+        ],
+      },
+    ],
+  },
+  newsletter: {
+    sections: [
+      {
+        title: 'Content',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'subtitle', label: 'Subtitle', type: 'text' },
+          { key: 'buttonText', label: 'Button Text', type: 'text' },
+          { key: 'socialProof', label: 'Social Proof', type: 'text' },
+        ],
+      },
+    ],
+  },
+  logocloud: {
+    sections: [
+      {
+        title: 'Content',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'logos', label: 'Logos', type: 'array-strings' },
+        ],
+      },
+    ],
+  },
 }
 
 function PropertyField({ field, block }: { field: FieldDef; block: BlockConfig }) {

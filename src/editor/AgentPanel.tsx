@@ -1,12 +1,18 @@
 import { useState } from 'react'
 import { Send, Check, X } from 'lucide-react'
+import { toast } from 'sonner'
+import { useConfigStore } from '@/store/configStore'
 
 interface ChatMessage {
   id: string
   role: 'user' | 'agent'
   text: string
+  applied?: boolean
   patch?: {
     path: string
+    blockId?: string
+    propKey?: string
+    value?: string
     added?: string[]
     removed?: string[]
   }
@@ -29,6 +35,9 @@ const initialMessages: ChatMessage[] = [
     text: 'I\'ll update the hero headline for you.',
     patch: {
       path: 'blocks[1].props.headline',
+      blockId: 'block-hero',
+      propKey: 'headline',
+      value: 'Ship faster with OpenPage',
       removed: ['"Build websites with JSON"'],
       added: ['"Ship faster with OpenPage"'],
     },
@@ -59,9 +68,29 @@ function TypingIndicator() {
 }
 
 export function AgentPanel() {
-  const [messages] = useState(initialMessages)
+  const [messages, setMessages] = useState(initialMessages)
   const [input, setInput] = useState('')
   const [showTyping] = useState(false)
+  const updateBlockProps = useConfigStore((s) => s.updateBlockProps)
+
+  function handleApply(msg: ChatMessage) {
+    if (!msg.patch?.blockId || !msg.patch?.propKey || !msg.patch?.value) {
+      toast.error('Cannot apply: missing patch data')
+      return
+    }
+    updateBlockProps(msg.patch.blockId, { [msg.patch.propKey]: msg.patch.value })
+    setMessages((prev) =>
+      prev.map((m) => (m.id === msg.id ? { ...m, applied: true } : m))
+    )
+    toast('Patch applied')
+  }
+
+  function handleReject(msg: ChatMessage) {
+    setMessages((prev) =>
+      prev.map((m) => (m.id === msg.id ? { ...m, applied: false, patch: undefined } : m))
+    )
+    toast('Patch rejected')
+  }
 
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
@@ -85,14 +114,27 @@ export function AgentPanel() {
                   <span className="font-sans text-[9px] font-semibold uppercase tracking-wider text-text-3">
                     JSON Patch
                   </span>
-                  <div className="flex gap-1">
-                    <button className="px-1.5 py-0.5 rounded text-[9px] bg-green/20 text-green hover:bg-green/30 transition-colors flex items-center gap-0.5">
-                      <Check size={9} /> Apply
-                    </button>
-                    <button className="px-1.5 py-0.5 rounded text-[9px] bg-status-red/10 text-status-red hover:bg-status-red/20 transition-colors flex items-center gap-0.5">
-                      <X size={9} /> Reject
-                    </button>
-                  </div>
+                  {!msg.applied && (
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => handleApply(msg)}
+                        className="px-1.5 py-0.5 rounded text-[9px] bg-green/20 text-green hover:bg-green/30 transition-colors flex items-center gap-0.5"
+                      >
+                        <Check size={9} /> Apply
+                      </button>
+                      <button
+                        onClick={() => handleReject(msg)}
+                        className="px-1.5 py-0.5 rounded text-[9px] bg-status-red/10 text-status-red hover:bg-status-red/20 transition-colors flex items-center gap-0.5"
+                      >
+                        <X size={9} /> Reject
+                      </button>
+                    </div>
+                  )}
+                  {msg.applied && (
+                    <span className="text-[9px] text-green font-medium flex items-center gap-0.5">
+                      <Check size={9} /> Applied
+                    </span>
+                  )}
                 </div>
                 <div className="text-text-3 text-[10px] mb-1">{msg.patch.path}</div>
                 {msg.patch.removed?.map((line, i) => (

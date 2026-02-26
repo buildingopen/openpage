@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus, Search } from 'lucide-react'
 import { useProjectsStore, type Project } from '@/store/projectsStore'
@@ -8,6 +8,25 @@ type Filter = (typeof filters)[number]
 
 function ProjectCard({ project }: { project: Project }) {
   const navigate = useNavigate()
+  const renameProject = useProjectsStore((s) => s.renameProject)
+  const [editing, setEditing] = useState(false)
+  const [name, setName] = useState(project.name)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (editing) inputRef.current?.focus()
+  }, [editing])
+
+  function commitRename() {
+    const trimmed = name.trim()
+    if (trimmed && trimmed !== project.name) {
+      renameProject(project.id, trimmed)
+    } else {
+      setName(project.name)
+    }
+    setEditing(false)
+  }
+
   return (
     <div
       onClick={() => navigate('/editor')}
@@ -29,7 +48,28 @@ function ProjectCard({ project }: { project: Project }) {
 
       {/* Body */}
       <div className="px-4 py-3.5">
-        <div className="text-sm font-semibold mb-1">{project.name}</div>
+        {editing ? (
+          <input
+            ref={inputRef}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onBlur={commitRename}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') commitRename()
+              if (e.key === 'Escape') { setName(project.name); setEditing(false) }
+            }}
+            onClick={(e) => e.stopPropagation()}
+            className="text-sm font-semibold mb-1 bg-transparent border-b border-green outline-none w-full"
+          />
+        ) : (
+          <div
+            className="text-sm font-semibold mb-1 hover:text-green transition-colors"
+            onDoubleClick={(e) => { e.stopPropagation(); setEditing(true) }}
+            title="Double-click to rename"
+          >
+            {project.name}
+          </div>
+        )}
         <div className="text-[11.5px] text-text-2 flex items-center gap-2.5">
           <span className="flex items-center gap-1.5">
             <span
@@ -62,6 +102,28 @@ function NewProjectCard() {
   )
 }
 
+function EmptyState() {
+  const addProject = useProjectsStore((s) => s.addProject)
+  const navigate = useNavigate()
+  return (
+    <div className="flex flex-col items-center justify-center py-24 px-12">
+      <div className="w-20 h-20 rounded-2xl bg-bg-2 border border-border-default flex items-center justify-center mb-6">
+        <Plus size={32} className="text-text-3" />
+      </div>
+      <h2 className="text-lg font-semibold mb-2">Create your first site</h2>
+      <p className="text-text-2 text-sm mb-6 text-center max-w-sm">
+        Start building with our visual editor and component library. Your site config is just JSON.
+      </p>
+      <button
+        onClick={() => { addProject('My First Site'); navigate('/editor') }}
+        className="px-5 py-2.5 rounded-lg bg-green text-black text-sm font-semibold hover:bg-green-dim transition-all"
+      >
+        Get Started
+      </button>
+    </div>
+  )
+}
+
 export function Dashboard() {
   const projects = useProjectsStore((s) => s.projects)
   const [filter, setFilter] = useState<Filter>('All')
@@ -73,6 +135,10 @@ export function Dashboard() {
     if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false
     return true
   })
+
+  if (projects.length === 0) {
+    return <EmptyState />
+  }
 
   return (
     <div className="h-full overflow-y-auto">

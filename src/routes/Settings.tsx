@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import {
   Settings2, Search as SearchIcon, Globe, BarChart3, Puzzle, Key, AlertTriangle,
 } from 'lucide-react'
+import { toast } from 'sonner'
 
 type SettingsTab = 'general' | 'seo' | 'domain' | 'analytics' | 'integrations' | 'api' | 'danger'
 
-const tabs: { value: SettingsTab; label: string; icon: typeof Settings2 }[] = [
+const tabDefs: { value: SettingsTab; label: string; icon: typeof Settings2 }[] = [
   { value: 'general', label: 'General', icon: Settings2 },
   { value: 'seo', label: 'SEO', icon: SearchIcon },
   { value: 'domain', label: 'Domain', icon: Globe },
@@ -14,6 +15,25 @@ const tabs: { value: SettingsTab; label: string; icon: typeof Settings2 }[] = [
   { value: 'api', label: 'API Keys', icon: Key },
   { value: 'danger', label: 'Danger Zone', icon: AlertTriangle },
 ]
+
+// Simple local settings state (persisted in localStorage)
+function useSettingsState() {
+  const [data, setData] = useState<Record<string, string>>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('openpage-settings') || '{}')
+    } catch { return {} }
+  })
+
+  const update = useCallback((key: string, value: string) => {
+    setData((prev) => {
+      const next = { ...prev, [key]: value }
+      localStorage.setItem('openpage-settings', JSON.stringify(next))
+      return next
+    })
+  }, [])
+
+  return { data, update }
+}
 
 function FieldGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -24,36 +44,42 @@ function FieldGroup({ label, children }: { label: string; children: React.ReactN
   )
 }
 
-function Input({ value, placeholder }: { value?: string; placeholder?: string }) {
+function ControlledInput({ settingsKey, placeholder, settings }: { settingsKey: string; placeholder?: string; settings: ReturnType<typeof useSettingsState> }) {
   return (
     <input
       type="text"
-      defaultValue={value}
+      value={settings.data[settingsKey] || ''}
       placeholder={placeholder}
+      onChange={(e) => settings.update(settingsKey, e.target.value)}
       className="w-full px-3 py-2 rounded-lg border border-border-default bg-bg-2 text-text-0 text-[13px] outline-none focus:border-green placeholder:text-text-3 transition-colors"
     />
   )
 }
 
-function Textarea({ value, rows = 3 }: { value?: string; rows?: number }) {
+function ControlledTextarea({ settingsKey, rows = 3, settings }: { settingsKey: string; rows?: number; settings: ReturnType<typeof useSettingsState> }) {
   return (
     <textarea
-      defaultValue={value}
+      value={settings.data[settingsKey] || ''}
       rows={rows}
+      onChange={(e) => settings.update(settingsKey, e.target.value)}
       className="w-full px-3 py-2 rounded-lg border border-border-default bg-bg-2 text-text-0 text-[13px] outline-none focus:border-green resize-y transition-colors"
     />
   )
 }
 
-function GeneralPanel() {
+function GeneralPanel({ settings }: { settings: ReturnType<typeof useSettingsState> }) {
   return (
     <div>
       <h2 className="text-lg font-semibold mb-4">General</h2>
-      <FieldGroup label="Site Name"><Input value="My Website" /></FieldGroup>
-      <FieldGroup label="Site Description"><Textarea value="A beautiful website built with OpenPage" /></FieldGroup>
-      <FieldGroup label="Favicon URL"><Input placeholder="https://example.com/favicon.ico" /></FieldGroup>
+      <FieldGroup label="Site Name"><ControlledInput settingsKey="siteName" settings={settings} /></FieldGroup>
+      <FieldGroup label="Site Description"><ControlledTextarea settingsKey="siteDescription" settings={settings} /></FieldGroup>
+      <FieldGroup label="Favicon URL"><ControlledInput settingsKey="faviconUrl" placeholder="https://example.com/favicon.ico" settings={settings} /></FieldGroup>
       <FieldGroup label="Language">
-        <select className="w-full px-3 py-2 rounded-lg border border-border-default bg-bg-2 text-text-0 text-[13px] outline-none focus:border-green cursor-pointer">
+        <select
+          value={settings.data.language || 'English'}
+          onChange={(e) => settings.update('language', e.target.value)}
+          className="w-full px-3 py-2 rounded-lg border border-border-default bg-bg-2 text-text-0 text-[13px] outline-none focus:border-green cursor-pointer"
+        >
           <option>English</option><option>German</option><option>Spanish</option><option>French</option>
         </select>
       </FieldGroup>
@@ -61,32 +87,36 @@ function GeneralPanel() {
   )
 }
 
-function SeoPanel() {
+function SeoPanel({ settings }: { settings: ReturnType<typeof useSettingsState> }) {
+  const title = settings.data.seoTitle || 'My Website - Build with OpenPage'
+  const description = settings.data.seoDescription || 'A beautiful website built with structured JSON config.'
+  const domain = settings.data.customDomain || 'mywebsite.com'
+
   return (
     <div>
       <h2 className="text-lg font-semibold mb-4">SEO</h2>
-      <FieldGroup label="Page Title"><Input value="My Website - Build with OpenPage" /></FieldGroup>
-      <FieldGroup label="Meta Description"><Textarea value="A beautiful website built with structured JSON config." /></FieldGroup>
-      <FieldGroup label="OG Image URL"><Input placeholder="https://example.com/og.png" /></FieldGroup>
+      <FieldGroup label="Page Title"><ControlledInput settingsKey="seoTitle" settings={settings} /></FieldGroup>
+      <FieldGroup label="Meta Description"><ControlledTextarea settingsKey="seoDescription" settings={settings} /></FieldGroup>
+      <FieldGroup label="OG Image URL"><ControlledInput settingsKey="ogImageUrl" placeholder="https://example.com/og.png" settings={settings} /></FieldGroup>
 
-      {/* Google preview */}
+      {/* Live Google preview */}
       <div className="mt-6 p-4 rounded-xl bg-bg-2 border border-border-default">
         <div className="text-[10px] font-semibold uppercase tracking-wider text-text-3 mb-3">Google Preview</div>
-        <div className="text-[#8ab4f8] text-sm hover:underline cursor-pointer">My Website - Build with OpenPage</div>
-        <div className="text-[#bdc1c6] text-[11px] mt-0.5">https://mywebsite.com</div>
+        <div className="text-[#8ab4f8] text-sm hover:underline cursor-pointer">{title}</div>
+        <div className="text-[#bdc1c6] text-[11px] mt-0.5">https://{domain}</div>
         <div className="text-[#9aa0a6] text-[11.5px] mt-1 leading-relaxed">
-          A beautiful website built with structured JSON config.
+          {description}
         </div>
       </div>
     </div>
   )
 }
 
-function DomainPanel() {
+function DomainPanel({ settings }: { settings: ReturnType<typeof useSettingsState> }) {
   return (
     <div>
       <h2 className="text-lg font-semibold mb-4">Domain</h2>
-      <FieldGroup label="Custom Domain"><Input placeholder="www.example.com" /></FieldGroup>
+      <FieldGroup label="Custom Domain"><ControlledInput settingsKey="customDomain" placeholder="www.example.com" settings={settings} /></FieldGroup>
 
       <div className="mt-4">
         <div className="text-[10px] font-semibold uppercase tracking-wider text-text-3 mb-2">DNS Configuration</div>
@@ -121,12 +151,12 @@ function DomainPanel() {
   )
 }
 
-function AnalyticsPanel() {
+function AnalyticsPanel({ settings }: { settings: ReturnType<typeof useSettingsState> }) {
   return (
     <div>
       <h2 className="text-lg font-semibold mb-4">Analytics</h2>
-      <FieldGroup label="Google Analytics ID"><Input placeholder="G-XXXXXXXXXX" /></FieldGroup>
-      <FieldGroup label="PostHog Project Key"><Input placeholder="phc_..." /></FieldGroup>
+      <FieldGroup label="Google Analytics ID"><ControlledInput settingsKey="gaId" placeholder="G-XXXXXXXXXX" settings={settings} /></FieldGroup>
+      <FieldGroup label="PostHog Project Key"><ControlledInput settingsKey="posthogKey" placeholder="phc_..." settings={settings} /></FieldGroup>
       <p className="text-[11px] text-text-3 mt-2">Analytics scripts are injected automatically when you deploy.</p>
     </div>
   )
@@ -200,7 +230,10 @@ function DangerPanel() {
             <div className="text-sm font-semibold">Delete Project</div>
             <div className="text-[11px] text-text-3">Permanently delete this project and all its data</div>
           </div>
-          <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-status-red border border-status-red/30 hover:bg-status-red/10 transition-colors">
+          <button
+            onClick={() => toast.error('This action cannot be undone', { description: 'Contact support to delete your project.' })}
+            className="px-3 py-1.5 rounded-lg text-xs font-medium text-status-red border border-status-red/30 hover:bg-status-red/10 transition-colors"
+          >
             Delete
           </button>
         </div>
@@ -209,25 +242,25 @@ function DangerPanel() {
   )
 }
 
-const panels: Record<SettingsTab, React.FC> = {
-  general: GeneralPanel,
-  seo: SeoPanel,
-  domain: DomainPanel,
-  analytics: AnalyticsPanel,
-  integrations: IntegrationsPanel,
-  api: ApiPanel,
-  danger: DangerPanel,
-}
-
 export function Settings() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('general')
-  const Panel = panels[activeTab]
+  const settings = useSettingsState()
+
+  const panels: Record<SettingsTab, React.ReactNode> = {
+    general: <GeneralPanel settings={settings} />,
+    seo: <SeoPanel settings={settings} />,
+    domain: <DomainPanel settings={settings} />,
+    analytics: <AnalyticsPanel settings={settings} />,
+    integrations: <IntegrationsPanel />,
+    api: <ApiPanel />,
+    danger: <DangerPanel />,
+  }
 
   return (
     <div className="h-full flex overflow-hidden">
       {/* Sidebar */}
       <div className="w-52 bg-bg-1 border-r border-border-default p-2 shrink-0">
-        {tabs.map(({ value, label, icon: Icon }) => (
+        {tabDefs.map(({ value, label, icon: Icon }) => (
           <button
             key={value}
             onClick={() => setActiveTab(value)}
@@ -249,7 +282,7 @@ export function Settings() {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-8 max-w-2xl">
-        <Panel />
+        {panels[activeTab]}
       </div>
     </div>
   )
