@@ -13,21 +13,18 @@ function useAutoSaveToProject() {
   const config = useConfigStore((s) => s.config)
   const activeProjectId = useEditorStore((s) => s.activeProjectId)
   const updateProjectConfig = useProjectsStore((s) => s.updateProjectConfig)
-  const initialConfigRef = useRef(config)
-  const hasMountedRef = useRef(false)
+  const loadedConfigRef = useRef<string | null>(null)
 
+  // Snapshot the config at load time so we can diff
   useEffect(() => {
-    initialConfigRef.current = config
-    hasMountedRef.current = false
+    loadedConfigRef.current = JSON.stringify(config)
   }, [activeProjectId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!activeProjectId) return
-    // Skip the first render (initial load from project)
-    if (!hasMountedRef.current) {
-      hasMountedRef.current = true
-      return
-    }
+    const serialized = JSON.stringify(config)
+    // Only save when config actually differs from what was loaded
+    if (serialized === loadedConfigRef.current) return
     updateProjectConfig(activeProjectId, config)
   }, [config, activeProjectId, updateProjectConfig])
 }

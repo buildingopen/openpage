@@ -322,12 +322,15 @@ function PropertyField({ field, block }: { field: FieldDef; block: BlockConfig }
           for (const key of Object.keys(items[0])) template[key] = ''
           return template
         }
-        // Fallback templates by field key
-        const templates: Record<string, Record<string, string>> = {
-          items: { title: '', description: '' },
-          members: { name: '', role: '' },
+        // Fallback templates by block type + field key
+        const blockTemplates: Partial<Record<string, Record<string, Record<string, string>>>> = {
+          testimonials: { items: { name: '', role: '', quote: '' } },
+          stats: { items: { value: '', label: '' } },
+          faq: { items: { question: '', answer: '' } },
+          team: { members: { name: '', role: '' } },
+          features: { items: { title: '', description: '' } },
         }
-        return templates[field.key] || { title: '', description: '' }
+        return blockTemplates[block.type]?.[field.key] || { title: '', description: '' }
       }
 
       return (

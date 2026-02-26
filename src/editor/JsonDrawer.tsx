@@ -1,14 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { useConfigStore } from '@/store/configStore'
 import { useEditorStore } from '@/store/editorStore'
 
+function escapeHtml(str: string): string {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
 function syntaxHighlight(json: string): string {
-  return json.replace(
-    /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+  const escaped = escapeHtml(json)
+  return escaped.replace(
+    /(&quot;(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\&])*?&quot;(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
     (match) => {
       let cls = 'text-status-yellow' // number
-      if (/^"/.test(match)) {
+      if (/^&quot;/.test(match)) {
         if (/:$/.test(match)) {
           cls = 'text-sky-300' // key
           match = match.replace(/:$/, '')
@@ -33,6 +38,14 @@ export function JsonDrawer() {
   const [editing, setEditing] = useState(false)
   const [editValue, setEditValue] = useState('')
   const [error, setError] = useState<string | null>(null)
+
+  // Reset edit state when drawer closes
+  useEffect(() => {
+    if (!jsonDrawerOpen) {
+      setEditing(false)
+      setError(null)
+    }
+  }, [jsonDrawerOpen])
 
   const jsonStr = JSON.stringify(config, null, 2)
   const highlighted = syntaxHighlight(jsonStr)

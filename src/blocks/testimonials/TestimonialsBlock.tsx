@@ -86,7 +86,8 @@ function TestimonialsCarousel({ props }: { props: TestimonialsProps }) {
   }
 
   if (items.length === 0) return null
-  const item = items[activeIndex]
+  const safeIndex = Math.min(activeIndex, items.length - 1)
+  const item = items[safeIndex]
 
   return (
     <section className="px-6 sm:px-10 py-16 sm:py-20">
@@ -120,7 +121,7 @@ function TestimonialsCarousel({ props }: { props: TestimonialsProps }) {
           {/* Navigation */}
           <div className="flex items-center justify-center gap-4 mt-6">
             <button
-              onClick={() => goTo(activeIndex - 1)}
+              onClick={() => goTo(safeIndex - 1)}
               className="w-8 h-8 rounded-full border border-border-default bg-bg-2 flex items-center justify-center text-text-2 hover:text-text-0 hover:border-border-hover transition-colors"
             >
               <ChevronLeft size={16} />
@@ -131,13 +132,13 @@ function TestimonialsCarousel({ props }: { props: TestimonialsProps }) {
                   key={i}
                   onClick={() => goTo(i)}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    i === activeIndex ? 'bg-green' : 'bg-bg-4 hover:bg-bg-5'
+                    i === safeIndex ? 'bg-green' : 'bg-bg-4 hover:bg-bg-5'
                   }`}
                 />
               ))}
             </div>
             <button
-              onClick={() => goTo(activeIndex + 1)}
+              onClick={() => goTo(safeIndex + 1)}
               className="w-8 h-8 rounded-full border border-border-default bg-bg-2 flex items-center justify-center text-text-2 hover:text-text-0 hover:border-border-hover transition-colors"
             >
               <ChevronRight size={16} />

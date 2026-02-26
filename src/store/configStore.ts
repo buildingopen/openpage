@@ -103,7 +103,7 @@ export const useConfigStore = create<ConfigState>()(
       undoStack: [],
       redoStack: [],
 
-      setConfig: (config) => set({ config }),
+      setConfig: (config) => set({ config, undoStack: [], redoStack: [] }),
 
       updateBlock: (id, updates) =>
         set((state) => ({

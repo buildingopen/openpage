@@ -32,6 +32,8 @@ export function Deploy() {
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
       toast('JSON config downloaded')
+    } else {
+      toast(`${action.charAt(0).toUpperCase() + action.slice(1)} export coming soon`)
     }
   }
 
