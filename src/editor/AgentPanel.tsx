@@ -85,7 +85,6 @@ export function AgentPanel() {
   const [input, setInput] = useState('')
   const [showTyping, setShowTyping] = useState(false)
   const updateBlockProps = useConfigStore((s) => s.updateBlockProps)
-  const blocks = useConfigStore((s) => s.config.blocks)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -120,9 +119,10 @@ export function AgentPanel() {
     setInput('')
     setShowTyping(true)
 
-    // Simulate agent thinking
+    // Simulate agent thinking (read fresh blocks inside timeout)
     setTimeout(() => {
-      const response = generateResponse(text, blocks)
+      const currentBlocks = useConfigStore.getState().config.blocks
+      const response = generateResponse(text, currentBlocks)
       setShowTyping(false)
       setMessages((prev) => [...prev, response])
     }, 800 + Math.random() * 600)

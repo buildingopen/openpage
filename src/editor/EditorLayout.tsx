@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { CanvasToolbar } from './CanvasToolbar'
 import { LeftSidebar } from './LeftSidebar'
 import { Canvas } from './Canvas'
@@ -14,11 +14,22 @@ function useAutoSaveToProject() {
   const config = useConfigStore((s) => s.config)
   const activeProjectId = useEditorStore((s) => s.activeProjectId)
   const updateProjectConfig = useProjectsStore((s) => s.updateProjectConfig)
+  const initialConfigRef = useRef(config)
+  const hasMountedRef = useRef(false)
 
   useEffect(() => {
-    if (activeProjectId) {
-      updateProjectConfig(activeProjectId, config)
+    initialConfigRef.current = config
+    hasMountedRef.current = false
+  }, [activeProjectId]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!activeProjectId) return
+    // Skip the first render (initial load from project)
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true
+      return
     }
+    updateProjectConfig(activeProjectId, config)
   }, [config, activeProjectId, updateProjectConfig])
 }
 
