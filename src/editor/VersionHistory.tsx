@@ -15,7 +15,6 @@ function timeAgo(ts: number): string {
 export function VersionHistory() {
   const { historyOpen, toggleHistory } = useEditorStore()
   const undoStack = useConfigStore((s) => s.undoStack)
-  const undo = useConfigStore((s) => s.undo)
 
   const entries = [...undoStack].reverse()
 
@@ -57,8 +56,8 @@ export function VersionHistory() {
           <div
             key={i}
             onClick={() => {
-              // Undo (i+1) times to restore this point
-              for (let n = 0; n <= i; n++) undo()
+              // Use getState() to bypass React batching, each call reads fresh state
+              for (let n = 0; n <= i; n++) useConfigStore.getState().undo()
             }}
             className="p-3 rounded-lg cursor-pointer transition-colors mb-0.5 hover:bg-bg-3 group"
           >

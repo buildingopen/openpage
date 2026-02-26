@@ -100,17 +100,6 @@ select:focus-visible {
   }
 }
 
-@keyframes blockFadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-}
-
 .block-enter {
   animation: blockFadeIn 0.2s ease-out;
 }

@@ -10,12 +10,14 @@ interface EditorState {
   jsonDrawerOpen: boolean
   historyOpen: boolean
   shortcutsModalOpen: boolean
+  activeProjectId: string | null
   selectBlock: (id: string | null) => void
   setLeftPanel: (panel: LeftPanel) => void
   setViewport: (vp: Viewport) => void
   toggleJsonDrawer: () => void
   toggleHistory: () => void
   toggleShortcutsModal: () => void
+  setActiveProject: (id: string | null) => void
 }
 
 export const useEditorStore = create<EditorState>()((set) => ({
@@ -25,10 +27,12 @@ export const useEditorStore = create<EditorState>()((set) => ({
   jsonDrawerOpen: false,
   historyOpen: false,
   shortcutsModalOpen: false,
+  activeProjectId: null,
   selectBlock: (id) => set({ selectedBlockId: id }),
   setLeftPanel: (panel) => set({ leftPanel: panel }),
   setViewport: (vp) => set({ viewport: vp }),
   toggleJsonDrawer: () => set((s) => ({ jsonDrawerOpen: !s.jsonDrawerOpen })),
   toggleHistory: () => set((s) => ({ historyOpen: !s.historyOpen })),
   toggleShortcutsModal: () => set((s) => ({ shortcutsModalOpen: !s.shortcutsModalOpen })),
+  setActiveProject: (id) => set({ activeProjectId: id }),
 }))

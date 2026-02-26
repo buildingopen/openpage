@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Send, Check, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { useConfigStore } from '@/store/configStore'
@@ -23,24 +23,6 @@ const initialMessages: ChatMessage[] = [
     id: '1',
     role: 'agent',
     text: 'Hi! I can help you build and modify your site. Try asking me to add sections, change content, or tweak styles.',
-  },
-  {
-    id: '2',
-    role: 'user',
-    text: 'Change the hero headline to "Ship faster with OpenPage"',
-  },
-  {
-    id: '3',
-    role: 'agent',
-    text: 'I\'ll update the hero headline for you.',
-    patch: {
-      path: 'blocks[1].props.headline',
-      blockId: 'block-hero',
-      propKey: 'headline',
-      value: 'Ship faster with OpenPage',
-      removed: ['"Build websites with JSON"'],
-      added: ['"Ship faster with OpenPage"'],
-    },
   },
 ]
 
@@ -67,11 +49,48 @@ function TypingIndicator() {
   )
 }
 
+// Simple pattern matching for demo agent responses
+function generateResponse(input: string, blocks: { id: string; type: string; props: Record<string, unknown> }[]): ChatMessage {
+  const lower = input.toLowerCase()
+  const heroBlock = blocks.find((b) => b.type === 'hero')
+
+  if (lower.includes('change') && lower.includes('headline') && heroBlock) {
+    const match = input.match(/["'](.+?)["']/) || input.match(/to\s+(.+)/i)
+    const newHeadline = match?.[1]?.trim() || 'Your New Headline'
+    const oldHeadline = String(heroBlock.props.headline || 'Build websites with JSON')
+    return {
+      id: `msg-${Date.now()}`,
+      role: 'agent',
+      text: `I'll update the hero headline for you.`,
+      patch: {
+        path: `blocks[${blocks.indexOf(heroBlock)}].props.headline`,
+        blockId: heroBlock.id,
+        propKey: 'headline',
+        value: newHeadline,
+        removed: [`"${oldHeadline}"`],
+        added: [`"${newHeadline}"`],
+      },
+    }
+  }
+
+  return {
+    id: `msg-${Date.now()}`,
+    role: 'agent',
+    text: "I'm a demo agent. I can change the hero headline if you ask me to. Try: \"Change the headline to 'Your New Title'\"",
+  }
+}
+
 export function AgentPanel() {
-  const [messages, setMessages] = useState(initialMessages)
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages)
   const [input, setInput] = useState('')
-  const [showTyping] = useState(false)
+  const [showTyping, setShowTyping] = useState(false)
   const updateBlockProps = useConfigStore((s) => s.updateBlockProps)
+  const blocks = useConfigStore((s) => s.config.blocks)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, showTyping])
 
   function handleApply(msg: ChatMessage) {
     if (!msg.patch?.blockId || !msg.patch?.propKey || !msg.patch?.value) {
@@ -90,6 +109,27 @@ export function AgentPanel() {
       prev.map((m) => (m.id === msg.id ? { ...m, applied: false, patch: undefined } : m))
     )
     toast('Patch rejected')
+  }
+
+  function handleSend() {
+    const text = input.trim()
+    if (!text) return
+
+    const userMsg: ChatMessage = { id: `msg-${Date.now()}`, role: 'user', text }
+    setMessages((prev) => [...prev, userMsg])
+    setInput('')
+    setShowTyping(true)
+
+    // Simulate agent thinking
+    setTimeout(() => {
+      const response = generateResponse(text, blocks)
+      setShowTyping(false)
+      setMessages((prev) => [...prev, response])
+    }, 800 + Math.random() * 600)
+  }
+
+  function handleHint(hint: string) {
+    setInput(hint)
   }
 
   return (
@@ -152,6 +192,7 @@ export function AgentPanel() {
           </div>
         ))}
         {showTyping && <TypingIndicator />}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input */}
@@ -162,16 +203,21 @@ export function AgentPanel() {
             placeholder="Ask the agent..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
             className="flex-1 px-3 py-2 rounded-lg border border-border-default bg-bg-2 text-text-0 text-[13px] outline-none focus:border-green placeholder:text-text-3"
           />
-          <button className="w-9 h-9 rounded-lg bg-green flex items-center justify-center text-black shrink-0 hover:bg-green-dim transition-colors">
+          <button
+            onClick={handleSend}
+            className="w-9 h-9 rounded-lg bg-green flex items-center justify-center text-black shrink-0 hover:bg-green-dim transition-colors"
+          >
             <Send size={14} />
           </button>
         </div>
         <div className="flex gap-1 mt-1.5 flex-wrap">
-          {['Add hero section', 'Change colors', 'Add pricing', 'Make it minimal'].map((hint) => (
+          {['Change the headline', 'Add pricing', 'Make it minimal'].map((hint) => (
             <span
               key={hint}
+              onClick={() => handleHint(hint)}
               className="px-2 py-0.5 rounded-full text-[10.5px] text-text-2 border border-border-default bg-bg-2 cursor-pointer hover:border-green hover:text-green hover:bg-green-glow transition-all"
             >
               {hint}

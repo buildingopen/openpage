@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus, Search } from 'lucide-react'
 import { useProjectsStore, type Project } from '@/store/projectsStore'
+import { useConfigStore } from '@/store/configStore'
+import { useEditorStore } from '@/store/editorStore'
 
 const filters = ['All', 'Published', 'Drafts'] as const
 type Filter = (typeof filters)[number]
@@ -9,6 +11,8 @@ type Filter = (typeof filters)[number]
 function ProjectCard({ project }: { project: Project }) {
   const navigate = useNavigate()
   const renameProject = useProjectsStore((s) => s.renameProject)
+  const setConfig = useConfigStore((s) => s.setConfig)
+  const setActiveProject = useEditorStore((s) => s.setActiveProject)
   const [editing, setEditing] = useState(false)
   const [name, setName] = useState(project.name)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -27,9 +31,17 @@ function ProjectCard({ project }: { project: Project }) {
     setEditing(false)
   }
 
+  function openProject() {
+    setActiveProject(project.id)
+    if (project.config) {
+      setConfig(project.config)
+    }
+    navigate('/editor')
+  }
+
   return (
     <div
-      onClick={() => navigate('/editor')}
+      onClick={openProject}
       className="bg-bg-1 border border-border-default rounded-xl overflow-hidden cursor-pointer transition-all hover:border-border-hover hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.3)]"
     >
       {/* Thumbnail */}
@@ -104,6 +116,7 @@ function NewProjectCard() {
 
 function EmptyState() {
   const addProject = useProjectsStore((s) => s.addProject)
+  const setActiveProject = useEditorStore((s) => s.setActiveProject)
   const navigate = useNavigate()
   return (
     <div className="flex flex-col items-center justify-center py-24 px-12">
@@ -115,7 +128,7 @@ function EmptyState() {
         Start building with our visual editor and component library. Your site config is just JSON.
       </p>
       <button
-        onClick={() => { addProject('My First Site'); navigate('/editor') }}
+        onClick={() => { const id = addProject('My First Site'); setActiveProject(id); navigate('/editor') }}
         className="px-5 py-2.5 rounded-lg bg-green text-black text-sm font-semibold hover:bg-green-dim transition-all"
       >
         Get Started
