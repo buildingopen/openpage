@@ -109,16 +109,37 @@ body { font-family: var(--font); background: var(--bg-0); color: var(--text-0); 
 .lpanel { display: none; flex-direction: column; flex: 1; overflow: hidden; }
 .lpanel.active { display: flex; }
 
-/* Components list */
-.side-search { margin: 10px; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-2); color: var(--text-0); font-family: var(--font); font-size: 12px; outline: none; }
-.side-search:focus { border-color: var(--green); }
-.clist { flex: 1; overflow-y: auto; padding: 0 8px 8px; }
-.cgroup { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-3); padding: 14px 8px 6px; }
-.citem { padding: 7px 10px; border-radius: 6px; font-size: 12.5px; color: var(--text-1); cursor: grab; display: flex; align-items: center; gap: 8px; transition: all 0.12s; user-select: none; }
-.citem:hover { background: var(--bg-3); color: var(--text-0); }
-.citem:active { cursor: grabbing; background: var(--green-glow); color: var(--green); }
-.citem .ico { width: 28px; height: 28px; border-radius: 5px; background: var(--bg-3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
-.citem span { font-weight: 500; }
+/* Layers list (active blocks on canvas) */
+.layers-header { padding: 10px 12px 6px; display: flex; align-items: center; justify-content: space-between; }
+.layers-header-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-3); }
+.layers-list { flex: 1; overflow-y: auto; padding: 0 8px 8px; }
+.layer-item { padding: 8px 10px; border-radius: 6px; font-size: 12.5px; color: var(--text-1); display: flex; align-items: center; gap: 8px; transition: all 0.12s; user-select: none; cursor: pointer; position: relative; }
+.layer-item:hover { background: var(--bg-3); color: var(--text-0); }
+.layer-item.active { background: var(--green-glow); color: var(--green); }
+.layer-item .l-drag { cursor: grab; color: var(--text-3); font-size: 10px; display: flex; flex-direction: column; gap: 1px; padding: 2px 2px 2px 0; opacity: 0; transition: opacity 0.12s; }
+.layer-item:hover .l-drag { opacity: 1; }
+.layer-item .l-drag i { width: 8px; height: 2px; background: var(--text-3); border-radius: 1px; display: block; }
+.layer-item .l-ico { width: 26px; height: 26px; border-radius: 5px; background: var(--bg-3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+.layer-item.active .l-ico { border-color: rgba(34,197,94,0.3); background: var(--green-glow); }
+.layer-item .l-name { font-weight: 500; flex: 1; }
+.layer-item .l-actions { display: flex; gap: 2px; opacity: 0; transition: opacity 0.12s; }
+.layer-item:hover .l-actions { opacity: 1; }
+.layer-act { width: 22px; height: 22px; border-radius: 4px; border: none; background: transparent; color: var(--text-3); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 10px; transition: all 0.1s; }
+.layer-act:hover { background: var(--bg-4); color: var(--text-0); }
+.layer-act.del:hover { color: var(--red); background: rgba(239,68,68,0.08); }
+
+/* Add component popover */
+.add-comp-wrap { padding: 8px; border-top: 1px solid var(--border-subtle); }
+.add-comp-btn { width: 100%; padding: 8px; border-radius: 6px; border: 1px dashed var(--border); background: transparent; color: var(--text-2); font-family: var(--font); font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s; }
+.add-comp-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-glow2); }
+.add-comp-popover { display: none; position: absolute; bottom: 52px; left: 8px; right: 8px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 10; max-height: 280px; overflow-y: auto; }
+.add-comp-popover.open { display: block; }
+.add-comp-popover .acp-search { width: 100%; padding: 6px 8px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg-3); color: var(--text-0); font-family: var(--font); font-size: 11.5px; outline: none; margin-bottom: 4px; }
+.add-comp-popover .acp-search:focus { border-color: var(--green); }
+.acp-group { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-3); padding: 8px 6px 4px; }
+.acp-item { padding: 6px 8px; border-radius: 5px; font-size: 12px; color: var(--text-1); cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all 0.1s; }
+.acp-item:hover { background: var(--bg-3); color: var(--text-0); }
+.acp-item .acp-ico { width: 22px; height: 22px; border-radius: 4px; background: var(--bg-3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
 
 /* Agent chat */
 .agent-msgs { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
@@ -397,34 +418,86 @@ body { font-family: var(--font); background: var(--bg-0); color: var(--text-0); 
     <!-- LEFT -->
     <div class="ed-left" id="ed-left">
       <div class="mode-toggle">
-        <button class="mode-btn active" onclick="switchMode('comps',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Components</button>
+        <button class="mode-btn active" onclick="switchMode('comps',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Layers</button>
         <button class="mode-btn" onclick="switchMode('chat',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Agent</button>
       </div>
 
-      <!-- Components -->
+      <!-- Layers (live list of canvas blocks) -->
       <div id="panel-comps" class="lpanel active">
-        <input type="text" class="side-search" placeholder="Search components...">
-        <div class="clist">
-          <div class="cgroup">Layout</div>
-          <div class="citem"><div class="ico">H</div><span>Hero</span></div>
-          <div class="citem"><div class="ico">N</div><span>Navbar</span></div>
-          <div class="citem"><div class="ico">F</div><span>Footer</span></div>
-          <div class="citem"><div class="ico">S</div><span>Section</span></div>
-          <div class="cgroup">Content</div>
-          <div class="citem"><div class="ico" style="color:var(--green)">&#9733;</div><span>Features</span></div>
-          <div class="citem"><div class="ico">$</div><span>Pricing</span></div>
-          <div class="citem"><div class="ico">"</div><span>Testimonials</span></div>
-          <div class="citem"><div class="ico">#</div><span>Stats</span></div>
-          <div class="citem"><div class="ico">?</div><span>FAQ</span></div>
-          <div class="citem"><div class="ico">T</div><span>Team</span></div>
-          <div class="cgroup">Actions</div>
-          <div class="citem"><div class="ico" style="color:var(--green)">&#8594;</div><span>CTA</span></div>
-          <div class="citem"><div class="ico">@</div><span>Contact</span></div>
-          <div class="citem"><div class="ico">&#9993;</div><span>Newsletter</span></div>
-          <div class="cgroup">Media</div>
-          <div class="citem"><div class="ico">&#9656;</div><span>Video</span></div>
-          <div class="citem"><div class="ico">&#9638;</div><span>Gallery</span></div>
-          <div class="citem"><div class="ico">&#9679;</div><span>Logo Cloud</span></div>
+        <div class="layers-header">
+          <span class="layers-header-title">Layers</span>
+          <span style="font-size:10px;color:var(--text-3);">4 blocks</span>
+        </div>
+        <div class="layers-list" id="layers-list">
+          <div class="layer-item active" onclick="layerClick(this,0)" data-idx="0">
+            <div class="l-drag"><i></i><i></i><i></i></div>
+            <div class="l-ico">H</div>
+            <span class="l-name">Hero</span>
+            <div class="l-actions">
+              <button class="layer-act" title="Move up">&#8593;</button>
+              <button class="layer-act" title="Move down">&#8595;</button>
+              <button class="layer-act" title="Duplicate">&#8911;</button>
+              <button class="layer-act del" title="Delete" onclick="event.stopPropagation();showToast('Block removed')">&#10005;</button>
+            </div>
+          </div>
+          <div class="layer-item" onclick="layerClick(this,1)" data-idx="1">
+            <div class="l-drag"><i></i><i></i><i></i></div>
+            <div class="l-ico" style="color:var(--green)">&#9733;</div>
+            <span class="l-name">Features</span>
+            <div class="l-actions">
+              <button class="layer-act" title="Move up">&#8593;</button>
+              <button class="layer-act" title="Move down">&#8595;</button>
+              <button class="layer-act" title="Duplicate">&#8911;</button>
+              <button class="layer-act del" title="Delete" onclick="event.stopPropagation();showToast('Block removed')">&#10005;</button>
+            </div>
+          </div>
+          <div class="layer-item" onclick="layerClick(this,2)" data-idx="2">
+            <div class="l-drag"><i></i><i></i><i></i></div>
+            <div class="l-ico" style="color:var(--green)">&#8594;</div>
+            <span class="l-name">CTA</span>
+            <div class="l-actions">
+              <button class="layer-act" title="Move up">&#8593;</button>
+              <button class="layer-act" title="Move down">&#8595;</button>
+              <button class="layer-act" title="Duplicate">&#8911;</button>
+              <button class="layer-act del" title="Delete" onclick="event.stopPropagation();showToast('Block removed')">&#10005;</button>
+            </div>
+          </div>
+          <div class="layer-item" onclick="layerClick(this,3)" data-idx="3">
+            <div class="l-drag"><i></i><i></i><i></i></div>
+            <div class="l-ico">F</div>
+            <span class="l-name">Footer</span>
+            <div class="l-actions">
+              <button class="layer-act" title="Move up">&#8593;</button>
+              <button class="layer-act" title="Move down">&#8595;</button>
+              <button class="layer-act" title="Duplicate">&#8911;</button>
+              <button class="layer-act del" title="Delete" onclick="event.stopPropagation();showToast('Block removed')">&#10005;</button>
+            </div>
+          </div>
+        </div>
+        <div class="add-comp-wrap" style="position:relative;">
+          <button class="add-comp-btn" onclick="toggleAddComp()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Add Component
+          </button>
+          <div class="add-comp-popover" id="add-popover">
+            <input type="text" class="acp-search" placeholder="Search components...">
+            <div class="acp-group">Layout</div>
+            <div class="acp-item" onclick="showToast('Navbar added');toggleAddComp()"><div class="acp-ico">N</div> Navbar</div>
+            <div class="acp-item" onclick="showToast('Section added');toggleAddComp()"><div class="acp-ico">S</div> Section</div>
+            <div class="acp-group">Content</div>
+            <div class="acp-item" onclick="showToast('Pricing added');toggleAddComp()"><div class="acp-ico">$</div> Pricing</div>
+            <div class="acp-item" onclick="showToast('Testimonials added');toggleAddComp()"><div class="acp-ico">"</div> Testimonials</div>
+            <div class="acp-item" onclick="showToast('Stats added');toggleAddComp()"><div class="acp-ico">#</div> Stats</div>
+            <div class="acp-item" onclick="showToast('FAQ added');toggleAddComp()"><div class="acp-ico">?</div> FAQ</div>
+            <div class="acp-item" onclick="showToast('Team added');toggleAddComp()"><div class="acp-ico">T</div> Team</div>
+            <div class="acp-group">Actions</div>
+            <div class="acp-item" onclick="showToast('Contact added');toggleAddComp()"><div class="acp-ico">@</div> Contact</div>
+            <div class="acp-item" onclick="showToast('Newsletter added');toggleAddComp()"><div class="acp-ico">&#9993;</div> Newsletter</div>
+            <div class="acp-group">Media</div>
+            <div class="acp-item" onclick="showToast('Video added');toggleAddComp()"><div class="acp-ico">&#9656;</div> Video</div>
+            <div class="acp-item" onclick="showToast('Gallery added');toggleAddComp()"><div class="acp-ico">&#9638;</div> Gallery</div>
+            <div class="acp-item" onclick="showToast('Logo Cloud added');toggleAddComp()"><div class="acp-ico">&#9679;</div> Logo Cloud</div>
+          </div>
         </div>
       </div>
 
@@ -779,15 +852,42 @@ function switchMode(panel, btn) {
   else { left.classList.remove('wide'); }
 }
 
+const blockMap = [
+  { type: 'Hero', path: 'config.blocks[0]', panel: 'hero' },
+  { type: 'Features', path: 'config.blocks[1]', panel: 'features' },
+  { type: 'CTA', path: 'config.blocks[2]', panel: 'cta' },
+  { type: 'Footer', path: 'config.blocks[3]', panel: 'footer' }
+];
+
 function selBlock(el, type, path, panelId) {
   document.querySelectorAll('.cb').forEach(b => b.classList.remove('selected'));
   el.classList.add('selected');
   document.getElementById('type-badge').textContent = type;
   document.getElementById('pf-path').textContent = path;
-  // Switch right panel
   document.querySelectorAll('.rpanel').forEach(p => p.classList.remove('active'));
   const rp = document.getElementById('rp-' + panelId);
   if (rp) rp.classList.add('active');
+  // Sync layer highlight
+  document.querySelectorAll('.layer-item').forEach(l => l.classList.remove('active'));
+  const blocks = document.querySelectorAll('.cb');
+  const idx = Array.from(blocks).indexOf(el);
+  const layers = document.querySelectorAll('.layer-item');
+  if (layers[idx]) layers[idx].classList.add('active');
+}
+
+function layerClick(layerEl, idx) {
+  // Select the corresponding canvas block
+  const blocks = document.querySelectorAll('.cb');
+  if (blocks[idx]) {
+    const b = blockMap[idx];
+    selBlock(blocks[idx], b.type, b.path, b.panel);
+    // Scroll block into view
+    blocks[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function toggleAddComp() {
+  document.getElementById('add-popover').classList.toggle('open');
 }
 
 function toggleJSON() {
@@ -813,6 +913,15 @@ document.querySelectorAll('.set-nav-item').forEach(i => { i.addEventListener('cl
 document.querySelectorAll('.pswatch').forEach(s => { s.addEventListener('click', function() { this.parentElement.querySelectorAll('.pswatch').forEach(x => x.classList.remove('active')); this.classList.add('active'); }); });
 // History items
 document.querySelectorAll('.history-item').forEach(i => { i.addEventListener('click', function() { this.parentElement.querySelectorAll('.history-item').forEach(x => x.classList.remove('active')); this.classList.add('active'); }); });
+// Close add-component popover on outside click
+document.addEventListener('click', e => {
+  const pop = document.getElementById('add-popover');
+  if (pop.classList.contains('open') && !e.target.closest('.add-comp-wrap')) pop.classList.remove('open');
+});
+// Escape to close popover
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { document.getElementById('add-popover').classList.remove('open'); document.getElementById('history-panel').classList.remove('open'); }
+});
 // Keyboard
 document.addEventListener('keydown', e => {
   const screens = ['dashboard','editor','components','deploy','settings'];
