@@ -7,6 +7,13 @@ import { FeaturesBlock } from './features/FeaturesBlock'
 import { PricingBlock } from './pricing/PricingBlock'
 import { CtaBlock } from './cta/CtaBlock'
 import { FooterBlock } from './footer/FooterBlock'
+import { TestimonialsBlock } from './testimonials/TestimonialsBlock'
+import { StatsBlock } from './stats/StatsBlock'
+import { FaqBlock } from './faq/FaqBlock'
+import { TeamBlock } from './team/TeamBlock'
+import { ContactBlock } from './contact/ContactBlock'
+import { NewsletterBlock } from './newsletter/NewsletterBlock'
+import { LogoCloudBlock } from './logocloud/LogoCloudBlock'
 
 // Fallback for unregistered block types
 function PlaceholderBlock({ block }: { block: BlockConfig }) {
@@ -24,6 +31,13 @@ const blockRenderers: Record<string, React.ComponentType<{ block: BlockConfig }>
   pricing: PricingBlock,
   cta: CtaBlock,
   footer: FooterBlock,
+  testimonials: TestimonialsBlock,
+  stats: StatsBlock,
+  faq: FaqBlock,
+  team: TeamBlock,
+  contact: ContactBlock,
+  newsletter: NewsletterBlock,
+  logocloud: LogoCloudBlock,
 }
 
 export function registerBlock(type: BlockType, component: React.ComponentType<{ block: BlockConfig }>) {
