@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toast } from 'sonner'
 import {
   Layout, Type, Grid3X3, DollarSign, Megaphone, PanelBottom,
   MessageSquare, BarChart3, HelpCircle, Users, Mail, Newspaper, Image,
@@ -187,6 +188,7 @@ export function LayersPanel() {
     }
     addBlock(block)
     selectBlock(block.id)
+    toast(`${meta.label} added`)
   }
 
   return (
@@ -207,10 +209,11 @@ export function LayersPanel() {
                 block={block}
                 isSelected={selectedBlockId === block.id}
                 onSelect={() => selectBlock(block.id)}
-                onDuplicate={() => duplicateBlock(block.id)}
+                onDuplicate={() => { duplicateBlock(block.id); toast('Block duplicated') }}
                 onRemove={() => {
                   if (selectedBlockId === block.id) selectBlock(null)
                   removeBlock(block.id)
+                  toast('Block removed')
                 }}
               />
             ))}
