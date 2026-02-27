@@ -31,11 +31,12 @@ function useAutoSaveToProject() {
 
 export function EditorLayout() {
   useAutoSaveToProject()
+  const previewMode = useEditorStore((s) => s.previewMode)
 
   return (
     <div className="h-full flex flex-col relative">
       <div className="flex-1 flex overflow-hidden">
-        <LeftSidebar />
+        {!previewMode && <LeftSidebar />}
         <div className="flex-1 flex flex-col min-w-0">
           <CanvasToolbar />
           <div className="flex-1 flex flex-col overflow-hidden">
@@ -43,7 +44,7 @@ export function EditorLayout() {
             <JsonDrawer />
           </div>
         </div>
-        <RightSidebar />
+        {!previewMode && <RightSidebar />}
       </div>
       <VersionHistory />
     </div>

@@ -16,6 +16,7 @@ export function BlockWrapper({ block, isSelected, onSelect, children }: Props) {
   const blocks = useConfigStore((s) => s.config.blocks)
   const { duplicateBlock, removeBlock, moveBlock } = useConfigStore()
   const { selectedBlockId, selectBlock } = useEditorStore()
+  const previewMode = useEditorStore((s) => s.previewMode)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   const index = blocks.findIndex((b) => b.id === block.id)
@@ -27,6 +28,10 @@ export function BlockWrapper({ block, isSelected, onSelect, children }: Props) {
       wrapperRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
   }, [isSelected])
+
+  if (previewMode) {
+    return <div>{children}</div>
+  }
 
   return (
     <div

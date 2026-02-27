@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Monitor, Tablet, Smartphone, Undo2, Redo2, Code, Clock } from 'lucide-react'
+import { Monitor, Tablet, Smartphone, Undo2, Redo2, Code, Clock, Eye } from 'lucide-react'
 import { useEditorStore, type Viewport } from '@/store/editorStore'
 import { useConfigStore } from '@/store/configStore'
 import { useProjectsStore } from '@/store/projectsStore'
@@ -12,7 +12,7 @@ const viewports: { value: Viewport; icon: typeof Monitor; label: string }[] = [
 
 export function CanvasToolbar() {
   const navigate = useNavigate()
-  const { viewport, setViewport, toggleJsonDrawer, jsonDrawerOpen, toggleHistory, activeProjectId } = useEditorStore()
+  const { viewport, setViewport, toggleJsonDrawer, jsonDrawerOpen, toggleHistory, togglePreview, previewMode, activeProjectId } = useEditorStore()
   const { undo, redo, canUndo, canRedo } = useConfigStore()
   const projects = useProjectsStore((s) => s.projects)
   const configName = useConfigStore((s) => s.config.name)
@@ -80,6 +80,17 @@ export function CanvasToolbar() {
         </button>
 
         <div className="w-px h-5 bg-border-default mx-1" />
+
+        {/* Preview toggle */}
+        <button
+          onClick={togglePreview}
+          className={`w-7 h-7 rounded flex items-center justify-center transition-all ${
+            previewMode ? 'bg-green-glow text-green' : 'text-text-3 hover:text-text-1 hover:bg-bg-3'
+          }`}
+          title="Preview (P)"
+        >
+          <Eye size={14} />
+        </button>
 
         {/* JSON drawer toggle */}
         <button

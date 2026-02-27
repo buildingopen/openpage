@@ -37,7 +37,7 @@ export function Components() {
   return (
     <div className="h-full overflow-y-auto">
       {/* Header */}
-      <div className="px-12 pt-8">
+      <div className="px-4 md:px-12 pt-8">
         <h1 className="text-[22px] font-display font-semibold tracking-tight animate-fade-in-up stagger-1">Component Library</h1>
         <p className="text-text-2 text-[13px] mt-1 animate-fade-in-up stagger-2">
           {blockMetadata.length} components across {categories.length} categories
@@ -45,7 +45,7 @@ export function Components() {
       </div>
 
       {/* Category filters */}
-      <div className="px-12 pt-5 flex gap-1.5 flex-wrap animate-fade-in stagger-3">
+      <div className="px-4 md:px-12 pt-5 flex gap-1.5 flex-wrap animate-fade-in stagger-3">
         <button
           onClick={() => setActiveCategory(null)}
           className={`px-3 py-1.5 rounded-full text-xs transition-all ${
@@ -75,7 +75,7 @@ export function Components() {
       </div>
 
       {/* Component grid */}
-      <div className="px-12 pt-6 pb-12 grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
+      <div className="px-4 md:px-12 pt-6 pb-12 grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
         {filtered.map((meta, i) => {
           const variantIdx = activeVariants[meta.type] ?? 0
           const previewBlock: BlockConfig = {

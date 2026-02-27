@@ -36,13 +36,13 @@ export function Deploy() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="px-12 pt-8">
+      <div className="px-4 md:px-12 pt-8">
         <h1 className="text-[22px] font-display font-semibold tracking-tight animate-fade-in-up stagger-1">Deploy</h1>
         <p className="text-text-2 text-[13px] mt-1 animate-fade-in-up stagger-2">Export and publish your site</p>
       </div>
 
       {/* Ready export options */}
-      <div className="px-12 pt-6">
+      <div className="px-4 md:px-12 pt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {readyOptions.map((opt, i) => (
             <div
@@ -65,7 +65,7 @@ export function Deploy() {
       </div>
 
       {/* Planned exports */}
-      <div className="px-12 pt-8 pb-12 animate-fade-in-up stagger-4">
+      <div className="px-4 md:px-12 pt-8 pb-12 animate-fade-in-up stagger-4">
         <h2 className="text-[11px] font-semibold uppercase tracking-wider text-text-3 mb-3">More export options planned</h2>
         <div className="flex flex-col gap-2">
           {plannedOptions.map((opt) => (

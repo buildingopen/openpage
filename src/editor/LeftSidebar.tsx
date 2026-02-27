@@ -12,7 +12,7 @@ export function LeftSidebar() {
   const { leftPanel, setLeftPanel } = useEditorStore()
 
   return (
-    <div className="w-64 bg-bg-1 border-r border-border-default flex flex-col shrink-0">
+    <div className="hidden md:flex w-[280px] bg-bg-1 border-r border-border-default flex-col shrink-0">
       {/* Mode toggle */}
       <div className="flex m-2.5 mb-0 bg-bg-2 rounded-lg p-0.5 gap-0.5">
         {modes.map(({ value, label, icon: Icon }) => (

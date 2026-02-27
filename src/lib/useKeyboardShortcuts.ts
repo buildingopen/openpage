@@ -6,7 +6,7 @@ import { useConfigStore } from '@/store/configStore'
 export function useKeyboardShortcuts() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { toggleJsonDrawer, toggleHistory, toggleShortcutsModal, selectBlock } = useEditorStore()
+  const { toggleJsonDrawer, toggleHistory, toggleShortcutsModal, togglePreview, selectBlock } = useEditorStore()
   const { undo, redo } = useConfigStore()
 
   useEffect(() => {
@@ -33,6 +33,7 @@ export function useKeyboardShortcuts() {
           switch (e.key) {
             case 'j': case 'J': e.preventDefault(); toggleJsonDrawer(); return
             case 'h': case 'H': e.preventDefault(); toggleHistory(); return
+            case 'p': case 'P': e.preventDefault(); togglePreview(); return
             case 'Escape': e.preventDefault(); selectBlock(null); return
           }
         }
@@ -49,5 +50,5 @@ export function useKeyboardShortcuts() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [navigate, location.pathname, toggleJsonDrawer, toggleHistory, toggleShortcutsModal, selectBlock, undo, redo])
+  }, [navigate, location.pathname, toggleJsonDrawer, toggleHistory, toggleShortcutsModal, togglePreview, selectBlock, undo, redo])
 }

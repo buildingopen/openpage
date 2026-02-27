@@ -425,11 +425,11 @@ export function Dashboard() {
       {/* Projects section */}
       {projects.length > 0 && (
         <>
-          <div className="px-12 pt-4">
+          <div className="px-4 md:px-12 pt-4">
             <div className="border-t border-border-subtle" />
           </div>
 
-          <div className="px-12 pt-5 flex gap-2 items-center justify-between">
+          <div className="px-4 md:px-12 pt-5 flex flex-col sm:flex-row gap-2 items-start sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <h2 className="text-[13px] font-semibold text-text-1 animate-fade-in">
                 Your projects
@@ -467,7 +467,7 @@ export function Dashboard() {
           </div>
 
           {filtered.length > 0 ? (
-            <div className="px-12 pt-4 pb-12 grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-3.5">
+            <div className="px-4 md:px-12 pt-4 pb-12 grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-3.5">
               {filtered.map((p, i) => (
                 <div key={p.id} className="animate-fade-in-up" style={{ animationDelay: `${i * 50}ms` }}>
                   <ProjectCard project={p} />
@@ -475,7 +475,7 @@ export function Dashboard() {
               ))}
             </div>
           ) : (
-            <div className="px-12 pt-8 pb-12 flex flex-col items-center text-center">
+            <div className="px-4 md:px-12 pt-8 pb-12 flex flex-col items-center text-center">
               <FolderOpen size={28} className="text-text-3 mb-2" />
               <p className="text-text-2 text-[13px]">No projects match your filter</p>
               <button

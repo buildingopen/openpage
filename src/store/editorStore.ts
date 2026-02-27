@@ -10,6 +10,7 @@ interface EditorState {
   jsonDrawerOpen: boolean
   historyOpen: boolean
   shortcutsModalOpen: boolean
+  previewMode: boolean
   activeProjectId: string | null
   selectBlock: (id: string | null) => void
   setLeftPanel: (panel: LeftPanel) => void
@@ -17,6 +18,7 @@ interface EditorState {
   toggleJsonDrawer: () => void
   toggleHistory: () => void
   toggleShortcutsModal: () => void
+  togglePreview: () => void
   setActiveProject: (id: string | null) => void
 }
 
@@ -27,6 +29,7 @@ export const useEditorStore = create<EditorState>()((set) => ({
   jsonDrawerOpen: false,
   historyOpen: false,
   shortcutsModalOpen: false,
+  previewMode: false,
   activeProjectId: null,
   selectBlock: (id) => set({ selectedBlockId: id }),
   setLeftPanel: (panel) => set({ leftPanel: panel }),
@@ -34,5 +37,6 @@ export const useEditorStore = create<EditorState>()((set) => ({
   toggleJsonDrawer: () => set((s) => ({ jsonDrawerOpen: !s.jsonDrawerOpen })),
   toggleHistory: () => set((s) => ({ historyOpen: !s.historyOpen })),
   toggleShortcutsModal: () => set((s) => ({ shortcutsModalOpen: !s.shortcutsModalOpen })),
+  togglePreview: () => set((s) => ({ previewMode: !s.previewMode, ...(!s.previewMode ? { selectedBlockId: null } : {}) })),
   setActiveProject: (id) => set({ activeProjectId: id }),
 }))
