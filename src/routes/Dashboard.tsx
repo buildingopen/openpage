@@ -172,7 +172,7 @@ function PromptSection() {
               {suggestions.map((s) => (
                 <button
                   key={s}
-                  onClick={() => { setPrompt(s); generate(s) }}
+                  onClick={() => { setPrompt(s); textareaRef.current?.focus() }}
                   disabled={generating}
                   className="px-2 py-1 rounded-lg text-text-3 text-[11px] hover:text-text-1 hover:bg-bg-3 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 >
