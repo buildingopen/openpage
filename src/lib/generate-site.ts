@@ -7,20 +7,32 @@ const VARIANT_MAP = Object.fromEntries(blockMetadata.map((b) => [b.type, new Set
 const DEFAULT_PROPS_MAP = Object.fromEntries(blockMetadata.map((b) => [b.type, b.defaultProps]))
 
 export async function generateSiteConfig(prompt: string, signal?: AbortSignal): Promise<SiteConfig> {
-  const res = await fetch('/api/generate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt }),
-    signal,
-  })
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+      signal,
+    })
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }))
-    throw new Error(err.error || `Generation failed (${res.status})`)
+    const contentType = res.headers.get('content-type') || ''
+    if (!contentType.includes('application/json')) {
+      // API not available (static hosting), use fallback
+      return fallbackConfig(prompt)
+    }
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }))
+      throw new Error(err.error || `Generation failed (${res.status})`)
+    }
+
+    const raw = await res.json()
+    return validateSiteConfig(raw, prompt)
+  } catch (err) {
+    if (err instanceof Error && err.name === 'AbortError') throw err
+    // Network error or parse failure, use fallback
+    return fallbackConfig(prompt)
   }
-
-  const raw = await res.json()
-  return validateSiteConfig(raw, prompt)
 }
 
 function isValidHex(s: unknown): s is string {
