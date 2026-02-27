@@ -102,117 +102,124 @@ function PromptSection() {
     setGenerating(false)
   }
 
+  const isFocused = prompt.length > 0 || generating
+
   return (
     <div className="relative overflow-hidden">
-      {/* Subtle glow background */}
+      {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[500px] bg-green/[0.05] rounded-full blur-[120px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(34,197,94,0.03)_0%,transparent_70%)]" />
+        <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-green/[0.07] rounded-full blur-[150px]" />
       </div>
 
       <div className="relative flex flex-col items-center pt-16 pb-6 px-6">
-        <h1 className="text-[32px] font-display font-bold tracking-tight mb-2 text-center animate-fade-in-up stagger-1">What will you build?</h1>
-        <p className="text-text-2 text-sm mb-6 text-center animate-fade-in-up stagger-2">Describe your site and AI generates the layout, copy, and theme.</p>
+        <h1 className="text-[36px] font-display font-bold tracking-tight mb-2 text-center animate-fade-in-up stagger-1">What will you build?</h1>
+        <p className="text-text-2 text-[15px] mb-8 text-center animate-fade-in-up stagger-2">Describe your site and AI generates the layout, copy, and theme.</p>
 
-        {/* Prompt card */}
-        <div className={`w-full max-w-[640px] rounded-2xl border bg-bg-1 transition-all animate-scale-in stagger-3 ${generating ? 'border-green/30 shadow-[0_0_60px_rgba(34,197,94,0.12)]' : 'border-border-hover shadow-[0_0_80px_rgba(34,197,94,0.06)] focus-within:border-green/40 focus-within:shadow-[0_0_60px_rgba(34,197,94,0.12)]'}`}>
-          <textarea
-            ref={textareaRef}
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-                generate(prompt)
-              }
-            }}
-            rows={4}
-            disabled={generating}
-            placeholder="A landing page for a modern fitness app with dark theme..."
-            className="w-full px-5 pt-4 pb-2 bg-transparent text-text-0 text-[13.5px] placeholder:text-text-3 resize-none leading-relaxed disabled:opacity-50"
-          />
+        {/* Prompt card - gradient border wrapper */}
+        <div className={`w-full max-w-[680px] rounded-2xl p-px transition-all duration-300 animate-scale-in stagger-3 ${
+          isFocused || generating
+            ? 'bg-gradient-to-b from-green/40 via-green/20 to-green/5 shadow-[0_0_80px_rgba(34,197,94,0.15)]'
+            : 'bg-gradient-to-b from-border-hover via-border-default to-border-subtle shadow-[0_0_60px_rgba(34,197,94,0.06)] hover:from-green/25 hover:via-green/10 hover:to-green/5 hover:shadow-[0_0_80px_rgba(34,197,94,0.1)]'
+        }`}>
+          <div className="bg-bg-1 rounded-[15px] overflow-hidden">
+            <textarea
+              ref={textareaRef}
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                  generate(prompt)
+                }
+              }}
+              rows={3}
+              disabled={generating}
+              placeholder="A landing page for a modern fitness app with dark theme..."
+              className="w-full px-5 pt-5 pb-3 bg-transparent text-text-0 text-[14px] placeholder:text-text-3 resize-none leading-relaxed disabled:opacity-50"
+            />
 
-          {/* Attachments preview */}
-          {attachments.length > 0 && (
-            <div className="flex gap-2 px-5 pb-2">
-              {attachments.map((file, i) => (
-                <div key={i} className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-bg-3 border border-border-default text-[11px] text-text-1">
-                  <ImageIcon size={11} className="text-text-3" />
-                  <span className="max-w-[120px] truncate">{file.name}</span>
-                  <button onClick={() => setAttachments((prev) => prev.filter((_, j) => j !== i))} className="text-text-3 hover:text-text-0 transition-colors">
-                    <X size={10} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+            {/* Attachments preview */}
+            {attachments.length > 0 && (
+              <div className="flex gap-2 px-5 pb-2">
+                {attachments.map((file, i) => (
+                  <div key={i} className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-bg-3 border border-border-default text-[11px] text-text-1">
+                    <ImageIcon size={11} className="text-text-3" />
+                    <span className="max-w-[120px] truncate">{file.name}</span>
+                    <button onClick={() => setAttachments((prev) => prev.filter((_, j) => j !== i))} className="text-text-3 hover:text-text-0 transition-colors">
+                      <X size={10} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
 
-          {/* Bottom bar */}
-          <div className="flex items-center justify-between px-4 pb-3 pt-1">
-            <div className="flex items-center gap-1.5 animate-fade-in stagger-4">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                multiple
-                className="hidden"
-                onChange={(e) => {
-                  if (e.target.files) setAttachments((prev) => [...prev, ...Array.from(e.target.files!)])
-                  e.target.value = ''
-                }}
-              />
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                disabled={generating}
-                className="p-1.5 rounded-lg text-text-3 hover:text-text-1 hover:bg-bg-3 transition-all disabled:opacity-30"
-                title="Attach reference images"
-              >
-                <Paperclip size={14} />
-              </button>
-              <div className="w-px h-4 bg-border-default" />
-              {suggestions.map((s) => (
+            {/* Bottom bar */}
+            <div className="flex items-center justify-between px-4 pb-3 pt-1">
+              <div className="flex items-center gap-1.5 animate-fade-in stagger-4">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files) setAttachments((prev) => [...prev, ...Array.from(e.target.files!)])
+                    e.target.value = ''
+                  }}
+                />
                 <button
-                  key={s}
-                  onClick={() => { setPrompt(s); textareaRef.current?.focus() }}
+                  onClick={() => fileInputRef.current?.click()}
                   disabled={generating}
-                  className="px-2 py-1 rounded-lg text-text-3 text-[11px] hover:text-text-1 hover:bg-bg-3 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="p-1.5 rounded-lg text-text-3 hover:text-text-1 hover:bg-bg-3 transition-all disabled:opacity-30"
+                  title="Attach reference images"
                 >
-                  {s}
+                  <Paperclip size={14} />
                 </button>
-              ))}
-            </div>
-            <div className="flex items-center gap-2 shrink-0 ml-3">
-              {generating ? (
-                <button
-                  onClick={cancel}
-                  className="px-3 py-1.5 rounded-lg bg-bg-3 text-text-1 text-[12px] border border-border-default hover:bg-bg-4 transition-colors inline-flex items-center gap-1.5"
-                >
-                  <X size={12} />
-                  Cancel
-                </button>
-              ) : (
-                <>
-                  {prompt.trim() && (
-                    <span className="text-[10px] text-text-3 hidden sm:inline">
-                      {navigator.platform?.includes('Mac') ? '\u2318' : 'Ctrl'}+Enter
-                    </span>
-                  )}
+                <div className="w-px h-4 bg-border-default" />
+                {suggestions.map((s) => (
                   <button
-                    onClick={() => generate(prompt)}
-                    disabled={!prompt.trim()}
-                    className="px-5 py-2 rounded-lg bg-green text-black text-[12.5px] font-semibold hover:bg-green-dim hover:accent-glow-md active:scale-[0.97] transition-all disabled:opacity-30 disabled:cursor-not-allowed inline-flex items-center gap-1.5"
+                    key={s}
+                    onClick={() => { setPrompt(s); textareaRef.current?.focus() }}
+                    disabled={generating}
+                    className="px-2.5 py-1 rounded-full text-text-3 text-[11px] border border-border-default hover:text-text-0 hover:bg-bg-3 hover:border-border-hover transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                   >
-                    <Sparkles size={13} />
-                    Generate
+                    {s}
                   </button>
-                </>
-              )}
+                ))}
+              </div>
+              <div className="flex items-center gap-2 shrink-0 ml-3">
+                {generating ? (
+                  <button
+                    onClick={cancel}
+                    className="px-3 py-1.5 rounded-lg bg-bg-3 text-text-1 text-[12px] border border-border-default hover:bg-bg-4 transition-colors inline-flex items-center gap-1.5"
+                  >
+                    <X size={12} />
+                    Cancel
+                  </button>
+                ) : (
+                  <>
+                    {prompt.trim() && (
+                      <span className="text-[10px] text-text-3 hidden sm:inline">
+                        {navigator.platform?.includes('Mac') ? '\u2318' : 'Ctrl'}+Enter
+                      </span>
+                    )}
+                    <button
+                      onClick={() => generate(prompt)}
+                      disabled={!prompt.trim()}
+                      className="px-5 py-2.5 rounded-xl bg-green text-black text-[13px] font-semibold hover:bg-green-dim active:scale-[0.97] transition-all disabled:opacity-20 disabled:cursor-not-allowed inline-flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)]"
+                    >
+                      <Sparkles size={14} />
+                      Generate
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Error */}
         {error && (
-          <div className="w-full max-w-[640px] mt-3 px-4 py-2.5 rounded-xl bg-status-red/10 border border-status-red/20 text-status-red text-[12px] flex items-center justify-between">
+          <div className="w-full max-w-[680px] mt-3 px-4 py-2.5 rounded-xl bg-status-red/10 border border-status-red/20 text-status-red text-[12px] flex items-center justify-between">
             <span>{error}</span>
             <button onClick={() => setError('')} className="ml-2 hover:text-text-0 transition-colors"><X size={14} /></button>
           </div>
@@ -220,7 +227,7 @@ function PromptSection() {
 
         {/* Generating progress */}
         {generating && (
-          <div className="w-full max-w-[640px] mt-3 px-4 py-2.5 rounded-xl bg-green/5 border border-green/20 text-green text-[12.5px] flex items-center gap-2.5">
+          <div className="w-full max-w-[680px] mt-3 px-4 py-2.5 rounded-xl bg-green/5 border border-green/20 text-green text-[12.5px] flex items-center gap-2.5">
             <Loader2 size={15} className="animate-spin shrink-0" />
             <span>Building your site<span className="animate-pulse">...</span></span>
             <span className="tabular-nums text-green/60">{elapsed}s</span>
@@ -228,11 +235,11 @@ function PromptSection() {
         )}
 
         {/* Start blank */}
-        <div className="mt-3">
+        <div className="mt-4">
           <button
             onClick={startBlank}
             disabled={generating}
-            className="text-text-2 text-[12px] hover:text-text-0 transition-colors inline-flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed animate-fade-in stagger-5"
+            className="text-text-3 text-[12px] hover:text-text-1 transition-colors inline-flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed animate-fade-in stagger-5"
           >
             or start with a blank canvas <ArrowRight size={12} />
           </button>
