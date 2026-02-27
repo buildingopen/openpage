@@ -21,14 +21,14 @@ function StatsGrid({ props }: { props: StatsProps }) {
   const items = props.items || defaultStats
 
   return (
-    <section className="px-6 sm:px-10 py-12 sm:py-16">
+    <section className="px-6 @md:px-10 py-12 @md:py-16">
       {props.title && (
         <h2 className="text-xl font-bold tracking-tight text-center mb-8">{props.title}</h2>
       )}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 @2xl:grid-cols-4 gap-4">
         {items.map((item, i) => (
           <div key={i} className="text-center p-4 rounded-xl bg-bg-2 border border-border-default">
-            <div className="text-3xl sm:text-4xl font-bold tracking-tight text-green mb-1">
+            <div className="text-3xl @md:text-4xl font-bold tracking-tight text-green mb-1">
               {item.value}
             </div>
             <div className="text-[12px] text-text-2 font-medium">{item.label}</div>
@@ -43,11 +43,11 @@ function StatsBar({ props }: { props: StatsProps }) {
   const items = props.items || defaultStats
 
   return (
-    <section className="px-6 sm:px-10 py-10">
-      <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 py-6 px-4 rounded-xl bg-bg-2 border border-border-default">
+    <section className="px-6 @md:px-10 py-10">
+      <div className="flex flex-wrap items-center justify-center gap-8 @md:gap-12 py-6 px-4 rounded-xl bg-bg-2 border border-border-default">
         {items.map((item, i) => (
           <div key={i} className="text-center">
-            <div className="text-2xl sm:text-3xl font-bold tracking-tight text-text-0 mb-0.5">
+            <div className="text-2xl @md:text-3xl font-bold tracking-tight text-text-0 mb-0.5">
               {item.value}
             </div>
             <div className="text-[11px] text-text-3 font-medium uppercase tracking-wider">

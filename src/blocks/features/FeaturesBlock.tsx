@@ -30,7 +30,7 @@ function getIcon(name?: string): LucideIcon {
 
 function FeaturesGrid({ props }: { props: FeaturesProps }) {
   return (
-    <section className="px-6 sm:px-10 py-16 sm:py-20">
+    <section className="px-6 @md:px-10 py-16 @md:py-20">
       {/* Header */}
       <div className="text-center mb-10">
         {props.label && (
@@ -38,14 +38,14 @@ function FeaturesGrid({ props }: { props: FeaturesProps }) {
             {props.label}
           </div>
         )}
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">{props.title}</h2>
+        <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">{props.title}</h2>
         {props.subtitle && (
           <p className="text-text-2 text-sm max-w-lg mx-auto">{props.subtitle}</p>
         )}
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 @lg:grid-cols-2 @3xl:grid-cols-3 gap-4">
         {props.items.map((item, i) => {
           const Icon = getIcon(item.icon)
           return (
@@ -68,14 +68,14 @@ function FeaturesGrid({ props }: { props: FeaturesProps }) {
 
 function FeaturesList({ props }: { props: FeaturesProps }) {
   return (
-    <section className="px-6 sm:px-10 py-16 sm:py-20">
+    <section className="px-6 @md:px-10 py-16 @md:py-20">
       <div className="text-center mb-10">
         {props.label && (
           <div className="text-[11px] font-semibold uppercase tracking-widest text-green mb-2">
             {props.label}
           </div>
         )}
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">{props.title}</h2>
+        <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">{props.title}</h2>
         {props.subtitle && (
           <p className="text-text-2 text-sm max-w-lg mx-auto">{props.subtitle}</p>
         )}

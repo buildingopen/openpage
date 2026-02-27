@@ -53,12 +53,12 @@ export function LogoCloudBlock({ block }: { block: BlockConfig }) {
   const logos = props.logos || defaultLogos
 
   return (
-    <section className="px-6 sm:px-10 py-10 sm:py-14">
+    <section className="px-6 @md:px-10 py-10 @md:py-14">
       <p className="text-center text-[11px] font-medium uppercase tracking-widest text-text-3 mb-6">
         {props.title || 'Trusted by teams at'}
       </p>
 
-      <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
+      <div className="flex flex-wrap items-center justify-center gap-8 @md:gap-12">
         {logos.map((logo, i) => (
           <LogoPlaceholder key={i} name={logo} />
         ))}

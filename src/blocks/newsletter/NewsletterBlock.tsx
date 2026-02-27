@@ -13,12 +13,12 @@ export function NewsletterBlock({ block }: { block: BlockConfig }) {
   const props = block.props as unknown as NewsletterProps
 
   return (
-    <section className="px-6 sm:px-10 py-12 sm:py-16">
+    <section className="px-6 @md:px-10 py-12 @md:py-16">
       <div className="max-w-xl mx-auto text-center">
         <div className="w-12 h-12 rounded-xl bg-green/10 border border-green/20 flex items-center justify-center text-green mx-auto mb-4">
           <Mail size={22} />
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold tracking-tight mb-2">
+        <h2 className="text-xl @md:text-2xl font-bold tracking-tight mb-2">
           {props.title || 'Stay in the loop'}
         </h2>
         <p className="text-text-2 text-sm mb-6">

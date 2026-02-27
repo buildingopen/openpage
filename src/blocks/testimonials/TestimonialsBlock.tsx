@@ -40,9 +40,9 @@ function TestimonialsCards({ props }: { props: TestimonialsProps }) {
   const items = props.items || defaultTestimonials
 
   return (
-    <section className="px-6 sm:px-10 py-16 sm:py-20">
+    <section className="px-6 @md:px-10 py-16 @md:py-20">
       <div className="text-center mb-10">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
+        <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">
           {props.title || 'What people say'}
         </h2>
         {props.subtitle && (
@@ -50,7 +50,7 @@ function TestimonialsCards({ props }: { props: TestimonialsProps }) {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 @2xl:grid-cols-3 gap-4">
         {items.map((item, i) => (
           <div
             key={i}
@@ -90,9 +90,9 @@ function TestimonialsCarousel({ props }: { props: TestimonialsProps }) {
   const item = items[safeIndex]
 
   return (
-    <section className="px-6 sm:px-10 py-16 sm:py-20">
+    <section className="px-6 @md:px-10 py-16 @md:py-20">
       <div className="text-center mb-10">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
+        <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">
           {props.title || 'What people say'}
         </h2>
       </div>

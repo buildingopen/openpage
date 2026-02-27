@@ -56,9 +56,9 @@ export function FaqBlock({ block }: { block: BlockConfig }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (
-    <section className="px-6 sm:px-10 py-16 sm:py-20">
+    <section className="px-6 @md:px-10 py-16 @md:py-20">
       <div className="text-center mb-10">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
+        <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">
           {props.title || 'Frequently Asked Questions'}
         </h2>
         {props.subtitle && (

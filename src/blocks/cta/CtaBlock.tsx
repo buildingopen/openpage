@@ -9,12 +9,12 @@ interface CtaProps {
 
 function CtaSimple({ props }: { props: CtaProps }) {
   return (
-    <section className="px-6 sm:px-10 py-16 sm:py-20 text-center relative overflow-hidden">
+    <section className="px-6 @md:px-10 py-16 @md:py-20 text-center relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-green/6 via-green/3 to-transparent pointer-events-none" />
 
       <div className="relative z-10">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+        <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-3">
           {props.headline}
         </h2>
         {props.subheadline && (
@@ -33,11 +33,11 @@ function CtaSimple({ props }: { props: CtaProps }) {
 
 function CtaSplit({ props }: { props: CtaProps }) {
   return (
-    <section className="px-6 sm:px-10 py-12 sm:py-16">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 rounded-xl bg-bg-2 border border-border-default relative overflow-hidden">
+    <section className="px-6 @md:px-10 py-12 @md:py-16">
+      <div className="flex flex-col @lg:flex-row items-center justify-between gap-6 p-8 rounded-xl bg-bg-2 border border-border-default relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-green/5 to-transparent pointer-events-none" />
         <div className="relative z-10">
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight mb-1">
+          <h2 className="text-xl @md:text-2xl font-bold tracking-tight mb-1">
             {props.headline}
           </h2>
           {props.subheadline && (

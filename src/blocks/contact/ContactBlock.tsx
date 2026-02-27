@@ -11,10 +11,10 @@ export function ContactBlock({ block }: { block: BlockConfig }) {
   const props = block.props as unknown as ContactProps
 
   return (
-    <section className="px-6 sm:px-10 py-16 sm:py-20">
+    <section className="px-6 @md:px-10 py-16 @md:py-20">
       <div className="max-w-lg mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
+          <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">
             {props.title || 'Get in Touch'}
           </h2>
           {props.subtitle && (
@@ -23,7 +23,7 @@ export function ContactBlock({ block }: { block: BlockConfig }) {
         </div>
 
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 @sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-[11.5px] text-text-2 mb-1.5 font-medium">Name</label>
               <input

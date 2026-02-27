@@ -11,7 +11,7 @@ interface HeroProps {
 
 function HeroCentered({ props }: { props: HeroProps }) {
   return (
-    <section className="px-6 sm:px-10 py-20 sm:py-28 text-center">
+    <section className="px-6 @md:px-10 py-20 @md:py-28 text-center">
       {/* Badge */}
       {props.badge && (
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green/10 border border-green/20 text-green text-[11px] font-medium mb-6">
@@ -21,17 +21,17 @@ function HeroCentered({ props }: { props: HeroProps }) {
       )}
 
       {/* Headline */}
-      <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.1] mb-4 max-w-3xl mx-auto">
+      <h1 className="text-4xl @md:text-5xl font-bold tracking-tight leading-[1.1] mb-4 max-w-3xl mx-auto">
         {props.headline}
       </h1>
 
       {/* Subheadline */}
-      <p className="text-text-2 text-base sm:text-lg leading-relaxed max-w-xl mx-auto mb-8">
+      <p className="text-text-2 text-base @md:text-lg leading-relaxed max-w-xl mx-auto mb-8">
         {props.subheadline}
       </p>
 
       {/* CTAs */}
-      <div className="flex items-center justify-center gap-3">
+      <div className="flex flex-wrap items-center justify-center gap-3">
         <button className="px-6 py-3 rounded-lg bg-green text-black text-sm font-semibold hover:bg-green-dim transition-all hover:accent-glow-xl flex items-center gap-2">
           {props.primaryCta}
           <ArrowRight size={16} />
@@ -48,7 +48,7 @@ function HeroCentered({ props }: { props: HeroProps }) {
 
 function HeroSplit({ props }: { props: HeroProps }) {
   return (
-    <section className="px-6 sm:px-10 py-16 sm:py-24 flex flex-col md:flex-row items-center gap-10">
+    <section className="px-6 @md:px-10 py-16 @md:py-24 flex flex-col @2xl:flex-row items-center gap-10">
       {/* Text side */}
       <div className="flex-1">
         {props.badge && (
@@ -57,13 +57,13 @@ function HeroSplit({ props }: { props: HeroProps }) {
             {props.badge}
           </div>
         )}
-        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight leading-[1.1] mb-4">
+        <h1 className="text-3xl @md:text-5xl font-bold tracking-tight leading-[1.1] mb-4">
           {props.headline}
         </h1>
         <p className="text-text-2 text-base leading-relaxed mb-6 max-w-lg">
           {props.subheadline}
         </p>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <button className="px-6 py-3 rounded-lg bg-green text-black text-sm font-semibold hover:bg-green-dim transition-all flex items-center gap-2">
             {props.primaryCta}
             <ArrowRight size={16} />
@@ -91,7 +91,7 @@ function HeroSplit({ props }: { props: HeroProps }) {
 
 function HeroGradient({ props }: { props: HeroProps }) {
   return (
-    <section className="px-6 sm:px-10 py-20 sm:py-32 text-center relative overflow-hidden">
+    <section className="px-6 @md:px-10 py-20 @md:py-32 text-center relative overflow-hidden">
       {/* Gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-green/5 via-transparent to-transparent pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-green/8 rounded-full blur-[100px] pointer-events-none" />
@@ -104,15 +104,15 @@ function HeroGradient({ props }: { props: HeroProps }) {
           </div>
         )}
 
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.1] mb-4 max-w-3xl mx-auto" style={{ color: 'var(--color-text-0)' }}>
+        <h1 className="text-4xl @md:text-5xl font-bold tracking-tight leading-[1.1] mb-4 max-w-3xl mx-auto" style={{ color: 'var(--color-text-0)' }}>
           {props.headline}
         </h1>
 
-        <p className="text-text-2 text-base sm:text-lg leading-relaxed max-w-xl mx-auto mb-8">
+        <p className="text-text-2 text-base @md:text-lg leading-relaxed max-w-xl mx-auto mb-8">
           {props.subheadline}
         </p>
 
-        <div className="flex items-center justify-center gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-3">
           <button className="px-6 py-3 rounded-lg bg-green text-black text-sm font-semibold hover:bg-green-dim transition-all hover:accent-glow-xl flex items-center gap-2">
             {props.primaryCta}
             <ArrowRight size={16} />

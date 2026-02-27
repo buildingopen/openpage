@@ -49,15 +49,15 @@ function PricingSimple({ props }: { props: PricingProps }) {
   const tiers = props.tiers || defaultTiers
 
   return (
-    <section className="px-6 sm:px-10 py-16 sm:py-20">
+    <section className="px-6 @md:px-10 py-16 @md:py-20">
       <div className="text-center mb-10">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">{props.title}</h2>
+        <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">{props.title}</h2>
         {props.subtitle && (
           <p className="text-text-2 text-sm max-w-lg mx-auto">{props.subtitle}</p>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 @2xl:grid-cols-3 gap-4 max-w-4xl mx-auto">
         {tiers.map((tier, i) => (
           <div
             key={i}
@@ -118,9 +118,9 @@ function PricingComparison({ props }: { props: PricingProps }) {
   const allFeatures = [...new Set(tiers.flatMap((t) => t.features))]
 
   return (
-    <section className="px-6 sm:px-10 py-16 sm:py-20">
+    <section className="px-6 @md:px-10 py-16 @md:py-20">
       <div className="text-center mb-10">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">{props.title}</h2>
+        <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">{props.title}</h2>
         {props.subtitle && (
           <p className="text-text-2 text-sm max-w-lg mx-auto">{props.subtitle}</p>
         )}
