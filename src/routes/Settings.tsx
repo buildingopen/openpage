@@ -588,7 +588,9 @@ export function Settings() {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-8 max-w-2xl">
-        {panels[activeTab]}
+        <div key={activeTab} className="animate-fade-in">
+          {panels[activeTab]}
+        </div>
       </div>
     </div>
   )

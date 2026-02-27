@@ -161,7 +161,7 @@ function PromptSection() {
                   <button
                     onClick={() => generate(prompt)}
                     disabled={!prompt.trim()}
-                    className="px-4 py-1.5 rounded-lg bg-green text-black text-[12px] font-semibold hover:bg-green-dim transition-all disabled:opacity-30 disabled:cursor-not-allowed inline-flex items-center gap-1.5"
+                    className="px-4 py-1.5 rounded-lg bg-green text-black text-[12px] font-semibold hover:bg-green-dim hover:accent-glow-md transition-all disabled:opacity-30 disabled:cursor-not-allowed inline-flex items-center gap-1.5"
                   >
                     <Sparkles size={13} />
                     Generate
