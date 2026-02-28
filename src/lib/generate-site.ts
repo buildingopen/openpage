@@ -10,12 +10,18 @@ const DEFAULT_PROPS_MAP = Object.fromEntries(blockMetadata.map((b) => [b.type, b
 const GEMINI_MODEL = 'gemini-3-flash-preview'
 const STORAGE_KEY = 'openpage-gemini-key'
 
-export async function generateSiteConfig(prompt: string, signal?: AbortSignal): Promise<SiteConfig> {
+export interface GenerationResult {
+  config: SiteConfig
+  source: 'ai' | 'template'
+}
+
+export async function generateSiteConfig(prompt: string, signal?: AbortSignal): Promise<GenerationResult> {
   // 1. Try client-side Gemini if key exists
   const apiKey = localStorage.getItem(STORAGE_KEY)
   if (apiKey) {
     try {
-      return await callGeminiDirect(prompt, apiKey, signal)
+      const config = await callGeminiDirect(prompt, apiKey, signal)
+      return { config, source: 'ai' }
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') throw err
       // Fall through to server
@@ -34,14 +40,14 @@ export async function generateSiteConfig(prompt: string, signal?: AbortSignal): 
     const contentType = res.headers.get('content-type') || ''
     if (contentType.includes('application/json') && res.ok) {
       const raw = await res.json()
-      return validateSiteConfig(raw, prompt)
+      return { config: validateSiteConfig(raw, prompt), source: 'ai' }
     }
   } catch (err) {
     if (err instanceof Error && err.name === 'AbortError') throw err
   }
 
-  // 3. Smart fallback template
-  return getTemplateForPrompt(prompt)
+  // 3. Smart fallback template (instant, no fake progress)
+  return { config: getTemplateForPrompt(prompt), source: 'template' }
 }
 
 async function callGeminiDirect(prompt: string, apiKey: string, signal?: AbortSignal): Promise<SiteConfig> {

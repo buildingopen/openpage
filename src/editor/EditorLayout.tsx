@@ -50,7 +50,7 @@ function useGenerationOrchestration() {
     abortRef.current = controller
 
     generateSiteConfig(generationPrompt, controller.signal)
-      .then((config) => {
+      .then(({ config, source }) => {
         if (controller.signal.aborted) return
         setConfig(config)
         if (activeProjectId) {
@@ -58,6 +58,9 @@ function useGenerationOrchestration() {
           if (config.name) renameProject(activeProjectId, config.name)
         }
         clearGeneration()
+        if (source === 'template') {
+          toast('Generated from template. Add a Gemini API key in Settings for AI generation.')
+        }
       })
       .catch((err) => {
         if (err instanceof Error && err.name === 'AbortError') return

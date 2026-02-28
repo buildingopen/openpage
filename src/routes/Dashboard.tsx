@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Search, Sparkles, X, ArrowRight, Trash2, FolderOpen, Paperclip, Image as ImageIcon, Copy } from 'lucide-react'
+import { Search, Sparkles, ArrowRight, Trash2, FolderOpen, Paperclip, Copy } from 'lucide-react'
 import { useProjectsStore, type Project } from '@/store/projectsStore'
 import { useConfigStore, defaultConfig } from '@/store/configStore'
 import { useEditorStore } from '@/store/editorStore'
@@ -48,9 +48,7 @@ function PromptSection() {
   const editorSetGenerating = useEditorStore((s) => s.setGenerating)
 
   const [prompt, setPrompt] = useState('')
-  const [attachments, setAttachments] = useState<File[]>([])
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   function startBlank() {
     const id = addProject('Untitled Project')
@@ -106,40 +104,14 @@ function PromptSection() {
               className="w-full px-5 pt-5 pb-3 bg-transparent text-text-0 text-[14px] placeholder:text-text-3 resize-none leading-relaxed"
             />
 
-            {/* Attachments preview */}
-            {attachments.length > 0 && (
-              <div className="flex gap-2 px-5 pb-2">
-                {attachments.map((file, i) => (
-                  <div key={i} className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-bg-3 border border-border-default text-[11px] text-text-1">
-                    <ImageIcon size={11} className="text-text-3" />
-                    <span className="max-w-[120px] truncate">{file.name}</span>
-                    <button onClick={() => setAttachments((prev) => prev.filter((_, j) => j !== i))} className="text-text-3 hover:text-text-0 transition-colors" aria-label={`Remove ${file.name}`}>
-                      <X size={10} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-
             {/* Bottom bar */}
             <div className="flex items-center justify-between px-4 pb-3 pt-1">
               <div className="flex items-center gap-1.5 animate-fade-in stagger-4">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  className="hidden"
-                  onChange={(e) => {
-                    if (e.target.files) setAttachments((prev) => [...prev, ...Array.from(e.target.files!)])
-                    e.target.value = ''
-                  }}
-                />
                 <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="p-1.5 rounded-lg text-text-3 hover:text-text-1 hover:bg-bg-3 transition-all"
-                  title="Attach reference images"
-                  aria-label="Attach reference images"
+                  onClick={() => toast('Image attachments coming soon')}
+                  className="p-1.5 rounded-lg text-text-3/40 hover:text-text-3 transition-all cursor-default"
+                  title="Coming soon"
+                  aria-label="Attach reference images (coming soon)"
                 >
                   <Paperclip size={14} />
                 </button>
