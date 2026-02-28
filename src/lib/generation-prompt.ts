@@ -16,8 +16,14 @@ Return a JSON object matching this exact schema:
     "fontSans": "Font Name", "fontDisplay": "Font Name", "fontMono": "Font Name",
     "radius": 8, "radiusLg": 12
   },
-  "blocks": [{ "id": "block-unique-id", "type": "block_type", "variant": "variant_name", "props": { ... } }]
+  "pages": [
+    { "id": "page-home", "name": "Home", "path": "/", "blocks": [...] },
+    { "id": "page-about", "name": "About", "path": "/about", "blocks": [...] }
+  ],
+  "blocks": []
 }
+
+Each page has its own blocks array. Generate at least 2 pages: Home and one additional page (About, Pricing, or Features depending on the site type). The top-level "blocks" array should be empty (blocks live inside pages).
 
 ## Available Block Types
 
@@ -46,12 +52,13 @@ Fonts: DM Sans, Inter, Space Grotesk, Poppins, Manrope, Outfit, Plus Jakarta San
 
 ## Rules
 
-1. ALWAYS include: navbar, hero, at least 2 content sections, a CTA, and a footer
-2. Generate 6-10 blocks total
+1. ALWAYS generate at least 2 pages. The Home page MUST include: navbar, hero, at least 2 content sections, a CTA, and a footer
+2. Generate 6-10 blocks per page
 3. Write specific, realistic copy matching the user's description
 4. Pick a theme that fits the vibe (dark for tech, warm for food, clean for agencies)
 5. Use unique block IDs (format: block-type-1, block-hero-1, etc.)
 6. Do NOT use placeholder text like "Lorem ipsum"
 7. Make copy compelling and specific to the described business
+8. Each page needs a unique id (page-home, page-about, etc.), a name, and a path (/, /about, etc.)
 
 Return ONLY valid JSON. No markdown, no code fences, no explanation.`

@@ -163,7 +163,12 @@ function AddComponentPopover({ onAdd, onClose }: { onAdd: (type: BlockType) => v
 }
 
 export function LayersPanel() {
-  const blocks = useConfigStore((s) => s.config.blocks)
+  const blocks = useConfigStore((s) => {
+    const pages = s.config.pages
+    if (!pages || pages.length === 0) return s.config.blocks
+    const page = pages.find((p) => p.id === s.activePageId) ?? pages[0]
+    return page.blocks
+  })
   const { duplicateBlock, removeBlock, moveBlock, addBlock } = useConfigStore()
   const { selectedBlockId, selectBlock } = useEditorStore()
   const [showPopover, setShowPopover] = useState(false)

@@ -8,7 +8,12 @@ type Tab = 'properties' | 'design'
 
 export function RightSidebar() {
   const selectedBlockId = useEditorStore((s) => s.selectedBlockId)
-  const blocks = useConfigStore((s) => s.config.blocks)
+  const blocks = useConfigStore((s) => {
+    const pages = s.config.pages
+    if (!pages || pages.length === 0) return s.config.blocks
+    const page = pages.find((p) => p.id === s.activePageId) ?? pages[0]
+    return page.blocks
+  })
   const selectedBlock = blocks.find((b) => b.id === selectedBlockId)
   const [tab, setTab] = useState<Tab>('design')
 

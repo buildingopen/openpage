@@ -125,6 +125,15 @@ function validateBlock(raw: Record<string, unknown>, index: number): BlockConfig
   }
 }
 
+function validatePageBlocks(rawBlocks: unknown[]): BlockConfig[] {
+  const blocks: BlockConfig[] = []
+  for (let i = 0; i < rawBlocks.length; i++) {
+    const block = validateBlock(rawBlocks[i] as Record<string, unknown>, i)
+    if (block) blocks.push(block)
+  }
+  return blocks
+}
+
 export function validateSiteConfig(raw: unknown, prompt?: string): SiteConfig {
   if (!raw || typeof raw !== 'object') {
     return getTemplateForPrompt(prompt || '')
@@ -133,16 +142,44 @@ export function validateSiteConfig(raw: unknown, prompt?: string): SiteConfig {
   const obj = raw as Record<string, unknown>
   const name = typeof obj.name === 'string' ? obj.name : extractNameFromPrompt(prompt)
 
-  let blocks: BlockConfig[] = []
-  if (Array.isArray(obj.blocks)) {
-    for (let i = 0; i < obj.blocks.length; i++) {
-      const block = validateBlock(obj.blocks[i] as Record<string, unknown>, i)
-      if (block) blocks.push(block)
+  // Try pages first
+  let pages: { id: string; name: string; path: string; blocks: BlockConfig[] }[] | undefined
+  if (Array.isArray(obj.pages) && obj.pages.length > 0) {
+    pages = []
+    for (const rawPage of obj.pages) {
+      if (!rawPage || typeof rawPage !== 'object') continue
+      const p = rawPage as Record<string, unknown>
+      const pageBlocks = Array.isArray(p.blocks) ? validatePageBlocks(p.blocks) : []
+      if (pageBlocks.length > 0) {
+        pages.push({
+          id: typeof p.id === 'string' ? p.id : `page-${Date.now()}-${pages.length}`,
+          name: typeof p.name === 'string' ? p.name : `Page ${pages.length + 1}`,
+          path: typeof p.path === 'string' ? p.path : `/${pages.length === 0 ? '' : `page-${pages.length}`}`,
+          blocks: pageBlocks,
+        })
+      }
     }
+    if (pages.length === 0) pages = undefined
   }
 
-  if (blocks.length === 0) {
+  // Fall back to top-level blocks
+  let blocks: BlockConfig[] = []
+  if (Array.isArray(obj.blocks)) {
+    blocks = validatePageBlocks(obj.blocks)
+  }
+
+  // If we have pages but no top-level blocks, use first page's blocks for compat
+  if (pages && pages.length > 0 && blocks.length === 0) {
+    blocks = pages[0].blocks
+  }
+
+  if (!pages && blocks.length === 0) {
     return getTemplateForPrompt(prompt || '')
+  }
+
+  // If no pages but have blocks, wrap into single Home page
+  if (!pages && blocks.length > 0) {
+    pages = [{ id: 'page-home', name: 'Home', path: '/', blocks }]
   }
 
   let theme: Partial<ThemeConfig> | undefined
@@ -151,7 +188,7 @@ export function validateSiteConfig(raw: unknown, prompt?: string): SiteConfig {
     if (Object.keys(theme).length === 0) theme = undefined
   }
 
-  return { name, blocks, theme }
+  return { name, pages, blocks, theme }
 }
 
 function extractNameFromPrompt(prompt?: string): string {

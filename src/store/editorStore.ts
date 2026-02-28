@@ -12,6 +12,10 @@ interface EditorState {
   shortcutsModalOpen: boolean
   previewMode: boolean
   activeProjectId: string | null
+  // Generation state
+  isGenerating: boolean
+  generationPrompt: string | null
+  generationError: string | null
   selectBlock: (id: string | null) => void
   setLeftPanel: (panel: LeftPanel) => void
   setViewport: (vp: Viewport) => void
@@ -20,6 +24,9 @@ interface EditorState {
   toggleShortcutsModal: () => void
   togglePreview: () => void
   setActiveProject: (id: string | null) => void
+  setGenerating: (prompt: string | null) => void
+  setGenerationError: (err: string | null) => void
+  clearGeneration: () => void
 }
 
 export const useEditorStore = create<EditorState>()((set) => ({
@@ -31,6 +38,9 @@ export const useEditorStore = create<EditorState>()((set) => ({
   shortcutsModalOpen: false,
   previewMode: false,
   activeProjectId: null,
+  isGenerating: false,
+  generationPrompt: null,
+  generationError: null,
   selectBlock: (id) => set({ selectedBlockId: id }),
   setLeftPanel: (panel) => set({ leftPanel: panel }),
   setViewport: (vp) => set({ viewport: vp }),
@@ -39,4 +49,7 @@ export const useEditorStore = create<EditorState>()((set) => ({
   toggleShortcutsModal: () => set((s) => ({ shortcutsModalOpen: !s.shortcutsModalOpen })),
   togglePreview: () => set((s) => ({ previewMode: !s.previewMode, ...(!s.previewMode ? { selectedBlockId: null } : {}) })),
   setActiveProject: (id) => set({ activeProjectId: id }),
+  setGenerating: (prompt) => set({ isGenerating: !!prompt, generationPrompt: prompt, generationError: null }),
+  setGenerationError: (err) => set({ generationError: err }),
+  clearGeneration: () => set({ isGenerating: false, generationPrompt: null }),
 }))

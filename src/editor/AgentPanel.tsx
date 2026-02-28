@@ -180,7 +180,11 @@ export function AgentPanel() {
 
     // Simulate agent thinking (read fresh blocks inside timeout)
     setTimeout(() => {
-      const currentBlocks = useConfigStore.getState().config.blocks
+      const state = useConfigStore.getState()
+      const pages = state.config.pages
+      const currentBlocks = pages && pages.length > 0
+        ? (pages.find((p) => p.id === state.activePageId) ?? pages[0]).blocks
+        : state.config.blocks
       const response = generateResponse(text, currentBlocks)
       setShowTyping(false)
 

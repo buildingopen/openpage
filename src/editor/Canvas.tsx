@@ -8,7 +8,12 @@ import { resolveTheme, themeToCSS } from '@/lib/theme-presets'
 import { useGoogleFonts } from '@/lib/useGoogleFonts'
 
 export function Canvas() {
-  const blocks = useConfigStore((s) => s.config.blocks)
+  const blocks = useConfigStore((s) => {
+    const pages = s.config.pages
+    if (!pages || pages.length === 0) return s.config.blocks
+    const page = pages.find((p) => p.id === s.activePageId) ?? pages[0]
+    return page.blocks
+  })
   const theme = useConfigStore((s) => s.config.theme)
   const { selectedBlockId, selectBlock, viewport } = useEditorStore()
 

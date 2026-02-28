@@ -57,7 +57,7 @@ export function FaqBlock({ block }: { block: BlockConfig }) {
 
   return (
     <section className="px-6 @md:px-10 py-16 @md:py-20">
-      <div className="text-center mb-10">
+      <div className="reveal-fade-up reveal-d1 text-center mb-10">
         <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">
           {props.title || 'Frequently Asked Questions'}
         </h2>
@@ -68,12 +68,13 @@ export function FaqBlock({ block }: { block: BlockConfig }) {
 
       <div className="max-w-2xl mx-auto">
         {items.map((item, i) => (
-          <AccordionItem
-            key={i}
-            item={item}
-            isOpen={openIndex === i}
-            onToggle={() => setOpenIndex(openIndex === i ? null : i)}
-          />
+          <div key={i} className={`reveal-fade-up reveal-d${Math.min(i + 2, 8)}`}>
+            <AccordionItem
+              item={item}
+              isOpen={openIndex === i}
+              onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+            />
+          </div>
         ))}
       </div>
     </section>

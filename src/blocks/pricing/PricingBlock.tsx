@@ -50,7 +50,7 @@ function PricingSimple({ props }: { props: PricingProps }) {
 
   return (
     <section className="px-6 @md:px-10 py-16 @md:py-20">
-      <div className="text-center mb-10">
+      <div className="reveal-fade-up reveal-d1 text-center mb-10">
         <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">{props.title}</h2>
         {props.subtitle && (
           <p className="text-text-2 text-sm max-w-lg mx-auto">{props.subtitle}</p>
@@ -61,7 +61,7 @@ function PricingSimple({ props }: { props: PricingProps }) {
         {tiers.map((tier, i) => (
           <div
             key={i}
-            className={`relative rounded-xl p-6 flex flex-col transition-all ${
+            className={`reveal-fade-up reveal-d${Math.min(i + 2, 8)} relative rounded-xl p-6 flex flex-col transition-all ${
               tier.featured
                 ? 'bg-bg-2 border-2 border-green accent-glow-ring'
                 : 'bg-bg-2 border border-border-default hover:border-border-hover'
@@ -119,14 +119,14 @@ function PricingComparison({ props }: { props: PricingProps }) {
 
   return (
     <section className="px-6 @md:px-10 py-16 @md:py-20">
-      <div className="text-center mb-10">
+      <div className="reveal-fade-up reveal-d1 text-center mb-10">
         <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">{props.title}</h2>
         {props.subtitle && (
           <p className="text-text-2 text-sm max-w-lg mx-auto">{props.subtitle}</p>
         )}
       </div>
 
-      <div className="max-w-3xl mx-auto overflow-x-auto">
+      <div className="reveal-fade-up reveal-d2 max-w-3xl mx-auto overflow-x-auto">
         <table className="w-full text-left text-[12.5px]">
           <thead>
             <tr className="border-b border-border-default">

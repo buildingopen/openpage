@@ -25,7 +25,7 @@ export function TeamBlock({ block }: { block: BlockConfig }) {
 
   return (
     <section className="px-6 @md:px-10 py-16 @md:py-20">
-      <div className="text-center mb-10">
+      <div className="reveal-fade-up reveal-d1 text-center mb-10">
         <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-2">
           {props.title || 'Meet the Team'}
         </h2>
@@ -36,7 +36,7 @@ export function TeamBlock({ block }: { block: BlockConfig }) {
 
       <div className="grid grid-cols-2 @2xl:grid-cols-4 gap-4 max-w-3xl mx-auto">
         {members.map((member, i) => (
-          <div key={i} className="text-center group">
+          <div key={i} className={`reveal-fade-up reveal-d${Math.min(i + 2, 8)} text-center group`}>
             <div className="w-20 h-20 mx-auto rounded-full bg-bg-3 border-2 border-border-default flex items-center justify-center text-xl font-bold text-text-3 mb-3 transition-all group-hover:border-green/30 group-hover:accent-glow-sm">
               {member.name.split(' ').map(n => n[0]).join('')}
             </div>

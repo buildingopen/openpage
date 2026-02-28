@@ -57,8 +57,16 @@ export interface ThemeConfig {
   radiusLg: number
 }
 
+export interface PageConfig {
+  id: string
+  name: string
+  path: string
+  blocks: BlockConfig[]
+}
+
 export interface SiteConfig {
   name: string
+  pages?: PageConfig[]
   blocks: BlockConfig[]
   theme?: Partial<ThemeConfig>
 }

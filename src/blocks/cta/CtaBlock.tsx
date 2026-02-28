@@ -14,18 +14,20 @@ function CtaSimple({ props }: { props: CtaProps }) {
       <div className="absolute inset-0 bg-gradient-to-b from-green/6 via-green/3 to-transparent pointer-events-none" />
 
       <div className="relative z-10">
-        <h2 className="text-2xl @md:text-3xl font-bold tracking-tight mb-3">
+        <h2 className="reveal-fade-up reveal-d1 text-2xl @md:text-3xl font-bold tracking-tight mb-3">
           {props.headline}
         </h2>
         {props.subheadline && (
-          <p className="text-text-2 text-sm mb-6 max-w-md mx-auto">
+          <p className="reveal-fade-up reveal-d2 text-text-2 text-sm mb-6 max-w-md mx-auto">
             {props.subheadline}
           </p>
         )}
-        <button className="px-8 py-3 rounded-lg bg-green text-black text-sm font-semibold hover:bg-green-dim transition-all hover:accent-glow-xl inline-flex items-center gap-2">
-          {props.buttonText}
-          <ArrowRight size={16} />
-        </button>
+        <div className="reveal-fade-up reveal-d3">
+          <button className="px-8 py-3 rounded-lg bg-green text-black text-sm font-semibold hover:bg-green-dim transition-all hover:accent-glow-xl inline-flex items-center gap-2">
+            {props.buttonText}
+            <ArrowRight size={16} />
+          </button>
+        </div>
       </div>
     </section>
   )
@@ -34,7 +36,7 @@ function CtaSimple({ props }: { props: CtaProps }) {
 function CtaSplit({ props }: { props: CtaProps }) {
   return (
     <section className="px-6 @md:px-10 py-12 @md:py-16">
-      <div className="flex flex-col @lg:flex-row items-center justify-between gap-6 p-8 rounded-xl bg-bg-2 border border-border-default relative overflow-hidden">
+      <div className="reveal-scale reveal-d1 flex flex-col @lg:flex-row items-center justify-between gap-6 p-8 rounded-xl bg-bg-2 border border-border-default relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-green/5 to-transparent pointer-events-none" />
         <div className="relative z-10">
           <h2 className="text-xl @md:text-2xl font-bold tracking-tight mb-1">

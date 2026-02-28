@@ -54,13 +54,15 @@ export function LogoCloudBlock({ block }: { block: BlockConfig }) {
 
   return (
     <section className="px-6 @md:px-10 py-10 @md:py-14">
-      <p className="text-center text-[11px] font-medium uppercase tracking-widest text-text-3 mb-6">
+      <p className="reveal-fade-up reveal-d1 text-center text-[11px] font-medium uppercase tracking-widest text-text-3 mb-6">
         {props.title || 'Trusted by teams at'}
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-8 @md:gap-12">
         {logos.map((logo, i) => (
-          <LogoPlaceholder key={i} name={logo} />
+          <div key={i} className={`reveal-fade-up reveal-d${Math.min(i + 2, 8)}`}>
+            <LogoPlaceholder name={logo} />
+          </div>
         ))}
       </div>
     </section>

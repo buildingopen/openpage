@@ -73,8 +73,8 @@ export function JsonDrawer() {
   function applyEdit() {
     try {
       const parsed = JSON.parse(editValue)
-      if (!parsed.name || !Array.isArray(parsed.blocks)) {
-        setError('Invalid config: must have "name" and "blocks" array')
+      if (!parsed.name || (!Array.isArray(parsed.blocks) && !Array.isArray(parsed.pages))) {
+        setError('Invalid config: must have "name" and "blocks" or "pages" array')
         return
       }
       setConfig(parsed)

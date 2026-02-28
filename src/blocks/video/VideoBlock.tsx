@@ -39,9 +39,9 @@ export function VideoBlock({ block }: { block: BlockConfig }) {
 
   return (
     <div className="px-6 py-12 @lg:px-16 @lg:py-16">
-      {title && <h2 className="text-xl font-display font-semibold mb-4 text-center">{title}</h2>}
+      {title && <h2 className="reveal-fade-up reveal-d1 text-xl font-display font-semibold mb-4 text-center">{title}</h2>}
       {embedUrl ? (
-        <div className="w-full aspect-video rounded-lg overflow-hidden border border-border-default">
+        <div className="reveal-scale reveal-d2 w-full aspect-video rounded-lg overflow-hidden border border-border-default">
           <iframe
             src={embedUrl}
             title={title || 'Video'}

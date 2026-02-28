@@ -111,12 +111,16 @@ export const useProjectsStore = create<ProjectsState>()(
             p.id === id ? { ...p, name } : p
           ),
         })),
-      updateProjectConfig: (id, config) =>
+      updateProjectConfig: (id, config) => {
+        const totalBlocks = config.pages
+          ? config.pages.reduce((sum, page) => sum + page.blocks.length, 0)
+          : config.blocks.length
         set((state) => ({
           projects: state.projects.map((p) =>
-            p.id === id ? { ...p, config, blockCount: config.blocks.length, updatedAt: 'Just now' } : p
+            p.id === id ? { ...p, config, blockCount: totalBlocks, updatedAt: 'Just now' } : p
           ),
-        })),
+        }))
+      },
       updateProjectSettings: (id, settings) =>
         set((state) => ({
           projects: state.projects.map((p) =>

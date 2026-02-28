@@ -46,7 +46,7 @@ export async function exportToHTML(config: SiteConfig): Promise<string> {
         {
           style: { ...cssVars, color: 'var(--color-text-0)', backgroundColor: 'var(--color-bg-1)' } as React.CSSProperties,
         },
-        ...config.blocks.map((block) => renderBlock(block)),
+        ...(config.pages?.[0]?.blocks ?? config.blocks).map((block) => renderBlock(block)),
       ),
     )
   })

@@ -39,10 +39,12 @@ export function GalleryBlock({ block }: { block: BlockConfig }) {
   if (variant === 'masonry') {
     return (
       <div className="px-6 py-12 @lg:px-16 @lg:py-16">
-        {title && <h2 className="text-2xl font-display font-semibold mb-6 text-center">{title}</h2>}
+        {title && <h2 className="reveal-fade-up reveal-d1 text-2xl font-display font-semibold mb-6 text-center">{title}</h2>}
         <div className="grid grid-cols-2 @lg:grid-cols-3 auto-rows-[160px] gap-3">
           {images.map((img, i) => (
-            <ImageCard key={i} image={img} tall={i % 3 === 0} />
+            <div key={i} className={`reveal-scale reveal-d${Math.min(i + 2, 8)}`}>
+              <ImageCard image={img} tall={i % 3 === 0} />
+            </div>
           ))}
         </div>
       </div>
@@ -52,10 +54,12 @@ export function GalleryBlock({ block }: { block: BlockConfig }) {
   // grid (default)
   return (
     <div className="px-6 py-12 @lg:px-16 @lg:py-16">
-      {title && <h2 className="text-2xl font-display font-semibold mb-6 text-center">{title}</h2>}
+      {title && <h2 className="reveal-fade-up reveal-d1 text-2xl font-display font-semibold mb-6 text-center">{title}</h2>}
       <div className="grid grid-cols-2 @lg:grid-cols-3 gap-3">
         {images.map((img, i) => (
-          <ImageCard key={i} image={img} />
+          <div key={i} className={`reveal-scale reveal-d${Math.min(i + 2, 8)}`}>
+            <ImageCard image={img} />
+          </div>
         ))}
       </div>
     </div>

@@ -15,17 +15,17 @@ export function NewsletterBlock({ block }: { block: BlockConfig }) {
   return (
     <section className="px-6 @md:px-10 py-12 @md:py-16">
       <div className="max-w-xl mx-auto text-center">
-        <div className="w-12 h-12 rounded-xl bg-green/10 border border-green/20 flex items-center justify-center text-green mx-auto mb-4">
+        <div className="reveal-scale reveal-d1 w-12 h-12 rounded-xl bg-green/10 border border-green/20 flex items-center justify-center text-green mx-auto mb-4">
           <Mail size={22} />
         </div>
-        <h2 className="text-xl @md:text-2xl font-bold tracking-tight mb-2">
+        <h2 className="reveal-fade-up reveal-d2 text-xl @md:text-2xl font-bold tracking-tight mb-2">
           {props.title || 'Stay in the loop'}
         </h2>
-        <p className="text-text-2 text-sm mb-6">
+        <p className="reveal-fade-up reveal-d3 text-text-2 text-sm mb-6">
           {props.subtitle || 'Get updates on new features and releases. No spam, ever.'}
         </p>
 
-        <div className="flex gap-2 max-w-sm mx-auto">
+        <div className="reveal-fade-up reveal-d4 flex gap-2 max-w-sm mx-auto">
           <input
             type="email"
             placeholder="you@example.com"

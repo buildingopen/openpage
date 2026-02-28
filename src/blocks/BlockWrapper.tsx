@@ -14,12 +14,17 @@ interface Props {
 }
 
 export function BlockWrapper({ block, isSelected, onSelect, children }: Props) {
-  const blocks = useConfigStore((s) => s.config.blocks)
+  const blocks = useConfigStore((s) => {
+    const pages = s.config.pages
+    if (!pages || pages.length === 0) return s.config.blocks
+    const page = pages.find((p) => p.id === s.activePageId) ?? pages[0]
+    return page.blocks
+  })
   const { duplicateBlock, removeBlock, moveBlock } = useConfigStore()
   const { selectedBlockId, selectBlock } = useEditorStore()
   const previewMode = useEditorStore((s) => s.previewMode)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const { ref: revealRef, isRevealed } = useScrollReveal(previewMode)
+  const { ref: revealRef, isRevealed } = useScrollReveal(!previewMode)
 
   const index = blocks.findIndex((b) => b.id === block.id)
   const isFirst = index === 0
@@ -32,7 +37,14 @@ export function BlockWrapper({ block, isSelected, onSelect, children }: Props) {
   }, [isSelected])
 
   if (previewMode) {
-    return <div>{children}</div>
+    return (
+      <div
+        ref={revealRef}
+        className={isRevealed ? 'scroll-revealed' : ''}
+      >
+        {children}
+      </div>
+    )
   }
 
   return (
@@ -45,7 +57,7 @@ export function BlockWrapper({ block, isSelected, onSelect, children }: Props) {
         e.stopPropagation()
         onSelect()
       }}
-      className={`relative cursor-pointer border-b border-border-subtle group transition-[opacity,transform] duration-500 ${
+      className={`scroll-revealed relative cursor-pointer border-b border-border-subtle group transition-[opacity,transform] duration-500 ${
         isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       } ${
         isSelected

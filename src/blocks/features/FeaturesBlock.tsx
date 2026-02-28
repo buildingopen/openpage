@@ -32,7 +32,7 @@ function FeaturesGrid({ props }: { props: FeaturesProps }) {
   return (
     <section className="px-6 @md:px-10 py-16 @md:py-20">
       {/* Header */}
-      <div className="text-center mb-10">
+      <div className="reveal-fade-up reveal-d1 text-center mb-10">
         {props.label && (
           <div className="text-[11px] font-semibold uppercase tracking-widest text-green mb-2">
             {props.label}
@@ -51,7 +51,7 @@ function FeaturesGrid({ props }: { props: FeaturesProps }) {
           return (
             <div
               key={i}
-              className="group bg-bg-2 border border-border-default rounded-xl p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
+              className={`reveal-fade-up reveal-d${Math.min(i + 2, 8)} group bg-bg-2 border border-border-default rounded-xl p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)]`}
             >
               <div className="w-10 h-10 rounded-lg bg-green/10 border border-green/20 flex items-center justify-center text-green mb-3 transition-all group-hover:bg-green/15 group-hover:accent-glow-md">
                 <Icon size={18} />
@@ -69,7 +69,7 @@ function FeaturesGrid({ props }: { props: FeaturesProps }) {
 function FeaturesList({ props }: { props: FeaturesProps }) {
   return (
     <section className="px-6 @md:px-10 py-16 @md:py-20">
-      <div className="text-center mb-10">
+      <div className="reveal-fade-up reveal-d1 text-center mb-10">
         {props.label && (
           <div className="text-[11px] font-semibold uppercase tracking-widest text-green mb-2">
             {props.label}
@@ -87,7 +87,7 @@ function FeaturesList({ props }: { props: FeaturesProps }) {
           return (
             <div
               key={i}
-              className="flex gap-4 p-4 rounded-xl bg-bg-2 border border-border-default transition-all hover:border-border-hover"
+              className={`reveal-fade-up reveal-d${Math.min(i + 2, 8)} flex gap-4 p-4 rounded-xl bg-bg-2 border border-border-default transition-all hover:border-border-hover`}
             >
               <div className="w-10 h-10 rounded-lg bg-green/10 border border-green/20 flex items-center justify-center text-green shrink-0">
                 <Icon size={18} />
@@ -107,7 +107,7 @@ function FeaturesList({ props }: { props: FeaturesProps }) {
 function FeaturesAlternating({ props }: { props: FeaturesProps }) {
   return (
     <section className="px-6 @md:px-10 py-16 @md:py-20">
-      <div className="text-center mb-12">
+      <div className="reveal-fade-up reveal-d1 text-center mb-12">
         {props.label && (
           <div className="text-[11px] font-semibold uppercase tracking-widest text-green mb-2">
             {props.label}
@@ -128,7 +128,7 @@ function FeaturesAlternating({ props }: { props: FeaturesProps }) {
           return (
             <div
               key={i}
-              className={`flex flex-col @lg:flex-row items-center gap-6 @lg:gap-10 ${isReversed ? '@lg:flex-row-reverse' : ''}`}
+              className={`reveal-fade-up reveal-d${Math.min(i + 2, 8)} flex flex-col @lg:flex-row items-center gap-6 @lg:gap-10 ${isReversed ? '@lg:flex-row-reverse' : ''}`}
             >
               {/* Image / placeholder */}
               <div className="flex-1 w-full">

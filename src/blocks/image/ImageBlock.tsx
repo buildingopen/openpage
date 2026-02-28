@@ -26,10 +26,10 @@ export function ImageBlock({ block }: { block: BlockConfig }) {
     return (
       <div className="px-6 py-12 @lg:px-16 @lg:py-16">
         <div className={`grid grid-cols-1 @lg:grid-cols-2 gap-8 @lg:gap-12 items-center ${imageSide === 'right' ? '' : ''}`}>
-          <div className={imageSide === 'right' ? '@lg:order-2' : ''}>
+          <div className={`reveal-scale reveal-d1 ${imageSide === 'right' ? '@lg:order-2' : ''}`}>
             {imgEl}
           </div>
-          <div className={imageSide === 'right' ? '@lg:order-1' : ''}>
+          <div className={`reveal-fade-up reveal-d2 ${imageSide === 'right' ? '@lg:order-1' : ''}`}>
             {title && <h2 className="text-2xl font-display font-semibold mb-3">{title}</h2>}
             {subtitle && <p className="text-text-1 leading-relaxed">{subtitle}</p>}
           </div>
@@ -45,10 +45,10 @@ export function ImageBlock({ block }: { block: BlockConfig }) {
 
     return (
       <div className="px-6 py-12 @lg:px-16 @lg:py-16">
-        {title && <h2 className="text-2xl font-display font-semibold mb-6 text-center">{title}</h2>}
+        {title && <h2 className="reveal-fade-up reveal-d1 text-2xl font-display font-semibold mb-6 text-center">{title}</h2>}
         <div className="grid grid-cols-2 @lg:grid-cols-4 gap-3">
           {gridImages.map((img, i) => (
-            <div key={i} className="aspect-square rounded-lg overflow-hidden">
+            <div key={i} className={`reveal-scale reveal-d${Math.min(i + 2, 8)} aspect-square rounded-lg overflow-hidden`}>
               {img.src
                 ? <img src={img.src} alt={img.alt || ''} className="w-full h-full object-cover" />
                 : <Placeholder className="w-full h-full" />
@@ -62,15 +62,15 @@ export function ImageBlock({ block }: { block: BlockConfig }) {
 
   // hero-image (default)
   return (
-    <div className="relative">
+    <div className="reveal-scale reveal-d1 relative">
       {src
         ? <img src={src} alt={alt} className="w-full h-64 @lg:h-96 object-cover" />
         : <Placeholder className="w-full h-64 @lg:h-96" />
       }
       {(title || subtitle) && (
         <div className="absolute inset-0 bg-gradient-to-t from-bg-0/80 to-transparent flex flex-col justify-end p-6 @lg:p-12">
-          {title && <h2 className="text-2xl @lg:text-3xl font-display font-bold mb-2">{title}</h2>}
-          {subtitle && <p className="text-text-1 text-sm @lg:text-base max-w-lg">{subtitle}</p>}
+          {title && <h2 className="reveal-fade-up reveal-d2 text-2xl @lg:text-3xl font-display font-bold mb-2">{title}</h2>}
+          {subtitle && <p className="reveal-fade-up reveal-d3 text-text-1 text-sm @lg:text-base max-w-lg">{subtitle}</p>}
         </div>
       )}
     </div>

@@ -1,11 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Search, Sparkles, Loader2, X, ArrowRight, Trash2, FolderOpen, Paperclip, Image as ImageIcon, Copy } from 'lucide-react'
+import { Search, Sparkles, X, ArrowRight, Trash2, FolderOpen, Paperclip, Image as ImageIcon, Copy } from 'lucide-react'
 import { useProjectsStore, type Project } from '@/store/projectsStore'
 import { useConfigStore, defaultConfig } from '@/store/configStore'
 import { useEditorStore } from '@/store/editorStore'
-import { generateSiteConfig } from '@/lib/generate-site'
 import { hexToRgb } from '@/lib/theme-presets'
 
 const suggestions = [
@@ -32,26 +31,14 @@ function projectAccent(project: Project): string {
 function PromptSection() {
   const navigate = useNavigate()
   const addProject = useProjectsStore((s) => s.addProject)
-  const updateProjectConfig = useProjectsStore((s) => s.updateProjectConfig)
   const setConfig = useConfigStore((s) => s.setConfig)
   const setActiveProject = useEditorStore((s) => s.setActiveProject)
+  const editorSetGenerating = useEditorStore((s) => s.setGenerating)
 
   const [prompt, setPrompt] = useState('')
-  const [generating, setGenerating] = useState(false)
-  const [elapsed, setElapsed] = useState(0)
-  const [error, setError] = useState('')
   const [attachments, setAttachments] = useState<File[]>([])
-  const abortRef = useRef<AbortController | null>(null)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    return () => {
-      abortRef.current?.abort()
-      if (timerRef.current) clearInterval(timerRef.current)
-    }
-  }, [])
 
   function startBlank() {
     const id = addProject('Untitled Project')
@@ -60,50 +47,20 @@ function PromptSection() {
     navigate('/editor')
   }
 
-  async function generate(text: string) {
+  function generate(text: string) {
     const trimmed = text.trim()
     if (!trimmed) return
 
-    setGenerating(true)
-    setElapsed(0)
-    setError('')
-
-    const controller = new AbortController()
-    abortRef.current = controller
-
-    timerRef.current = setInterval(() => {
-      setElapsed((e) => e + 1)
-    }, 1000)
-
-    try {
-      const config = await generateSiteConfig(trimmed, controller.signal)
-      if (timerRef.current) clearInterval(timerRef.current)
-
-      const id = addProject(config.name || 'Generated Site')
-      updateProjectConfig(id, config)
-      setActiveProject(id)
-      setConfig(config)
-      navigate('/editor')
-    } catch (err: unknown) {
-      if (timerRef.current) clearInterval(timerRef.current)
-
-      if (err instanceof Error && err.name === 'AbortError') {
-        setGenerating(false)
-        return
-      }
-
-      setError(err instanceof Error ? err.message : 'Generation failed')
-      setGenerating(false)
-    }
+    // Create placeholder project, set generation state, navigate immediately
+    const placeholderName = trimmed.split(/\s+/).slice(0, 4).join(' ')
+    const id = addProject(placeholderName.charAt(0).toUpperCase() + placeholderName.slice(1))
+    setActiveProject(id)
+    setConfig(defaultConfig)
+    editorSetGenerating(trimmed)
+    navigate('/editor')
   }
 
-  function cancel() {
-    abortRef.current?.abort()
-    if (timerRef.current) clearInterval(timerRef.current)
-    setGenerating(false)
-  }
-
-  const isFocused = prompt.length > 0 || generating
+  const isFocused = prompt.length > 0
 
   return (
     <div className="relative overflow-hidden">
@@ -118,7 +75,7 @@ function PromptSection() {
 
         {/* Prompt card - gradient border wrapper */}
         <div className={`w-full max-w-[680px] rounded-2xl p-px transition-all duration-300 animate-scale-in stagger-3 ${
-          isFocused || generating
+          isFocused
             ? 'bg-gradient-to-b from-green/40 via-green/20 to-green/5 shadow-[0_0_80px_rgba(34,197,94,0.15)]'
             : 'bg-gradient-to-b from-border-hover via-border-default to-border-subtle shadow-[0_0_60px_rgba(34,197,94,0.06)] hover:from-green/25 hover:via-green/10 hover:to-green/5 hover:shadow-[0_0_80px_rgba(34,197,94,0.1)]'
         }`}>
@@ -133,9 +90,8 @@ function PromptSection() {
                 }
               }}
               rows={3}
-              disabled={generating}
               placeholder="A landing page for a modern fitness app with dark theme..."
-              className="w-full px-5 pt-5 pb-3 bg-transparent text-text-0 text-[14px] placeholder:text-text-3 resize-none leading-relaxed disabled:opacity-50"
+              className="w-full px-5 pt-5 pb-3 bg-transparent text-text-0 text-[14px] placeholder:text-text-3 resize-none leading-relaxed"
             />
 
             {/* Attachments preview */}
@@ -169,8 +125,7 @@ function PromptSection() {
                 />
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  disabled={generating}
-                  className="p-1.5 rounded-lg text-text-3 hover:text-text-1 hover:bg-bg-3 transition-all disabled:opacity-30"
+                  className="p-1.5 rounded-lg text-text-3 hover:text-text-1 hover:bg-bg-3 transition-all"
                   title="Attach reference images"
                   aria-label="Attach reference images"
                 >
@@ -181,67 +136,36 @@ function PromptSection() {
                   <button
                     key={s}
                     onClick={() => { setPrompt(s); textareaRef.current?.focus() }}
-                    disabled={generating}
-                    className="px-2.5 py-1 rounded-full text-text-3 text-[11px] border border-border-default hover:text-text-0 hover:bg-bg-3 hover:border-border-hover transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="px-2.5 py-1 rounded-full text-text-3 text-[11px] border border-border-default hover:text-text-0 hover:bg-bg-3 hover:border-border-hover transition-all"
                   >
                     {s}
                   </button>
                 ))}
               </div>
               <div className="flex items-center gap-2 shrink-0 ml-3">
-                {generating ? (
-                  <button
-                    onClick={cancel}
-                    className="px-3 py-1.5 rounded-lg bg-bg-3 text-text-1 text-[12px] border border-border-default hover:bg-bg-4 transition-colors inline-flex items-center gap-1.5"
-                  >
-                    <X size={12} />
-                    Cancel
-                  </button>
-                ) : (
-                  <>
-                    {prompt.trim() && (
-                      <span className="text-[10px] text-text-3 hidden sm:inline">
-                        {navigator.platform?.includes('Mac') ? '\u2318' : 'Ctrl'}+Enter
-                      </span>
-                    )}
-                    <button
-                      onClick={() => generate(prompt)}
-                      disabled={!prompt.trim()}
-                      className="px-5 py-2.5 rounded-xl bg-green text-black text-[13px] font-semibold hover:bg-green-dim active:scale-[0.97] transition-all disabled:opacity-20 disabled:cursor-not-allowed inline-flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)]"
-                    >
-                      <Sparkles size={14} />
-                      Generate
-                    </button>
-                  </>
+                {prompt.trim() && (
+                  <span className="text-[10px] text-text-3 hidden sm:inline">
+                    {navigator.platform?.includes('Mac') ? '\u2318' : 'Ctrl'}+Enter
+                  </span>
                 )}
+                <button
+                  onClick={() => generate(prompt)}
+                  disabled={!prompt.trim()}
+                  className="px-5 py-2.5 rounded-xl bg-green text-black text-[13px] font-semibold hover:bg-green-dim active:scale-[0.97] transition-all disabled:opacity-20 disabled:cursor-not-allowed inline-flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)]"
+                >
+                  <Sparkles size={14} />
+                  Generate
+                </button>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Error */}
-        {error && (
-          <div className="w-full max-w-[680px] mt-3 px-4 py-2.5 rounded-xl bg-status-red/10 border border-status-red/20 text-status-red text-[12px] flex items-center justify-between">
-            <span>{error}</span>
-            <button onClick={() => setError('')} className="ml-2 hover:text-text-0 transition-colors"><X size={14} /></button>
-          </div>
-        )}
-
-        {/* Generating progress */}
-        {generating && (
-          <div className="w-full max-w-[680px] mt-3 px-4 py-2.5 rounded-xl bg-green/5 border border-green/20 text-green text-[12.5px] flex items-center gap-2.5">
-            <Loader2 size={15} className="animate-spin shrink-0" />
-            <span>Building your site<span className="animate-pulse">...</span></span>
-            <span className="tabular-nums text-green/60">{elapsed}s</span>
-          </div>
-        )}
-
         {/* Start blank */}
         <div className="mt-4">
           <button
             onClick={startBlank}
-            disabled={generating}
-            className="text-text-3 text-[12px] hover:text-text-1 transition-colors inline-flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed animate-fade-in stagger-5"
+            className="text-text-3 text-[12px] hover:text-text-1 transition-colors inline-flex items-center gap-1.5 animate-fade-in stagger-5"
           >
             or start with a blank canvas <ArrowRight size={12} />
           </button>
