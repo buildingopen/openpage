@@ -49,8 +49,17 @@ function useGenerationOrchestration() {
     const controller = new AbortController()
     abortRef.current = controller
 
+    // Timeout after 30s to prevent infinite loading
+    const timeout = setTimeout(() => {
+      controller.abort()
+      setGenerationError('Generation timed out')
+      toast.error('Generation timed out. Try again or add a Gemini API key in Settings.')
+      clearGeneration()
+    }, 30000)
+
     generateSiteConfig(generationPrompt, controller.signal)
       .then(({ config, source }) => {
+        clearTimeout(timeout)
         if (controller.signal.aborted) return
         setConfig(config)
         if (activeProjectId) {
@@ -63,6 +72,7 @@ function useGenerationOrchestration() {
         }
       })
       .catch((err) => {
+        clearTimeout(timeout)
         if (err instanceof Error && err.name === 'AbortError') return
         setGenerationError(err instanceof Error ? err.message : 'Generation failed')
         toast.error(err instanceof Error ? err.message : 'Generation failed')
@@ -70,6 +80,7 @@ function useGenerationOrchestration() {
       })
 
     return () => {
+      clearTimeout(timeout)
       controller.abort()
       abortRef.current = null
     }

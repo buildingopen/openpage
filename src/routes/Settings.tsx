@@ -88,15 +88,6 @@ function GeneralPanel({ settings }: { settings: ReturnType<typeof useSettingsSta
       <FieldGroup label="Site Name"><ControlledInput settingsKey="siteName" settings={settings} /></FieldGroup>
       <FieldGroup label="Site Description"><ControlledTextarea settingsKey="siteDescription" settings={settings} /></FieldGroup>
       <FieldGroup label="Favicon URL"><ControlledInput settingsKey="faviconUrl" placeholder="https://example.com/favicon.ico" settings={settings} /></FieldGroup>
-      <FieldGroup label="Language">
-        <select
-          value={settings.data.language || 'English'}
-          onChange={(e) => settings.update('language', e.target.value)}
-          className="w-full px-3 py-2 rounded-lg border border-border-default bg-bg-2 text-text-0 text-[13px] outline-none focus:border-green cursor-pointer"
-        >
-          <option>English</option><option>German</option><option>Spanish</option><option>French</option>
-        </select>
-      </FieldGroup>
     </div>
   )
 }
@@ -132,34 +123,8 @@ function DomainPanel({ settings }: { settings: ReturnType<typeof useSettingsStat
       <h2 className="text-lg font-semibold mb-4">Domain</h2>
       <FieldGroup label="Custom Domain"><ControlledInput settingsKey="customDomain" placeholder="www.example.com" settings={settings} /></FieldGroup>
 
-      <div className="mt-4">
-        <div className="text-[10px] font-semibold uppercase tracking-wider text-text-3 mb-2">DNS Configuration</div>
-        <div className="border border-border-default rounded-lg overflow-hidden">
-          <table className="w-full text-[12px]">
-            <thead>
-              <tr className="bg-bg-2 border-b border-border-default">
-                <th className="text-left px-3 py-2 text-text-3 font-medium">Type</th>
-                <th className="text-left px-3 py-2 text-text-3 font-medium">Name</th>
-                <th className="text-left px-3 py-2 text-text-3 font-medium">Value</th>
-                <th className="text-left px-3 py-2 text-text-3 font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border-subtle">
-                <td className="px-3 py-2 font-mono text-text-2">A</td>
-                <td className="px-3 py-2 font-mono text-text-2">@</td>
-                <td className="px-3 py-2 font-mono text-text-2">76.76.21.21</td>
-                <td className="px-3 py-2"><span className="text-[10px] px-2 py-0.5 rounded-full bg-status-yellow/10 text-status-yellow font-medium">Pending</span></td>
-              </tr>
-              <tr>
-                <td className="px-3 py-2 font-mono text-text-2">CNAME</td>
-                <td className="px-3 py-2 font-mono text-text-2">www</td>
-                <td className="px-3 py-2 font-mono text-text-2">cname.vercel-dns.com</td>
-                <td className="px-3 py-2"><span className="text-[10px] px-2 py-0.5 rounded-full bg-status-yellow/10 text-status-yellow font-medium">Pending</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div className="mt-4 p-4 rounded-xl bg-bg-2 border border-border-default">
+        <p className="text-[12px] text-text-2">DNS configuration will appear here once deploy integrations are available.</p>
       </div>
     </div>
   )
@@ -171,7 +136,7 @@ function AnalyticsPanel({ settings }: { settings: ReturnType<typeof useSettingsS
       <h2 className="text-lg font-semibold mb-4">Analytics</h2>
       <FieldGroup label="Google Analytics ID"><ControlledInput settingsKey="gaId" placeholder="G-XXXXXXXXXX" settings={settings} /></FieldGroup>
       <FieldGroup label="PostHog Project Key"><ControlledInput settingsKey="posthogKey" placeholder="phc_..." settings={settings} /></FieldGroup>
-      <p className="text-[11px] text-text-3 mt-2">Analytics scripts are injected automatically when you deploy.</p>
+      <p className="text-[11px] text-text-3 mt-2">Analytics scripts will be included in future deploy integrations.</p>
     </div>
   )
 }
@@ -283,29 +248,23 @@ function DangerPanel() {
     <div>
       <h2 className="text-lg font-semibold mb-4 text-status-red">Danger Zone</h2>
       <div className="space-y-3">
-        <div className="flex items-center justify-between p-4 rounded-xl border border-status-red/20">
+        <div className="flex items-center justify-between p-4 rounded-xl border border-border-subtle opacity-50">
           <div>
-            <div className="text-sm font-semibold">Transfer Project</div>
-            <div className="text-[11px] text-text-3">Transfer this project to another account</div>
+            <div className="text-sm font-semibold text-text-2">Transfer Project</div>
+            <div className="text-[11px] text-text-3">Contact support to transfer this project</div>
           </div>
-          <button
-            onClick={() => toast('Contact support to transfer your project')}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium text-status-red border border-status-red/30 hover:bg-status-red/10 transition-colors"
-          >
+          <span className="px-3 py-1.5 rounded-lg text-xs font-medium text-text-3 border border-border-subtle cursor-not-allowed">
             Transfer
-          </button>
+          </span>
         </div>
-        <div className="flex items-center justify-between p-4 rounded-xl border border-status-red/20">
+        <div className="flex items-center justify-between p-4 rounded-xl border border-border-subtle opacity-50">
           <div>
-            <div className="text-sm font-semibold">Delete Project</div>
-            <div className="text-[11px] text-text-3">Permanently delete this project and all its data</div>
+            <div className="text-sm font-semibold text-text-2">Delete Project</div>
+            <div className="text-[11px] text-text-3">Contact support to delete this project</div>
           </div>
-          <button
-            onClick={() => toast.error('This action cannot be undone', { description: 'Contact support to delete your project.' })}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium text-status-red border border-status-red/30 hover:bg-status-red/10 transition-colors"
-          >
+          <span className="px-3 py-1.5 rounded-lg text-xs font-medium text-text-3 border border-border-subtle cursor-not-allowed">
             Delete
-          </button>
+          </span>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Plus, Code } from 'lucide-react'
+import { Plus, Code, Search } from 'lucide-react'
 import { toast } from 'sonner'
 import { blockMetadata, categories } from '@/lib/block-metadata'
 import { renderBlock } from '@/blocks/registry'
@@ -13,15 +13,26 @@ export function Components() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [hoveredBlock, setHoveredBlock] = useState<string | null>(null)
   const [activeVariants, setActiveVariants] = useState<Record<string, number>>({})
+  const [search, setSearch] = useState('')
   const navigate = useNavigate()
   const addBlock = useConfigStore((s) => s.addBlock)
   const selectBlock = useEditorStore((s) => s.selectBlock)
   const theme = useConfigStore((s) => s.config.theme)
   const cssVars = useMemo(() => themeToCSS(resolveTheme(theme)), [theme])
 
-  const filtered = activeCategory
-    ? blockMetadata.filter((b) => b.category === activeCategory)
-    : blockMetadata
+  const filtered = useMemo(() => {
+    let results = blockMetadata
+    if (activeCategory) results = results.filter((b) => b.category === activeCategory)
+    if (search.trim()) {
+      const q = search.toLowerCase()
+      results = results.filter((b) =>
+        b.label.toLowerCase().includes(q) ||
+        b.description.toLowerCase().includes(q) ||
+        b.type.toLowerCase().includes(q)
+      )
+    }
+    return results
+  }, [activeCategory, search])
 
   function handleAdd(meta: typeof blockMetadata[number]) {
     const variantIdx = activeVariants[meta.type] ?? 0
@@ -47,8 +58,22 @@ export function Components() {
         </p>
       </div>
 
+      {/* Search */}
+      <div className="px-4 md:px-12 pt-5 animate-fade-in stagger-3">
+        <div className="relative max-w-xs">
+          <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-3" />
+          <input
+            type="text"
+            placeholder="Search components..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-7 pr-3 py-1.5 rounded-md border border-border-default bg-bg-2 text-text-0 text-[12px] outline-none focus:border-green placeholder:text-text-3"
+          />
+        </div>
+      </div>
+
       {/* Category filters */}
-      <div className="px-4 md:px-12 pt-5 flex gap-1.5 flex-wrap animate-fade-in stagger-3">
+      <div className="px-4 md:px-12 pt-3 flex gap-1.5 flex-wrap animate-fade-in stagger-3">
         <button
           onClick={() => setActiveCategory(null)}
           className={`px-3 py-1.5 rounded-full text-xs transition-all ${

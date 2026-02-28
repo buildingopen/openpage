@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Monitor, Tablet, Smartphone, Undo2, Redo2, Code, Clock, Eye, Plus } from 'lucide-react'
+import { Monitor, Tablet, Smartphone, Undo2, Redo2, Code, Clock, Eye, Plus, HelpCircle } from 'lucide-react'
+import { toast } from 'sonner'
 import { useEditorStore, type Viewport } from '@/store/editorStore'
 import { useConfigStore } from '@/store/configStore'
 import { useProjectsStore } from '@/store/projectsStore'
@@ -145,8 +146,10 @@ function PageTab({ page, isActive, onClick, onRename, onDelete, canDelete }: {
 
 export function CanvasToolbar() {
   const navigate = useNavigate()
-  const { viewport, setViewport, toggleJsonDrawer, jsonDrawerOpen, toggleHistory, togglePreview, previewMode, activeProjectId } = useEditorStore()
+  const { viewport, setViewport, toggleJsonDrawer, jsonDrawerOpen, toggleHistory, togglePreview, toggleShortcutsModal, previewMode, activeProjectId } = useEditorStore()
   const { undo, redo, canUndo, canRedo } = useConfigStore()
+  const undoStack = useConfigStore((s) => s.undoStack)
+  const redoStack = useConfigStore((s) => s.redoStack)
   const pages = useConfigStore((s) => s.config.pages) ?? []
   const activePageId = useConfigStore((s) => s.activePageId)
   const setActivePage = useConfigStore((s) => s.setActivePage)
@@ -231,7 +234,11 @@ export function CanvasToolbar() {
 
         {/* Undo/Redo */}
         <button
-          onClick={undo}
+          onClick={() => {
+            const label = undoStack[undoStack.length - 1]?.label
+            undo()
+            if (label) toast(`Undo: ${label}`, { duration: 1500 })
+          }}
           disabled={!canUndo()}
           className="w-7 h-7 rounded flex items-center justify-center text-text-3 hover:text-text-1 hover:bg-bg-3 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           title="Undo"
@@ -240,7 +247,11 @@ export function CanvasToolbar() {
           <Undo2 size={14} />
         </button>
         <button
-          onClick={redo}
+          onClick={() => {
+            const label = redoStack[redoStack.length - 1]?.label
+            redo()
+            if (label) toast(`Redo: ${label}`, { duration: 1500 })
+          }}
           disabled={!canRedo()}
           className="w-7 h-7 rounded flex items-center justify-center text-text-3 hover:text-text-1 hover:bg-bg-3 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           title="Redo"
@@ -285,6 +296,16 @@ export function CanvasToolbar() {
           aria-label="Toggle version history"
         >
           <Clock size={14} />
+        </button>
+
+        {/* Shortcuts help */}
+        <button
+          onClick={toggleShortcutsModal}
+          className="w-7 h-7 rounded flex items-center justify-center text-text-3 hover:text-text-1 hover:bg-bg-3 transition-all"
+          title="Keyboard shortcuts (?)"
+          aria-label="Show keyboard shortcuts"
+        >
+          <HelpCircle size={14} />
         </button>
       </div>
     </div>

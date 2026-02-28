@@ -27,11 +27,10 @@ function themeVarsToInline(theme: ThemeConfig): string {
   return Object.entries(vars).map(([k, v]) => `${k}:${v}`).join(';')
 }
 
-export async function exportToHTML(config: SiteConfig): Promise<string> {
-  const theme = resolveTheme(config.theme)
-  const cssVars = themeToCSS(theme)
-
-  // Render blocks into a temporary container
+function renderBlocksToHTML(
+  blocks: import('@/blocks/types').BlockConfig[],
+  cssVars: Record<string, string>,
+): string {
   const container = document.createElement('div')
   container.style.position = 'absolute'
   container.style.left = '-9999px'
@@ -46,21 +45,48 @@ export async function exportToHTML(config: SiteConfig): Promise<string> {
         {
           style: { ...cssVars, color: 'var(--color-text-0)', backgroundColor: 'var(--color-bg-1)' } as React.CSSProperties,
         },
-        ...(config.pages?.[0]?.blocks ?? config.blocks).map((block) => renderBlock(block)),
+        ...blocks.map((block) => renderBlock(block)),
       ),
     )
   })
 
-  const blockHTML = container.querySelector('div')?.innerHTML || ''
-
+  const html = container.querySelector('div')?.innerHTML || ''
   root.unmount()
   document.body.removeChild(container)
+  return html
+}
+
+export async function exportToHTML(config: SiteConfig): Promise<string> {
+  const theme = resolveTheme(config.theme)
+  const cssVars = themeToCSS(theme)
+
+  const pages = config.pages && config.pages.length > 0
+    ? config.pages
+    : [{ id: 'home', name: 'Home', path: '/', blocks: config.blocks }]
+
+  // Render each page's blocks
+  const pageSections: string[] = []
+  for (const page of pages) {
+    const html = renderBlocksToHTML(page.blocks, cssVars)
+    const sectionId = page.path === '/' ? 'home' : page.path.replace(/^\//, '').replace(/[^a-z0-9-]/gi, '-')
+    pageSections.push(`<section id="${escapeHtml(sectionId)}">${html}</section>`)
+  }
 
   // Extract compiled CSS from <style> tags
   const css = extractStyles()
 
   const fontLink = buildFontLink(theme)
   const inlineVars = themeVarsToInline(theme)
+
+  // Build page nav if multiple pages
+  let pageNav = ''
+  if (pages.length > 1) {
+    const navLinks = pages.map((page) => {
+      const href = page.path === '/' ? '#home' : `#${page.path.replace(/^\//, '').replace(/[^a-z0-9-]/gi, '-')}`
+      return `<a href="${escapeHtml(href)}" style="color: var(--color-text-2); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--color-text-0)'" onmouseout="this.style.color='var(--color-text-2)'">${escapeHtml(page.name)}</a>`
+    }).join('')
+    pageNav = `<nav style="position: sticky; top: 0; z-index: 50; display: flex; gap: 4px; justify-content: center; padding: 8px 16px; background: var(--color-bg-0); border-bottom: 1px solid var(--color-border-default);">${navLinks}</nav>`
+  }
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -71,10 +97,12 @@ export async function exportToHTML(config: SiteConfig): Promise<string> {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="${fontLink}" rel="stylesheet">
-  <style>${css}</style>
+  <style>${css}
+  html { scroll-behavior: smooth; }</style>
 </head>
 <body style="${escapeHtml(inlineVars)}; color: var(--color-text-0); background-color: var(--color-bg-1); margin: 0; -webkit-font-smoothing: antialiased;">
-  ${blockHTML}
+  ${pageNav}
+  ${pageSections.join('\n  ')}
 </body>
 </html>`
 }

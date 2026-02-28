@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Search, Sparkles, ArrowRight, Trash2, FolderOpen, Paperclip, Copy } from 'lucide-react'
+import { Search, Sparkles, ArrowRight, Trash2, FolderOpen, Paperclip, Copy, Pencil } from 'lucide-react'
 import { useProjectsStore, type Project } from '@/store/projectsStore'
 import { useConfigStore, defaultConfig } from '@/store/configStore'
 import { useEditorStore } from '@/store/editorStore'
@@ -304,11 +304,12 @@ function ProjectCard({ project }: { project: Project }) {
           />
         ) : (
           <div
-            className="text-[13px] font-semibold mb-1 transition-colors text-text-0"
+            className="text-[13px] font-semibold mb-1 transition-colors text-text-0 flex items-center gap-1.5 group/name"
             onDoubleClick={(e) => { e.stopPropagation(); setEditing(true) }}
             title="Double-click to rename"
           >
-            {project.name}
+            <span className="truncate">{project.name}</span>
+            <Pencil size={10} className="text-text-3 opacity-0 group-hover:opacity-100 group-hover/name:opacity-60 transition-opacity shrink-0" />
           </div>
         )}
         <div className="text-[10.5px] text-text-2 flex items-center gap-2">

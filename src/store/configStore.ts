@@ -122,10 +122,12 @@ function snapshot(state: ConfigState): { pages?: PageConfig[]; blocks: BlockConf
   }
 }
 
+const MAX_UNDO = 50
+
 function pushUndo(state: ConfigState, label: string): Partial<ConfigState> {
   const snap = snapshot(state)
   return {
-    undoStack: [...state.undoStack, { ...snap, label, timestamp: Date.now() }],
+    undoStack: [...state.undoStack, { ...snap, label, timestamp: Date.now() }].slice(-MAX_UNDO),
     redoStack: [],
   }
 }

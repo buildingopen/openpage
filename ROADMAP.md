@@ -1,49 +1,60 @@
-# OpenPage Polish Roadmap
+# OpenPage UX Fix Roadmap
 
-## Scoring: Ralph Wiggum Scale
-- 1-3: "I'm in danger" (broken/missing core features)
-- 4-5: "Me fail English?" (works but embarrassing gaps)
-- 6-7: "I bent my wookiee" (decent but rough edges)
-- 8-9: "I'm learnding!" (polished, few issues)
-- 10: "I'm a unitard!" (perfection, ship it)
+## Phase 1: Critical - Trust & Reliability
+Things that break user trust or crash the app.
 
-Current score: **6.5/10** "I bent my wookiee"
+### 1.1 Multi-page HTML export
+Export only renders first page. Multi-page sites silently lose all other pages.
+Fix: Render all pages as sections with anchor nav in single HTML.
 
----
+### 1.2 Block error boundary
+One bad block config crashes the entire canvas. No recovery.
+Fix: Wrap each block render in error boundary with recoverable fallback.
 
-## Iteration 1: Critical Wiring (target: 7.5)
-- [ ] Properties panel schemas for ALL 13 block types
-- [ ] configStore persistence (localStorage, survives refresh)
-- [ ] Component Library "Add" button actually adds block + navigates to editor
-- [ ] Testimonials carousel navigation (prev/next)
-
-## Iteration 2: Real Functionality (target: 8.0)
-- [ ] Version history reads from actual undo stack (not mock data)
-- [ ] JSON drawer is editable (paste JSON, apply)
-- [ ] Agent chat Apply/Reject buttons work (apply patch to config)
-- [ ] ? shortcut opens help modal with all shortcuts listed
-
-## Iteration 3: Polish & Completeness (target: 8.5)
-- [ ] Project-specific configs (clicking project card loads its config)
-- [ ] Settings inputs persist to projectsStore
-- [ ] Deploy "JSON Config" export actually downloads the file
-- [ ] Logo Cloud uses SVG placeholder logos (not text)
-- [ ] Viewport preview shows actual frame/bezel
-
-## Iteration 4: Edge Cases & UX (target: 9.0)
-- [ ] Empty states for all screens (no projects, no blocks)
-- [ ] Block action buttons on canvas hover (duplicate/delete/move)
-- [ ] Rename project from dashboard
-- [ ] Confirm dialog before delete (project + block)
-- [ ] Add block from Components screen wired to specific project
-
-## Iteration 5: Final Spit-Shine (target: 9.5+)
-- [ ] README with feature list
-- [ ] Animation polish (page transitions, block add animation)
-- [ ] Responsive dashboard grid on mobile
-- [ ] SEO Google preview updates live from inputs
-- [ ] Consistent focus states across all interactive elements
+### 1.3 Generation timeout
+If server hangs, overlay stays forever. No escape except Cancel button.
+Fix: 30s timeout on AbortController in useGenerationOrchestration.
 
 ---
 
-Track: Score after each iteration. Stop when Ralph says "I'm a unitard!"
+## Phase 2: Honesty - Stop faking
+Remove or properly mark non-functional UI.
+
+### 2.1 Settings cleanup
+- Language dropdown: remove (not implemented, no i18n)
+- DNS table: replace with placeholder text (deploy not implemented)
+- Danger zone: disable buttons, show "Contact support" as description
+- Analytics copy: fix misleading "injected automatically when you deploy"
+
+---
+
+## Phase 3: Editor Polish
+
+### 3.1 Undo/redo toast feedback
+Ctrl+Z works but gives zero visual feedback.
+Fix: Toast with action label on undo/redo.
+
+### 3.2 Keyboard shortcuts button in toolbar
+ShortcutsModal exists but no visible button. Only "?" hotkey.
+Fix: Add "?" button next to history in CanvasToolbar.
+
+### 3.3 Undo stack cap
+Stack grows unbounded in localStorage.
+Fix: Cap at 50 entries.
+
+---
+
+## Phase 4: Discoverability
+
+### 4.1 Project rename visual affordance
+Double-click to rename has no visual hint.
+Fix: Show pencil icon on hover.
+
+### 4.2 Component library search
+Category filters exist but no keyword search.
+Fix: Add search input above categories.
+
+---
+
+## Verification
+After each phase: npm run build, deploy, verify.
