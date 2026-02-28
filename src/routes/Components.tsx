@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus, Code } from 'lucide-react'
 import { toast } from 'sonner'
@@ -6,6 +6,7 @@ import { blockMetadata, categories } from '@/lib/block-metadata'
 import { renderBlock } from '@/blocks/registry'
 import { useConfigStore } from '@/store/configStore'
 import { useEditorStore } from '@/store/editorStore'
+import { resolveTheme, themeToCSS } from '@/lib/theme-presets'
 import type { BlockConfig } from '@/blocks/types'
 
 export function Components() {
@@ -15,6 +16,8 @@ export function Components() {
   const navigate = useNavigate()
   const addBlock = useConfigStore((s) => s.addBlock)
   const selectBlock = useEditorStore((s) => s.selectBlock)
+  const theme = useConfigStore((s) => s.config.theme)
+  const cssVars = useMemo(() => themeToCSS(resolveTheme(theme)), [theme])
 
   const filtered = activeCategory
     ? blockMetadata.filter((b) => b.category === activeCategory)
@@ -94,14 +97,12 @@ export function Components() {
               onMouseLeave={() => setHoveredBlock(null)}
             >
               {/* Mini preview */}
-              <div className="h-[120px] bg-bg-2 overflow-hidden relative">
+              <div className="h-[140px] bg-bg-2 overflow-hidden relative">
                 <div
-                  className="origin-top-left"
-                  style={{ transform: 'scale(0.35)', width: '285%', height: '285%' }}
+                  className="origin-top-left pointer-events-none"
+                  style={{ transform: 'scale(0.3)', width: '333%', height: '333%', ...cssVars, color: 'var(--color-text-0)', backgroundColor: 'var(--color-bg-1)' } as React.CSSProperties}
                 >
-                  <div className="pointer-events-none">
-                    {renderBlock(previewBlock)}
-                  </div>
+                  {renderBlock(previewBlock)}
                 </div>
 
                 {/* Variant tabs */}

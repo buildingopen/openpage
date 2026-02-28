@@ -8,10 +8,22 @@ import { useEditorStore } from '@/store/editorStore'
 import { hexToRgb } from '@/lib/theme-presets'
 
 const suggestions = [
-  'SaaS landing page',
-  'Portfolio site',
-  'Restaurant website',
-  'AI startup',
+  {
+    label: 'SaaS landing page',
+    prompt: 'Create a SaaS landing page for a project management tool called "FlowBoard". Include a hero with a compelling headline about team productivity, a features grid highlighting task boards, real-time collaboration, and analytics. Add a pricing section with Free, Pro ($12/mo), and Enterprise tiers. Use a clean, modern dark theme with blue accents.',
+  },
+  {
+    label: 'Portfolio site',
+    prompt: 'Create a portfolio site for a freelance product designer named Alex Chen. Include a hero section with a strong personal headline, a project gallery showcasing 4-6 case studies with titles and descriptions, a testimonials section with client quotes, an about/bio section, and a contact form. Use a minimal, sophisticated aesthetic with warm neutral tones.',
+  },
+  {
+    label: 'Restaurant website',
+    prompt: 'Create a website for an upscale Italian restaurant called "Trattoria Luna". Include a hero with an inviting headline about authentic cuisine, a features section highlighting handmade pasta, wood-fired pizza, and a curated wine list. Add a content block with the chef\'s philosophy, a testimonials section with diner reviews, and a CTA to make reservations. Use warm, earthy tones with gold accents.',
+  },
+  {
+    label: 'AI startup',
+    prompt: 'Create a landing page for an AI startup called "NeuralFlow" that builds intelligent document processing tools. Include a hero with a bold headline about automating workflows, a features grid with smart extraction, multi-language support, and enterprise security. Add a stats section with impressive numbers, a pricing comparison table, customer testimonials from CTOs, and a strong CTA. Use a sleek dark theme with green accents.',
+  },
 ]
 
 const filters = ['All', 'Published', 'Drafts'] as const
@@ -134,11 +146,11 @@ function PromptSection() {
                 <div className="w-px h-4 bg-border-default" />
                 {suggestions.map((s) => (
                   <button
-                    key={s}
-                    onClick={() => { setPrompt(s); textareaRef.current?.focus() }}
+                    key={s.label}
+                    onClick={() => { setPrompt(s.prompt); textareaRef.current?.focus() }}
                     className="px-2.5 py-1 rounded-full text-text-3 text-[11px] border border-border-default hover:text-text-0 hover:bg-bg-3 hover:border-border-hover transition-all"
                   >
-                    {s}
+                    {s.label}
                   </button>
                 ))}
               </div>
