@@ -203,6 +203,17 @@ How OpenPage compares to popular website builders and AI site generators:
 | Open source | No | No | No | No | No | **Yes (MIT)** |
 | Export to HTML | No | Limited | Yes | No | Yes | **Yes (standalone)** |
 
+## Use Cases
+
+OpenPage is built for anyone who needs to create websites programmatically, visually, or both:
+
+- **Startup landing pages** - Generate a complete landing page from a text prompt in under 30 seconds, then fine-tune visually
+- **AI agent workflows** - Give your agent a structured API to build and edit websites without fragile code generation
+- **Client sites and portfolios** - Use the visual editor to build sites, export to standalone HTML, deploy anywhere
+- **SaaS marketing pages** - Version-control your marketing site as JSON, review changes in pull requests with clean diffs
+- **White-label website builders** - Fork OpenPage as the foundation for your own website builder product (MIT licensed)
+- **Rapid prototyping** - Drag blocks to prototype page layouts, export the result, hand off to a development team
+
 ## Tech Stack
 
 - [React 19](https://react.dev/) + [TypeScript 5.9](https://www.typescriptlang.org/)
@@ -238,6 +249,14 @@ Yes. OpenPage is fully self-hostable. Clone the repo, run `npm install && npm ru
 ### What AI model does OpenPage use?
 
 OpenPage uses Google's Gemini model for AI site generation. The `/api/generate` endpoint sends a text prompt to Gemini with a detailed system prompt describing the block schema, and receives back a complete site config as structured JSON. You can swap in any LLM that supports structured/JSON output by modifying the API endpoint.
+
+### How do I build a website with OpenPage?
+
+Clone the repo, run `npm install && npm run dev`, and open the editor at `http://localhost:5173`. Click "New Site" to create a blank site, then add blocks from the block picker (navbar, hero, features, pricing, footer, etc.). Each block has multiple layout variants. Edit text and content inline. Choose a theme preset or customize colors, fonts, and spacing. When you're done, click "Export" to download a standalone HTML file. For AI-assisted building, set a Gemini API key and describe your site in the prompt field.
+
+### How do I use OpenPage with AI agents?
+
+POST a JSON body with a `prompt` field to the `/api/generate` endpoint. The API returns a complete `SiteConfig` JSON object with theme and blocks. Your agent can then modify this JSON programmatically (add blocks, change content, swap themes) and POST it back or render it directly. Because the format is structured JSON with a typed schema, agents can make precise, predictable edits without risk of breaking the site. See the [API documentation](#api) for details.
 
 ### Is OpenPage free?
 

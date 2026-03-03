@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenPage: Open-Source AI Website Builder | JSON-First Architecture</title>
+  <meta name="description" content="OpenPage is an open-source website builder that uses JSON as the single source of truth. Visual drag-and-drop editor, AI site generation, 19 block types, 42 variants, 10 themes. Self-hosted, MIT licensed. A Framer and Lovable alternative.">
+  <meta name="keywords" content="open source website builder, AI website builder, JSON website builder, drag and drop editor, landing page builder, self-hosted website builder, Framer alternative, Lovable alternative, v0 alternative, Webflow alternative, React website builder, no-code website builder, AI site generator, headless CMS, page builder">
+  <meta name="author" content="Building Open">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://github.com/buildingopen/openpage">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="OpenPage: Open-Source AI Website Builder">
+  <meta property="og:description" content="Open-source website builder where JSON is the source of truth. Visual drag-and-drop editor + AI generation + 19 block types + standalone HTML export. Self-hosted, MIT licensed.">
+  <meta property="og:url" content="https://github.com/buildingopen/openpage">
+  <meta property="og:site_name" content="OpenPage">
+  <meta property="og:image" content="https://raw.githubusercontent.com/buildingopen/openpage/main/docs/editor-screenshot.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="OpenPage open-source website builder showing the visual drag-and-drop editor with block layers, live canvas preview, and theme presets">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="OpenPage: Open-Source AI Website Builder">
+  <meta name="twitter:description" content="JSON-first website builder. Visual editor + AI generation. 19 block types, 42 variants, 10 themes. Self-hosted, MIT licensed.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/buildingopen/openpage/main/docs/editor-screenshot.png">
+
+  <!-- Structured Data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "OpenPage",
+    "description": "OpenPage is an open-source website builder that uses JSON as the single source of truth. It combines a visual drag-and-drop editor with AI-powered site generation, producing websites described by a structured, typed JSON config. Unlike code generators (Lovable, v0, Bolt) that produce fragile output, or visual editors (Framer, Webflow) that lock you into proprietary formats, OpenPage gives both humans and AI agents a shared, predictable interface to build and edit websites.",
+    "applicationCategory": "DeveloperApplication",
+    "applicationSubCategory": "Website Builder",
+    "operatingSystem": "Any",
+    "url": "https://github.com/buildingopen/openpage",
+    "downloadUrl": "https://github.com/buildingopen/openpage",
+    "screenshot": "https://raw.githubusercontent.com/buildingopen/openpage/main/docs/editor-screenshot.png",
+    "softwareVersion": "1.0.0",
+    "license": "https://opensource.org/licenses/MIT",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "programmingLanguage": ["TypeScript", "React", "JavaScript"],
+    "runtimePlatform": "Node.js",
+    "softwareRequirements": "Node.js 18+",
+    "codeRepository": "https://github.com/buildingopen/openpage",
+    "author": {
+      "@type": "Organization",
+      "name": "Building Open",
+      "url": "https://github.com/buildingopen"
+    },
+    "featureList": [
+      "Visual drag-and-drop editor with real-time preview",
+      "AI website generation from text prompts via Gemini",
+      "19 block types with 42 layout variants",
+      "10 built-in theme presets with full customization",
+      "One-click HTML export to standalone files",
+      "JSON-first architecture for predictable, diffable edits",
+      "Self-hosted and open source under MIT license",
+      "Structured API for AI agent integration"
+    ],
+    "keywords": "open source website builder, AI website builder, JSON website builder, drag and drop editor, landing page builder, self-hosted, Framer alternative, Lovable alternative"
+  }
+  </script>
+
+  <!-- Structured Data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is OpenPage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "OpenPage is an open-source website builder that uses a JSON-first architecture. Instead of generating code or storing designs in a proprietary format, every website is described by a single structured JSON document. A visual drag-and-drop editor lets you build pages by arranging blocks, while an AI endpoint can generate complete site configs from a text prompt. Both interfaces read and write the same JSON, making edits predictable, diffable, and version-controllable."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a JSON-first website builder?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A JSON-first website builder stores the entire website as structured JSON data rather than as source code or in a proprietary visual format. This means every element of the site (blocks, content, theme, layout) is represented as typed, structured data. The advantage: AI agents can make surgical edits via API, humans can edit visually, and the output is always clean and predictable. No hallucinated imports, no merge conflicts, no broken builds."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is OpenPage different from Framer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Framer is a proprietary visual editor. OpenPage is open-source and self-hosted. The key architectural difference is that OpenPage uses JSON as the source of truth, making sites programmatically editable via API. Framer sites live in Framer's cloud; OpenPage sites are JSON files you own and can store anywhere."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is OpenPage different from Lovable or v0?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lovable and v0 generate source code from prompts. Code generation is inherently fragile: LLMs hallucinate imports, produce inconsistent output, and create diffs that are hard to review or merge. OpenPage generates structured JSON instead of code, making AI output predictable and deterministic. The JSON schema enforces validity, so every generated config produces a working site."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I self-host OpenPage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. OpenPage is fully self-hostable. Clone the repo, run npm install and npm run dev, and the editor runs locally. The AI generation endpoint can be deployed as a Vercel serverless function or adapted to any backend. Exported sites are standalone HTML files that can be hosted anywhere."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What AI model does OpenPage use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "OpenPage uses Google's Gemini model for AI site generation. The /api/generate endpoint sends a text prompt to Gemini with a detailed system prompt describing the block schema, and receives back a complete site config as structured JSON. You can swap in any LLM that supports structured/JSON output by modifying the API endpoint."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is OpenPage free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. OpenPage is released under the MIT license. You can use it for personal projects, commercial projects, or as a starting point for your own website builder. There are no usage limits, no paid tiers, and no telemetry."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I build a website with OpenPage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Clone the repo, run npm install and npm run dev, and open the editor at http://localhost:5173. Click New Site to create a blank site, then add blocks from the block picker (navbar, hero, features, pricing, footer, etc.). Each block has multiple layout variants. Edit text and content inline. Choose a theme preset or customize colors, fonts, and spacing. When done, click Export to download a standalone HTML file. For AI-assisted building, set a Gemini API key and describe your site in the prompt field."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I use OpenPage with AI agents?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "POST a JSON body with a prompt field to the /api/generate endpoint. The API returns a complete SiteConfig JSON object with theme and blocks. Your agent can then modify this JSON programmatically (add blocks, change content, swap themes) and POST it back or render it directly. Because the format is structured JSON with a typed schema, agents can make precise, predictable edits without risk of breaking the site."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Structured Data: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Building Open",
+    "url": "https://github.com/buildingopen",
+    "logo": "https://github.com/buildingopen.png"
+  }
+  </script>
+
+  <!-- Structured Data: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Building Open",
+        "item": "https://github.com/buildingopen"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "OpenPage",
+        "item": "https://github.com/buildingopen/openpage"
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #09090b;
+      color: #fafafa;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: #22c55e; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+    header { padding: 48px 0 32px; text-align: center; }
+    h1 {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .accent { color: #22c55e; }
+    .subtitle {
+      color: #a1a1aa;
+      font-size: 1.125rem;
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+    .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .btn-primary { background: #22c55e; color: #09090b; }
+    .btn-primary:hover { background: #16a34a; text-decoration: none; }
+    .btn-secondary { background: #27272a; color: #fafafa; border: 1px solid #3f3f46; }
+    .btn-secondary:hover { background: #3f3f46; text-decoration: none; }
+    .screenshot { margin: 40px 0; text-align: center; }
+    .screenshot img {
+      max-width: 100%;
+      border-radius: 12px;
+      border: 1px solid #27272a;
+    }
+    section { padding: 48px 0; border-top: 1px solid #1c1c1f; }
+    h2 {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .feature {
+      padding: 20px;
+      background: #18181b;
+      border-radius: 8px;
+      border: 1px solid #27272a;
+    }
+    .feature h3 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .feature p {
+      color: #a1a1aa;
+      font-size: 0.8125rem;
+    }
+    .stats {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-value {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #22c55e;
+    }
+    .stat-label { color: #a1a1aa; font-size: 0.8125rem; }
+    .quick-start {
+      background: #18181b;
+      border-radius: 8px;
+      border: 1px solid #27272a;
+      padding: 20px 24px;
+      margin-top: 24px;
+    }
+    .quick-start code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      color: #a1a1aa;
+      display: block;
+      line-height: 1.8;
+    }
+    .quick-start code .cmd { color: #22c55e; }
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid #1c1c1f;
+      text-align: center;
+      color: #52525b;
+      font-size: 0.8125rem;
+    }
+    footer a { color: #71717a; }
+    @media (max-width: 640px) {
+      h1 { font-size: 1.75rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .stats { gap: 24px; }
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><span class="accent">OpenPage</span></h1>
+      <p class="subtitle">
+        Open-source website builder where JSON is the source of truth.
+        Visual drag-and-drop editor, AI generation, standalone HTML export.
+      </p>
+      <div class="cta-row">
+        <a href="https://openpage-phi.vercel.app" class="btn btn-primary">Live Demo</a>
+        <a href="https://github.com/buildingopen/openpage" class="btn btn-secondary">GitHub Repo</a>
+      </div>
+    </header>
+
+    <div class="screenshot">
+      <img
+        src="editor-screenshot.png"
+        alt="OpenPage open-source website builder showing the visual drag-and-drop editor with block layers, live canvas preview, 10 theme presets, and JSON config panel"
+        width="800"
+        loading="lazy"
+      >
+    </div>
+
+    <section>
+      <h2>Why JSON-First?</h2>
+      <p>
+        Code generators (Lovable, v0, Bolt) are fragile: LLMs hallucinate imports, break builds, produce unmergeable diffs.
+        Visual editors (Framer, Webflow) lock you into proprietary formats that AI agents can't read.
+        OpenPage puts a typed JSON config between the editor and the renderer, so humans drag blocks while agents make surgical edits via API. Same source of truth, clean diffs, predictable results.
+      </p>
+      <div class="features-grid">
+        <div class="feature">
+          <h3>Visual Editor</h3>
+          <p>Drag-and-drop blocks with real-time preview, inline editing, and block reordering</p>
+        </div>
+        <div class="feature">
+          <h3>AI Generation</h3>
+          <p>POST a prompt, get a complete website as structured JSON via Gemini</p>
+        </div>
+        <div class="feature">
+          <h3>19 Block Types</h3>
+          <p>Navbar, hero, features, pricing, testimonials, FAQ, and 13 more with 42 layout variants</p>
+        </div>
+        <div class="feature">
+          <h3>10 Theme Presets</h3>
+          <p>Full customization of colors, fonts, border radius, and spacing via CSS custom properties</p>
+        </div>
+        <div class="feature">
+          <h3>HTML Export</h3>
+          <p>One-click export to standalone HTML with zero runtime dependencies</p>
+        </div>
+        <div class="feature">
+          <h3>Self-Hosted</h3>
+          <p>MIT licensed. Clone, run, deploy. No vendor lock-in, no telemetry</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>By the Numbers</h2>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value">19</div>
+          <div class="stat-label">Block types</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">42</div>
+          <div class="stat-label">Layout variants</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">10</div>
+          <div class="stat-label">Theme presets</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">176 KB</div>
+          <div class="stat-label">Gzipped bundle</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">~5s</div>
+          <div class="stat-label">Production build</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Quick Start</h2>
+      <div class="quick-start">
+        <code>
+          <span class="cmd">git clone</span> https://github.com/buildingopen/openpage.git<br>
+          <span class="cmd">cd</span> openpage<br>
+          <span class="cmd">npm install</span><br>
+          <span class="cmd">npm run dev</span>
+        </code>
+      </div>
+      <p style="color: #a1a1aa; font-size: 0.875rem; margin-top: 12px;">
+        The editor opens at <code style="color: #22c55e; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem;">http://localhost:5173</code>.
+        Create a site, drag blocks, edit content, export to HTML.
+      </p>
+    </section>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>
+        <a href="https://github.com/buildingopen/openpage">OpenPage</a> is open source under the
+        <a href="https://github.com/buildingopen/openpage/blob/main/LICENSE">MIT License</a>.
+        Built by <a href="https://github.com/buildingopen">Building Open</a>.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
