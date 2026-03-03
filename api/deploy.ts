@@ -4,7 +4,7 @@ import {
   extractUpstreamError,
   isRequestOriginAllowed,
   sanitizeSlug,
-} from './lib/deploy-security'
+} from './lib/deploy-security.js'
 
 const VERCEL_DEPLOY_TOKEN = process.env.VERCEL_DEPLOY_TOKEN
 const VERCEL_TEAM_ID = process.env.VERCEL_TEAM_ID
