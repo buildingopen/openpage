@@ -9,6 +9,22 @@
     "url": "https://github.com/buildingopen/openpage.git"
   },
   "homepage": "https://openpage-phi.vercel.app",
+  "keywords": [
+    "website-builder",
+    "page-builder",
+    "visual-editor",
+    "drag-and-drop",
+    "ai-website-builder",
+    "json",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "landing-page",
+    "no-code",
+    "open-source",
+    "self-hosted",
+    "framer-alternative"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
