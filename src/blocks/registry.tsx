@@ -80,7 +80,7 @@ const blockRenderers: Record<string, React.ComponentType<{ block: BlockConfig }>
   gallery: GalleryBlock,
 }
 
-export function renderBlock(block: BlockConfig): ReactNode {
+export function RenderBlock({ block }: { block: BlockConfig }): ReactNode {
   const Renderer = blockRenderers[block.type] || PlaceholderBlock
   return (
     <BlockErrorBoundary blockType={block.type}>

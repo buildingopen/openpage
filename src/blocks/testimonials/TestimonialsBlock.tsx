@@ -62,9 +62,13 @@ function TestimonialsCards({ props }: { props: TestimonialsProps }) {
             </p>
             {item.rating && <StarRating rating={item.rating} />}
             <div className="flex items-center gap-3 mt-4 pt-4 border-t border-border-subtle">
-              <div className="w-9 h-9 rounded-full bg-bg-4 border border-border-default flex items-center justify-center text-[11px] font-semibold text-text-2">
-                {item.name.split(' ').map(n => n[0]).join('')}
-              </div>
+              {item.avatar ? (
+                <img src={item.avatar} alt={item.name} className="w-9 h-9 rounded-full object-cover border border-border-default" />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-bg-4 border border-border-default flex items-center justify-center text-[11px] font-semibold text-text-2">
+                  {item.name.split(' ').map(n => n[0]).join('')}
+                </div>
+              )}
               <div>
                 <div className="text-[12.5px] font-semibold">{item.name}</div>
                 <div className="text-[11px] text-text-3">{item.role}</div>
@@ -109,9 +113,13 @@ function TestimonialsCarousel({ props }: { props: TestimonialsProps }) {
             </div>
           )}
           <div className="flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-bg-4 border border-border-default flex items-center justify-center text-xs font-semibold text-text-2">
-              {item.name.split(' ').map(n => n[0]).join('')}
-            </div>
+            {item.avatar ? (
+              <img src={item.avatar} alt={item.name} className="w-10 h-10 rounded-full object-cover border border-border-default" />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-bg-4 border border-border-default flex items-center justify-center text-xs font-semibold text-text-2">
+                {item.name.split(' ').map(n => n[0]).join('')}
+              </div>
+            )}
             <div className="text-left">
               <div className="text-sm font-semibold">{item.name}</div>
               <div className="text-[11px] text-text-3">{item.role}</div>

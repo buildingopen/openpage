@@ -13,24 +13,33 @@ export function GenerationOverlay() {
   const isGenerating = useEditorStore((s) => s.isGenerating)
   const clearGeneration = useEditorStore((s) => s.clearGeneration)
   const [elapsed, setElapsed] = useState(0)
-  const [fading, setFading] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const [showAfterFade, setShowAfterFade] = useState(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
+  // Adjust state during render when isGenerating changes (React-recommended pattern)
+  const [prevIsGenerating, setPrevIsGenerating] = useState(false)
+  if (isGenerating !== prevIsGenerating) {
+    setPrevIsGenerating(isGenerating)
+    if (isGenerating) {
+      setShowAfterFade(true)
+      setElapsed(0)
+    }
+  }
+
+  // Timer management: all setState calls are inside callbacks, not synchronous
   useEffect(() => {
     if (isGenerating) {
-      setVisible(true)
-      setFading(false)
-      setElapsed(0)
       timerRef.current = setInterval(() => setElapsed((e) => e + 1), 1000)
-    } else if (visible) {
-      setFading(true)
-      if (timerRef.current) clearInterval(timerRef.current)
-      const t = setTimeout(() => { setVisible(false); setFading(false) }, 600)
+      return () => { if (timerRef.current) clearInterval(timerRef.current) }
+    }
+    if (showAfterFade) {
+      const t = setTimeout(() => setShowAfterFade(false), 600)
       return () => clearTimeout(t)
     }
-    return () => { if (timerRef.current) clearInterval(timerRef.current) }
-  }, [isGenerating]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isGenerating, showAfterFade])
+
+  const visible = isGenerating || showAfterFade
+  const fading = !isGenerating && showAfterFade
 
   if (!visible) return null
 

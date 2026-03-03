@@ -1,4 +1,12 @@
 {
+  "functions": {
+    "api/generate.ts": {
+      "maxDuration": 60
+    },
+    "api/deploy.ts": {
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }

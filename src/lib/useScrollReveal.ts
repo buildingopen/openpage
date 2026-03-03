@@ -5,10 +5,7 @@ export function useScrollReveal(disabled = false) {
   const [isRevealed, setIsRevealed] = useState(disabled)
 
   useEffect(() => {
-    if (disabled) {
-      setIsRevealed(true)
-      return
-    }
+    if (disabled) return
 
     const el = ref.current
     if (!el) return
@@ -27,5 +24,5 @@ export function useScrollReveal(disabled = false) {
     return () => observer.disconnect()
   }, [disabled])
 
-  return { ref, isRevealed }
+  return { ref, isRevealed: disabled || isRevealed }
 }

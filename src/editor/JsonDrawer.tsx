@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import { useConfigStore } from '@/store/configStore'
 import { useEditorStore } from '@/store/editorStore'
@@ -10,7 +10,7 @@ function escapeHtml(str: string): string {
 function syntaxHighlight(json: string): string {
   const escaped = escapeHtml(json)
   return escaped.replace(
-    /(&quot;(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\&])*?&quot;(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+    /(&quot;(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\&])*?&quot;(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
     (match) => {
       let cls = 'text-status-yellow' // number
       if (/^&quot;/.test(match)) {
@@ -38,28 +38,6 @@ export function JsonDrawer() {
   const [editing, setEditing] = useState(false)
   const [editValue, setEditValue] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const [syncing, setSyncing] = useState(false)
-  const prevConfigRef = useRef(config)
-  const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Reset edit state when drawer closes
-  useEffect(() => {
-    if (!jsonDrawerOpen) {
-      setEditing(false)
-      setError(null)
-    }
-  }, [jsonDrawerOpen])
-
-  // Track config changes for sync indicator
-  useEffect(() => {
-    if (config !== prevConfigRef.current) {
-      prevConfigRef.current = config
-      setSyncing(true)
-      if (syncTimer.current) clearTimeout(syncTimer.current)
-      syncTimer.current = setTimeout(() => setSyncing(false), 300)
-    }
-    return () => { if (syncTimer.current) clearTimeout(syncTimer.current) }
-  }, [config])
 
   const jsonStr = JSON.stringify(config, null, 2)
   const highlighted = syntaxHighlight(jsonStr)
@@ -129,9 +107,9 @@ export function JsonDrawer() {
               </button>
             </>
           )}
-          <div className={`flex items-center gap-1 text-[10px] transition-colors ${syncing ? 'text-status-yellow' : 'text-green'}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${syncing ? 'bg-status-yellow animate-pulse' : 'bg-green'}`} />
-            {syncing ? 'Saving...' : 'Synced'}
+          <div className="flex items-center gap-1 text-[10px] text-green">
+            <span className="w-1.5 h-1.5 rounded-full bg-green" />
+            Live
           </div>
         </div>
       </div>

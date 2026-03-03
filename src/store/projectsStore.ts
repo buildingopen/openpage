@@ -11,6 +11,9 @@ export interface Project {
   blockCount: number
   config?: SiteConfig
   settings?: ProjectSettings
+  deployUrl?: string
+  deploymentId?: string
+  lastDeployedAt?: string
 }
 
 export interface ProjectSettings {
@@ -24,6 +27,7 @@ export interface ProjectSettings {
   customDomain?: string
   gaId?: string
   posthogKey?: string
+  deployAccessKey?: string
 }
 
 interface ProjectsState {
@@ -34,6 +38,7 @@ interface ProjectsState {
   renameProject: (id: string, name: string) => void
   updateProjectConfig: (id: string, config: SiteConfig) => void
   updateProjectSettings: (id: string, settings: Partial<ProjectSettings>) => void
+  setDeployInfo: (id: string, url: string, deploymentId: string) => void
 }
 
 function buildMockConfig(name: string, prompt: string): SiteConfig {
@@ -147,6 +152,14 @@ export const useProjectsStore = create<ProjectsState>()(
         set((state) => ({
           projects: state.projects.map((p) =>
             p.id === id ? { ...p, settings: { ...p.settings, ...settings } } : p
+          ),
+        })),
+      setDeployInfo: (id, url, deploymentId) =>
+        set((state) => ({
+          projects: state.projects.map((p) =>
+            p.id === id
+              ? { ...p, deployUrl: url, deploymentId, lastDeployedAt: new Date().toISOString(), status: 'published' as const }
+              : p
           ),
         })),
     }),

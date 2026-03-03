@@ -3,11 +3,18 @@ import { useNavigate } from 'react-router-dom'
 import { Plus, Code, Search } from 'lucide-react'
 import { toast } from 'sonner'
 import { blockMetadata, categories } from '@/lib/block-metadata'
-import { renderBlock } from '@/blocks/registry'
+import { RenderBlock } from '@/blocks/registry'
 import { useConfigStore } from '@/store/configStore'
 import { useEditorStore } from '@/store/editorStore'
 import { resolveTheme, themeToCSS } from '@/lib/theme-presets'
 import type { BlockConfig } from '@/blocks/types'
+
+let componentBlockIdSeq = 0
+
+function nextComponentBlockId(): string {
+  componentBlockIdSeq += 1
+  return `block-${componentBlockIdSeq}`
+}
 
 export function Components() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
@@ -37,7 +44,7 @@ export function Components() {
   function handleAdd(meta: typeof blockMetadata[number]) {
     const variantIdx = activeVariants[meta.type] ?? 0
     const block: BlockConfig = {
-      id: `block-${Date.now()}`,
+      id: nextComponentBlockId(),
       type: meta.type,
       variant: meta.variants[variantIdx],
       props: { ...meta.defaultProps },
@@ -127,7 +134,7 @@ export function Components() {
                   className="origin-top-left pointer-events-none"
                   style={{ transform: 'scale(0.3)', width: '333%', height: '333%', ...cssVars, color: 'var(--color-text-0)', backgroundColor: 'var(--color-bg-1)' } as React.CSSProperties}
                 >
-                  {renderBlock(previewBlock)}
+                  <RenderBlock block={previewBlock} />
                 </div>
 
                 {/* Variant tabs */}

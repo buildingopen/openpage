@@ -17,6 +17,7 @@ const blockFields: Partial<Record<BlockType, { sections: { title: string; fields
         title: 'Content',
         fields: [
           { key: 'logo', label: 'Logo Text', type: 'text' },
+          { key: 'logoImage', label: 'Logo Image URL', type: 'text' },
           { key: 'ctaText', label: 'CTA Button', type: 'text' },
           { key: 'links', label: 'Nav Links', type: 'array-strings' },
         ],
@@ -38,7 +39,10 @@ const blockFields: Partial<Record<BlockType, { sections: { title: string; fields
           { key: 'headline', label: 'Headline', type: 'text' },
           { key: 'subheadline', label: 'Subheadline', type: 'textarea' },
           { key: 'primaryCta', label: 'Primary CTA', type: 'text' },
+          { key: 'primaryCtaUrl', label: 'Primary CTA URL', type: 'text' },
           { key: 'secondaryCta', label: 'Secondary CTA', type: 'text' },
+          { key: 'secondaryCtaUrl', label: 'Secondary CTA URL', type: 'text' },
+          { key: 'heroImage', label: 'Hero Image URL', type: 'text' },
         ],
       },
       {
@@ -98,6 +102,7 @@ const blockFields: Partial<Record<BlockType, { sections: { title: string; fields
           { key: 'headline', label: 'Headline', type: 'text' },
           { key: 'subheadline', label: 'Subheadline', type: 'text' },
           { key: 'buttonText', label: 'Button Text', type: 'text' },
+          { key: 'buttonUrl', label: 'Button URL', type: 'text' },
         ],
       },
       {
@@ -114,6 +119,7 @@ const blockFields: Partial<Record<BlockType, { sections: { title: string; fields
         title: 'Content',
         fields: [
           { key: 'logo', label: 'Logo Text', type: 'text' },
+          { key: 'logoImage', label: 'Logo Image URL', type: 'text' },
           { key: 'copyright', label: 'Copyright', type: 'text' },
           { key: 'links', label: 'Links', type: 'array-strings' },
         ],

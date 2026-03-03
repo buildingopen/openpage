@@ -1,11 +1,26 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Monitor, Tablet, Smartphone, Undo2, Redo2, Code, Clock, Eye, Plus, HelpCircle } from 'lucide-react'
+import {
+  Monitor,
+  Tablet,
+  Smartphone,
+  Undo2,
+  Redo2,
+  Code,
+  Clock,
+  Eye,
+  Plus,
+  HelpCircle,
+  Globe,
+  Loader2,
+  ExternalLink,
+} from 'lucide-react'
 import { toast } from 'sonner'
 import { useEditorStore, type Viewport } from '@/store/editorStore'
 import { useConfigStore } from '@/store/configStore'
 import { useProjectsStore } from '@/store/projectsStore'
 import type { PageConfig } from '@/blocks/types'
+import { publishSite } from '@/lib/publish-site'
 
 const viewports: { value: Viewport; icon: typeof Monitor; label: string }[] = [
   { value: 'desktop', icon: Monitor, label: 'Desktop' },
@@ -157,11 +172,41 @@ export function CanvasToolbar() {
   const removePage = useConfigStore((s) => s.removePage)
   const renamePage = useConfigStore((s) => s.renamePage)
   const projects = useProjectsStore((s) => s.projects)
+  const setDeployInfo = useProjectsStore((s) => s.setDeployInfo)
   const configName = useConfigStore((s) => s.config.name)
+  const config = useConfigStore((s) => s.config)
   const [showAddPage, setShowAddPage] = useState(false)
+  const [publishing, setPublishing] = useState(false)
 
   const activeProject = activeProjectId ? projects.find((p) => p.id === activeProjectId) : null
   const projectName = activeProject?.name || configName
+  const deployUrl = activeProject?.deployUrl
+  const hasDeployKey = !!activeProject?.settings?.deployAccessKey?.trim()
+
+  async function handlePublish() {
+    if (!activeProjectId) {
+      toast.error('Save your project first')
+      return
+    }
+
+    setPublishing(true)
+    try {
+      const { liveUrl, deploymentId } = await publishSite({
+        config,
+        projectName: activeProject?.name || config.name,
+        settings: activeProject?.settings,
+      })
+      setDeployInfo(activeProjectId, liveUrl, deploymentId)
+      toast.success('Published', {
+        description: liveUrl.replace('https://', ''),
+        action: { label: 'Visit', onClick: () => window.open(liveUrl, '_blank') },
+      })
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Deploy failed')
+    } finally {
+      setPublishing(false)
+    }
+  }
 
   return (
     <div className="h-10 bg-bg-1 border-b border-border-default flex items-center px-3 gap-1">
@@ -306,6 +351,40 @@ export function CanvasToolbar() {
           aria-label="Show keyboard shortcuts"
         >
           <HelpCircle size={14} />
+        </button>
+
+        <div className="w-px h-5 bg-border-default mx-1" />
+
+        {deployUrl && !publishing && (
+          <a
+            href={deployUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-7 h-7 rounded flex items-center justify-center text-text-3 hover:text-green hover:bg-bg-3 transition-all"
+            title={`Visit ${deployUrl.replace('https://', '')}`}
+          >
+            <ExternalLink size={13} />
+          </a>
+        )}
+        <button
+          onClick={handlePublish}
+          disabled={publishing || !activeProjectId || !hasDeployKey}
+          className="h-7 px-3 rounded-lg bg-green text-bg-0 text-[11.5px] font-semibold hover:bg-green/90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5"
+          title={!hasDeployKey ? 'Set Deploy Access Key in Settings -> API Keys' : undefined}
+        >
+          {publishing ? (
+            <>
+              <Loader2 size={12} className="animate-spin" />
+              <span>Publishing...</span>
+            </>
+          ) : deployUrl ? (
+            'Update'
+          ) : (
+            <>
+              <Globe size={12} />
+              <span>Publish</span>
+            </>
+          )}
         </button>
       </div>
     </div>

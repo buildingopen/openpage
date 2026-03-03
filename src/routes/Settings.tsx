@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   Settings2, Search as SearchIcon, Globe, BarChart3, Puzzle, Key, AlertTriangle, Check,
 } from 'lucide-react'
@@ -26,21 +26,21 @@ function useSettingsState() {
   const activeProject = activeProjectId ? projects.find((p) => p.id === activeProjectId) : null
   const projectSettings = activeProject?.settings || {}
 
-  const [localOverrides, setLocalOverrides] = useState<Record<string, string>>({})
   const [showSaved, setShowSaved] = useState(false)
   const savedTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const data: Record<string, string> = { ...Object.fromEntries(Object.entries(projectSettings).map(([k, v]) => [k, v || ''])), ...localOverrides }
+  const data: Record<string, string> = Object.fromEntries(
+    Object.entries(projectSettings).map(([k, v]) => [k, v || ''])
+  )
 
-  const update = useCallback((key: string, value: string) => {
-    setLocalOverrides((prev) => ({ ...prev, [key]: value }))
+  const update = (key: string, value: string) => {
     if (activeProjectId) {
       updateProjectSettings(activeProjectId, { [key]: value } as Partial<ProjectSettings>)
     }
     setShowSaved(true)
     if (savedTimer.current) clearTimeout(savedTimer.current)
     savedTimer.current = setTimeout(() => setShowSaved(false), 2000)
-  }, [activeProjectId, updateProjectSettings])
+  }
 
   useEffect(() => {
     return () => { if (savedTimer.current) clearTimeout(savedTimer.current) }
@@ -88,6 +88,15 @@ function GeneralPanel({ settings }: { settings: ReturnType<typeof useSettingsSta
       <FieldGroup label="Site Name"><ControlledInput settingsKey="siteName" settings={settings} /></FieldGroup>
       <FieldGroup label="Site Description"><ControlledTextarea settingsKey="siteDescription" settings={settings} /></FieldGroup>
       <FieldGroup label="Favicon URL"><ControlledInput settingsKey="faviconUrl" placeholder="https://example.com/favicon.ico" settings={settings} /></FieldGroup>
+      <FieldGroup label="Language">
+        <select
+          value={settings.data.language || 'English'}
+          onChange={(e) => settings.update('language', e.target.value)}
+          className="w-full px-3 py-2 rounded-lg border border-border-default bg-bg-2 text-text-0 text-[13px] outline-none focus:border-green cursor-pointer"
+        >
+          <option>English</option><option>German</option><option>Spanish</option><option>French</option>
+        </select>
+      </FieldGroup>
     </div>
   )
 }
@@ -169,7 +178,7 @@ function IntegrationsPanel() {
   )
 }
 
-function ApiPanel() {
+function ApiPanel({ settings }: { settings: ReturnType<typeof useSettingsState> }) {
   const [geminiKey, setGeminiKey] = useState(localStorage.getItem('openpage-gemini-key') || '')
   const [showKey, setShowKey] = useState(false)
   const [testing, setTesting] = useState(false)
@@ -205,6 +214,17 @@ function ApiPanel() {
   return (
     <div>
       <h2 className="text-lg font-semibold mb-4">API Keys</h2>
+
+      <FieldGroup label="Deploy Access Key">
+        <ControlledInput
+          settingsKey="deployAccessKey"
+          placeholder="Must match OPENPAGE_DEPLOY_KEY on server"
+          settings={settings}
+        />
+        <p className="text-[11px] text-text-3 mt-1.5">
+          Required for one-click publishing. Stored in your project settings.
+        </p>
+      </FieldGroup>
 
       <FieldGroup label="Gemini API Key">
         <div className="flex gap-2">
@@ -281,7 +301,7 @@ export function Settings() {
     domain: <DomainPanel settings={settings} />,
     analytics: <AnalyticsPanel settings={settings} />,
     integrations: <IntegrationsPanel />,
-    api: <ApiPanel />,
+    api: <ApiPanel settings={settings} />,
     danger: <DangerPanel />,
   }
 

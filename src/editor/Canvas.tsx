@@ -3,7 +3,7 @@ import { useConfigStore } from '@/store/configStore'
 import { useEditorStore } from '@/store/editorStore'
 import { CanvasEmpty } from './CanvasEmpty'
 import { BlockWrapper } from '@/blocks/BlockWrapper'
-import { renderBlock } from '@/blocks/registry'
+import { RenderBlock } from '@/blocks/registry'
 import { resolveTheme, themeToCSS } from '@/lib/theme-presets'
 import { useGoogleFonts } from '@/lib/useGoogleFonts'
 
@@ -44,7 +44,7 @@ export function Canvas() {
           isSelected={selectedBlockId === block.id}
           onSelect={() => selectBlock(block.id)}
         >
-          {renderBlock(block)}
+          <RenderBlock block={block} />
         </BlockWrapper>
       ))}
     </div>
