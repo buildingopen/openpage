@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { SiteConfig } from '@/blocks/types'
-import { getTemplateForPrompt } from '@/lib/templates'
 
 export interface Project {
   id: string
@@ -41,62 +40,10 @@ interface ProjectsState {
   setDeployInfo: (id: string, url: string, deploymentId: string) => void
 }
 
-function buildMockConfig(name: string, prompt: string): SiteConfig {
-  const config = getTemplateForPrompt(prompt)
-  return { ...config, name }
-}
-
-const acmeConfig = buildMockConfig('Acme Landing Page', 'acme digital agency landing page')
-const saasConfig = buildMockConfig('SaaS Dashboard', 'saas dashboard analytics platform')
-const portfolioConfig = buildMockConfig('Portfolio Site', 'portfolio site freelance designer')
-const startupConfig = buildMockConfig('Startup MVP', 'startup tech blog newsletter')
-
-function countBlocks(config: SiteConfig): number {
-  if (config.pages && config.pages.length > 0) {
-    return config.pages.reduce((sum, page) => sum + page.blocks.length, 0)
-  }
-  return config.blocks.length
-}
-
-const mockProjects: Project[] = [
-  {
-    id: 'proj-1',
-    name: 'Acme Landing Page',
-    status: 'published',
-    updatedAt: '2 hours ago',
-    blockCount: countBlocks(acmeConfig),
-    config: acmeConfig,
-  },
-  {
-    id: 'proj-2',
-    name: 'SaaS Dashboard',
-    status: 'draft',
-    updatedAt: '1 day ago',
-    blockCount: countBlocks(saasConfig),
-    config: saasConfig,
-  },
-  {
-    id: 'proj-3',
-    name: 'Portfolio Site',
-    status: 'published',
-    updatedAt: '3 days ago',
-    blockCount: countBlocks(portfolioConfig),
-    config: portfolioConfig,
-  },
-  {
-    id: 'proj-4',
-    name: 'Startup MVP',
-    status: 'draft',
-    updatedAt: '1 week ago',
-    blockCount: countBlocks(startupConfig),
-    config: startupConfig,
-  },
-]
-
 export const useProjectsStore = create<ProjectsState>()(
   persist(
     (set) => ({
-      projects: mockProjects,
+      projects: [],
       addProject: (name) => {
         const id = `proj-${Date.now()}`
         set((state) => ({

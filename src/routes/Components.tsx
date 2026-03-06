@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Plus, Code, Search } from 'lucide-react'
 import { toast } from 'sonner'
 import { blockMetadata, categories } from '@/lib/block-metadata'
@@ -22,6 +22,7 @@ export function Components() {
   const [activeVariants, setActiveVariants] = useState<Record<string, number>>({})
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
+  const location = useLocation()
   const addBlock = useConfigStore((s) => s.addBlock)
   const selectBlock = useEditorStore((s) => s.selectBlock)
   const theme = useConfigStore((s) => s.config.theme)
@@ -52,7 +53,7 @@ export function Components() {
     addBlock(block)
     selectBlock(block.id)
     toast(`${meta.label} added`)
-    navigate('/editor')
+    if (location.pathname !== '/editor') navigate('/editor')
   }
 
   return (

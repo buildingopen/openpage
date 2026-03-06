@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Search, Sparkles, ArrowRight, Trash2, FolderOpen, Paperclip, Copy, Pencil } from 'lucide-react'
+import { Search, Sparkles, ArrowRight, Trash2, FolderOpen, Copy, Pencil } from 'lucide-react'
 import { useProjectsStore, type Project } from '@/store/projectsStore'
 import { useConfigStore, defaultConfig } from '@/store/configStore'
 import { useEditorStore } from '@/store/editorStore'
@@ -61,6 +61,11 @@ function PromptSection() {
     const trimmed = text.trim()
     if (!trimmed) return
 
+    const hasGeminiKey = !!localStorage.getItem('openpage-gemini-key')
+    if (!hasGeminiKey) {
+      toast('No API key found. Generating from templates.', { duration: 3000 })
+    }
+
     // Create placeholder project, set generation state, navigate immediately
     const placeholderName = trimmed.split(/\s+/).slice(0, 4).join(' ')
     const id = addProject(placeholderName.charAt(0).toUpperCase() + placeholderName.slice(1))
@@ -107,15 +112,6 @@ function PromptSection() {
             {/* Bottom bar */}
             <div className="flex items-center justify-between px-4 pb-3 pt-1">
               <div className="flex items-center gap-1.5 animate-fade-in stagger-4">
-                <button
-                  onClick={() => toast('Image attachments coming soon')}
-                  className="p-1.5 rounded-lg text-text-3/40 hover:text-text-3 transition-all cursor-default"
-                  title="Coming soon"
-                  aria-label="Attach reference images (coming soon)"
-                >
-                  <Paperclip size={14} />
-                </button>
-                <div className="w-px h-4 bg-border-default" />
                 {suggestions.map((s) => (
                   <button
                     key={s.label}

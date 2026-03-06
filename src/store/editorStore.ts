@@ -1,11 +1,9 @@
 import { create } from 'zustand'
 
-export type LeftPanel = 'layers' | 'agent'
 export type Viewport = 'desktop' | 'tablet' | 'mobile'
 
 interface EditorState {
   selectedBlockId: string | null
-  leftPanel: LeftPanel
   viewport: Viewport
   jsonDrawerOpen: boolean
   historyOpen: boolean
@@ -17,7 +15,6 @@ interface EditorState {
   generationPrompt: string | null
   generationError: string | null
   selectBlock: (id: string | null) => void
-  setLeftPanel: (panel: LeftPanel) => void
   setViewport: (vp: Viewport) => void
   toggleJsonDrawer: () => void
   toggleHistory: () => void
@@ -31,7 +28,6 @@ interface EditorState {
 
 export const useEditorStore = create<EditorState>()((set) => ({
   selectedBlockId: null,
-  leftPanel: 'layers',
   viewport: 'desktop',
   jsonDrawerOpen: false,
   historyOpen: false,
@@ -42,7 +38,6 @@ export const useEditorStore = create<EditorState>()((set) => ({
   generationPrompt: null,
   generationError: null,
   selectBlock: (id) => set({ selectedBlockId: id }),
-  setLeftPanel: (panel) => set({ leftPanel: panel }),
   setViewport: (vp) => set({ viewport: vp }),
   toggleJsonDrawer: () => set((s) => ({ jsonDrawerOpen: !s.jsonDrawerOpen })),
   toggleHistory: () => set((s) => ({ historyOpen: !s.historyOpen })),
