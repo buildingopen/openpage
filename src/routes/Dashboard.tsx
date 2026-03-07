@@ -1,11 +1,17 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Search, Sparkles, ArrowRight, Trash2, FolderOpen, Copy, Pencil } from 'lucide-react'
+import { Search, Sparkles, Trash2, FolderOpen, Copy, Pencil, Layers, Briefcase, UtensilsCrossed, Building2, BookOpen } from 'lucide-react'
+import { NavLink } from 'react-router-dom'
 import { useProjectsStore, type Project } from '@/store/projectsStore'
 import { useConfigStore, defaultConfig } from '@/store/configStore'
 import { useEditorStore } from '@/store/editorStore'
 import { hexToRgb } from '@/lib/theme-presets'
+import { templateMeta, buildTemplate } from '@/lib/templates'
+
+const templateIcons: Record<string, typeof Briefcase> = {
+  Briefcase, UtensilsCrossed, Building2, BookOpen,
+}
 
 const suggestions = [
   {
@@ -57,14 +63,16 @@ function PromptSection() {
     navigate('/editor')
   }
 
+  function startFromTemplate(tplId: string, tplName: string) {
+    const id = addProject(tplName)
+    setActiveProject(id)
+    setConfig(buildTemplate(tplId, tplName))
+    navigate('/editor')
+  }
+
   function generate(text: string) {
     const trimmed = text.trim()
     if (!trimmed) return
-
-    const hasGeminiKey = !!localStorage.getItem('openpage-gemini-key')
-    if (!hasGeminiKey) {
-      toast('No API key found. Generating from templates.', { duration: 3000 })
-    }
 
     // Create placeholder project, set generation state, navigate immediately
     const placeholderName = trimmed.split(/\s+/).slice(0, 4).join(' ')
@@ -75,6 +83,7 @@ function PromptSection() {
     navigate('/editor')
   }
 
+  const hasGeminiKey = !!localStorage.getItem('openpage-gemini-key')
   const isFocused = prompt.length > 0
 
   return (
@@ -141,14 +150,59 @@ function PromptSection() {
           </div>
         </div>
 
-        {/* Start blank */}
-        <div className="mt-4">
+        {/* Template cards */}
+        <div className="w-full max-w-[680px] mt-5 grid grid-cols-2 md:grid-cols-4 gap-2.5 animate-fade-in-up stagger-5">
+          {templateMeta.map((tpl) => {
+            const rgb = hexToRgb(tpl.accent)
+            const Icon = templateIcons[tpl.icon] || Layers
+            return (
+              <button
+                key={tpl.id}
+                onClick={() => startFromTemplate(tpl.id, tpl.name)}
+                className="group relative bg-bg-1 border border-border-default rounded-xl p-3.5 text-left transition-all hover:border-border-hover card-lift hover:card-lift-hover active:scale-[0.97]"
+              >
+                <div
+                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                  style={{ background: `rgba(${rgb}, 0.06)` }}
+                />
+                <div className="relative">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <div
+                      className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all opacity-70 group-hover:opacity-100 group-hover:scale-110"
+                      style={{ background: `rgba(${rgb}, 0.12)`, color: tpl.accent }}
+                    >
+                      <Icon size={14} />
+                    </div>
+                    <div className="text-[12.5px] font-semibold text-text-0">{tpl.name}</div>
+                  </div>
+                  <div className="text-[10.5px] text-text-2 leading-snug">{tpl.description}</div>
+                  <div className="mt-2.5 flex items-center gap-1 text-[10px] text-text-3">
+                    <Layers size={10} />
+                    {tpl.blockCount} blocks
+                  </div>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Start blank + API key hint */}
+        <div className="mt-3 flex flex-col items-center gap-1.5">
           <button
             onClick={startBlank}
-            className="text-text-3 text-[12px] hover:text-text-1 transition-colors inline-flex items-center gap-1.5 animate-fade-in stagger-5"
+            className="text-text-3 text-[11px] hover:text-text-1 transition-colors"
           >
-            or start from a template <ArrowRight size={12} />
+            or start blank
           </button>
+          {!hasGeminiKey && (
+            <p className="text-text-3 text-[10.5px]">
+              Using template mode.{' '}
+              <NavLink to="/settings" className="text-green hover:text-green-dim transition-colors">
+                Add a Gemini API key
+              </NavLink>
+              {' '}for AI-generated sites.
+            </p>
+          )}
         </div>
       </div>
     </div>

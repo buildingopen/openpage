@@ -102,6 +102,21 @@ const templates: Template[] = [
   },
 ]
 
+// Metadata for the 4 featured template cards on Dashboard
+// icon: lucide-react icon name, mapped in rendering components
+export const templateMeta = [
+  { id: 'portfolio', name: 'Portfolio', description: 'Showcase your work and skills', accent: '#06b6d4', blockCount: 7, templateIndex: 0, icon: 'Briefcase' },
+  { id: 'restaurant', name: 'Restaurant', description: 'Menu, reservations, and ambiance', accent: '#e8a838', blockCount: 7, templateIndex: 1, icon: 'UtensilsCrossed' },
+  { id: 'agency', name: 'Agency', description: 'Services, case studies, and team', accent: '#228be6', blockCount: 8, templateIndex: 2, icon: 'Building2' },
+  { id: 'blog', name: 'Blog', description: 'Articles, topics, and subscribers', accent: '#4f46e5', blockCount: 7, templateIndex: 3, icon: 'BookOpen' },
+] as const
+
+export function buildTemplate(id: string, name: string): SiteConfig {
+  const meta = templateMeta.find((m) => m.id === id)
+  if (!meta) return templates[templates.length - 1].build(name)
+  return templates[meta.templateIndex].build(name)
+}
+
 function extractName(prompt: string): string {
   const words = prompt.split(/\s+/).slice(0, 4).join(' ')
   return words.charAt(0).toUpperCase() + words.slice(1)

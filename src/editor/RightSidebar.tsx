@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { MousePointer2 } from 'lucide-react'
 import { useEditorStore } from '@/store/editorStore'
 import { useConfigStore } from '@/store/configStore'
 import { PropertiesPanel } from './PropertiesPanel'
@@ -15,9 +16,14 @@ export function RightSidebar() {
     return page.blocks
   })
   const selectedBlock = blocks.find((b) => b.id === selectedBlockId)
-  const [tab, setTab] = useState<Tab>('design')
+  const [tab, setTab] = useState<Tab>('properties')
 
-  const activeTab = tab === 'properties' && !selectedBlock ? 'design' : tab
+  // Auto-switch to Properties when a block is selected
+  useEffect(() => {
+    if (selectedBlock) setTab('properties')
+  }, [selectedBlock?.id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const activeTab = tab
 
   return (
     <div className="hidden md:flex w-[280px] bg-bg-1 border-l border-border-default flex-col shrink-0">
@@ -57,8 +63,14 @@ export function RightSidebar() {
             </div>
           </>
         ) : (
-          <div className="flex-1 flex items-center justify-center text-text-3 text-xs text-center px-6 py-12">
-            Select a block to edit its properties
+          <div className="flex flex-col items-center justify-center text-center px-6 py-16 gap-3">
+            <div className="w-10 h-10 rounded-lg bg-bg-3 border border-border-default flex items-center justify-center">
+              <MousePointer2 size={16} className="text-text-3" />
+            </div>
+            <div>
+              <p className="text-text-1 text-[12px] font-medium">Click a block to edit</p>
+              <p className="text-text-3 text-[11px] mt-1">Select any block on the canvas to see its properties here</p>
+            </div>
           </div>
         )}
       </div>

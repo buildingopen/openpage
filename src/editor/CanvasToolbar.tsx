@@ -295,37 +295,40 @@ export function CanvasToolbar() {
         {/* Preview toggle */}
         <button
           onClick={togglePreview}
-          className={`w-7 h-7 rounded flex items-center justify-center transition-all ${
+          className={`h-7 px-2 rounded flex items-center gap-1 text-[11px] transition-all ${
             previewMode ? 'bg-green-glow text-green' : 'text-text-3 hover:text-text-1 hover:bg-bg-3'
           }`}
           title="Preview (P)"
           aria-label="Toggle preview mode"
           aria-pressed={previewMode}
         >
-          <Eye size={14} />
+          <Eye size={13} />
+          <span>Preview</span>
         </button>
 
         {/* JSON drawer toggle */}
         <button
           onClick={toggleJsonDrawer}
-          className={`w-7 h-7 rounded flex items-center justify-center transition-all ${
+          className={`h-7 px-2 rounded flex items-center gap-1 text-[11px] transition-all ${
             jsonDrawerOpen ? 'bg-green-glow text-green' : 'text-text-3 hover:text-text-1 hover:bg-bg-3'
           }`}
-          title="JSON Drawer (J)"
+          title="JSON (J)"
           aria-label="Toggle JSON drawer"
           aria-pressed={jsonDrawerOpen}
         >
-          <Code size={14} />
+          <Code size={13} />
+          <span>JSON</span>
         </button>
 
         {/* History */}
         <button
           onClick={toggleHistory}
-          className="w-7 h-7 rounded flex items-center justify-center text-text-3 hover:text-text-1 hover:bg-bg-3 transition-all"
+          className="h-7 px-2 rounded flex items-center gap-1 text-[11px] text-text-3 hover:text-text-1 hover:bg-bg-3 transition-all"
           title="History (H)"
           aria-label="Toggle version history"
         >
-          <Clock size={14} />
+          <Clock size={13} />
+          <span>History</span>
         </button>
 
         {/* Shortcuts help */}

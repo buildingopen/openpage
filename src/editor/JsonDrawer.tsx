@@ -71,7 +71,7 @@ export function JsonDrawer() {
 
   return (
     <div
-      className="bg-bg-0 border-t border-border-default flex flex-col overflow-hidden transition-all duration-250 ease-in-out"
+      className={`bg-bg-0 flex flex-col overflow-hidden transition-all duration-250 ease-in-out ${jsonDrawerOpen ? 'border-t border-border-default' : ''}`}
       style={{ height: jsonDrawerOpen ? '220px' : '0px' }}
     >
       {/* Header */}
